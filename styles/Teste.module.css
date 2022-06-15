@@ -1,0 +1,10 @@
+.scene{
+    width:100%;
+    height:100vh;
+    /* max-width: 800px; */
+}
+
+.canvas{
+    z-index: 3;
+    background: #00000000;
+}

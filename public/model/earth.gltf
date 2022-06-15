@@ -1,0 +1,191 @@
+{
+    "asset" : {
+        "copyright" : "Nyco3D",
+        "generator" : "Khronos glTF Blender I/O v1.8.19",
+        "version" : "2.0"
+    },
+    "scene" : 0,
+    "scenes" : [
+        {
+            "name" : "Scene",
+            "nodes" : [
+                0,
+                1
+            ]
+        }
+    ],
+    "nodes" : [
+        {
+            "mesh" : 0,
+            "name" : "Icosphere.002",
+            "rotation" : [
+                -0.2541554868221283,
+                0.47200727462768555,
+                0.2057788074016571,
+                0.8186997175216675
+            ],
+            "translation" : [
+                0,
+                0.27033209800720215,
+                0
+            ]
+        },
+        {
+            "mesh" : 1,
+            "name" : "Icosphere",
+            "translation" : [
+                0,
+                0.27033209800720215,
+                0
+            ]
+        }
+    ],
+    "materials" : [
+        {
+            "doubleSided" : true,
+            "name" : "Material.001",
+            "pbrMetallicRoughness" : {}
+        },
+        {
+            "doubleSided" : true,
+            "name" : "Material.002",
+            "pbrMetallicRoughness" : {}
+        }
+    ],
+    "meshes" : [
+        {
+            "name" : "Icosphere.003",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 0,
+                        "NORMAL" : 1
+                    },
+                    "indices" : 2,
+                    "material" : 0
+                }
+            ]
+        },
+        {
+            "name" : "Icosphere.001",
+            "primitives" : [
+                {
+                    "attributes" : {
+                        "POSITION" : 3,
+                        "NORMAL" : 4,
+                        "TEXCOORD_0" : 5
+                    },
+                    "indices" : 6,
+                    "material" : 1
+                }
+            ]
+        }
+    ],
+    "accessors" : [
+        {
+            "bufferView" : 0,
+            "componentType" : 5126,
+            "count" : 642,
+            "max" : [
+                0.984006404876709,
+                0.984006404876709,
+                0.9840063452720642
+            ],
+            "min" : [
+                -0.9840062856674194,
+                -0.9840065240859985,
+                -0.9840063452720642
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 1,
+            "componentType" : 5126,
+            "count" : 642,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 2,
+            "componentType" : 5123,
+            "count" : 3840,
+            "type" : "SCALAR"
+        },
+        {
+            "bufferView" : 3,
+            "componentType" : 5126,
+            "count" : 13722,
+            "max" : [
+                0.965416431427002,
+                0.986558198928833,
+                0.9787052273750305
+            ],
+            "min" : [
+                -0.8904792666435242,
+                -0.9994747042655945,
+                -0.9882975220680237
+            ],
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 4,
+            "componentType" : 5126,
+            "count" : 13722,
+            "type" : "VEC3"
+        },
+        {
+            "bufferView" : 5,
+            "componentType" : 5126,
+            "count" : 13722,
+            "type" : "VEC2"
+        },
+        {
+            "bufferView" : 6,
+            "componentType" : 5123,
+            "count" : 64440,
+            "type" : "SCALAR"
+        }
+    ],
+    "bufferViews" : [
+        {
+            "buffer" : 0,
+            "byteLength" : 7704,
+            "byteOffset" : 0
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 7704,
+            "byteOffset" : 7704
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 7680,
+            "byteOffset" : 15408
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 164664,
+            "byteOffset" : 23088
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 164664,
+            "byteOffset" : 187752
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 109776,
+            "byteOffset" : 352416
+        },
+        {
+            "buffer" : 0,
+            "byteLength" : 128880,
+            "byteOffset" : 462192
+        }
+    ],
+    "buffers" : [
+        {
+            "byteLength" : 591072,
+            "uri" : "earth.bin"
+        }
+    ]
+}
