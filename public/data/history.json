@@ -22,7 +22,8 @@
         "subtitle":"McNab Elementary School",
         "date": "1999",
         "text": "Com grafite representei a casa branca em uma A3, este foi enviado pelo colégio para um campeonado de desenhos em Washington, D.C. Fui premiado com o primeiro lugar.",
-        "type": "Conquista"
+        "type": "Conquista",
+        "image":"melhor_desenho-3.jpg"
     },{
         "title": "Colégio VIP",
         "subtitle":"Ensino Fundamental",
@@ -88,7 +89,8 @@
         "subtitle":"Programador Analista",
         "date": "Março - 2012 | Julho - 2012",
         "text": "Atuei na criação de dois jogos para cassino, um chamado Triple Bônus e o outro Lucky Note. Como programador de Python no motor de jogo Blender 3D. Ambos foram apresentados em uma feira de jogos na cidade do México.",
-        "type": "Emprego"
+        "type": "Emprego",
+        "image":"igs-6.jpg"
     },{
         "title": "Agência Rae,MP",
         "subtitle":"Designer de jogos",
@@ -102,14 +104,32 @@
         "text": "Desenvolvimento de aplicativos multi-plataforma para divulgação de produtos, softwares de administração para congressos de médicos, edição de vídeo para propaganda, animação e artes visuais. Gerente de projeto Claudio Corvello e Silva & CEO Pérsio Marcondes do Amaral",
         "type": "Emprego"
     },{
+        "title": "Centro Universitário FMU | FIAM-FAAM",
+        "subtitle":"Video Game Art and Development",
+        "date": "Fevereiro - 2011 | Outubro - 2014",
+        "text": "",
+        "type": "Formação",
+        "video":"PyVWa4rkqnI",
+        "image":"fmu-3.jpg",
+        "url":"portal.fmu.br/cursos/graduacao/ciencia-da-computacao/"
+    },{
         "title": "Vancouver Film School V.F.S.",
         "subtitle":"Video Game Art and Development",
         "date": "Agosto - 2014 | Dezembro - 2014",
         "text": "Fui para Vancouver no Canada, realizar um sonho, estudar Design de Jogos, onde aprofundei meus conhecimentos de Unity, Unreal Engine e como funciona o mercado de jogos digitais. Também tive o desafio de criar jogos de tabuleiro, celular e participei em Game Jams (Hat Jam), onde aprendi a fazer meu melhor o mais rápido possível.",
         "type": "Formação",
         "video":"YAfvWdQ55Fc",
-        "image":"vfs-4.jpg",
+        "image":"vfs-5.jpg",
         "url":"vfs.edu/programs/programming"
+    },{
+        "title": "Elpis The Game",
+        "subtitle":"Desenvolvedor",
+        "date": "Setembro - 2009 | Julho - 2016",
+        "text": "",
+        "type": "Projeto",
+        "image":"elpis-12.jpg",
+        "video":"RxjQfvImJuM",
+        "url":"blenderartists.org/t/elpis-the-game-infinite-procedural-terrain-video/466325/491"
     },{
         "title": "Galpão Base & ZOOMB",
         "subtitle":"Designer Programador Sênior",
