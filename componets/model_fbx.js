@@ -4,8 +4,7 @@ import { useLoader } from '@react-three/fiber'
 import { Suspense, useState } from 'react'
 import { Select } from '@react-three/postprocessing'
 
-export function loadFBXModel( fbxPath, options = { receiveShadow: true, castShadow: true }
-) {
+export function loadFBXModel( fbxPath, options = { receiveShadow: true, castShadow: true }) {
   const { receiveShadow, castShadow } = options
   return new Promise((resolve, reject) => {
     const loader = new FBXLoader()

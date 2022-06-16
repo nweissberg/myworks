@@ -6,7 +6,7 @@ import { Card } from 'primereact/card';
 import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
 import { Galleria } from 'primereact/galleria';
-import { HistoryService } from '../services/HistoryService';
+import HistoryService from '../services/HistoryService';
 
 const IconSet = {
     Conquista:{

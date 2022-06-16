@@ -1,5 +1,5 @@
 
-export class HistoryService {
+export default class HistoryService {
 
     getTimeline() {
         return fetch('data/history.json').then(res => res.json())

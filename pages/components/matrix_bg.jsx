@@ -1,9 +1,15 @@
 import { useEffect, useState, Suspense, useRef } from 'react'
 import Canvas from '../../componets/Canvas'
+import { isMobile } from '../utils'
 
 export default function MatrixBackGround(){
+  const [mobile, set_mobile] = useState()
+  useEffect(()=>{
+    set_mobile(isMobile())
+  },[])
+  
     var particles = []
-    const maxP = 150
+    const maxP = mobile?20:70;
     class particle{
         constructor(ctx){
           this.change = 0

@@ -43,7 +43,7 @@ function Pin(props) {
                 position:"absolute",
                 zIndex:10,
               }} className="pin_card">
-                <span>{props.name}</span>
+                <div style={{zIndex:100}}>{props.name}</div>
               </div>
             </div>
           </div>
