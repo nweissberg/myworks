@@ -141,6 +141,26 @@ p{
   background-image: radial-gradient(#fff 10%, #fff0 60%);
 }
 
+.fg_anim {
+  display: flex;
+  animation: linear;
+  align-items: center;
+  justify-content: center;
+  animation-name: alpha_blur;
+  animation-duration: 2s;
+}
+@keyframes alpha_blur {
+  0%{
+    opacity: 1.0;
+  }
+  50%{
+    opacity: 1.0;
+  }
+  100% {
+    opacity: 0.0;
+  }
+}
+
 .map_marker:hover{
   opacity: 1;
   cursor: pointer;

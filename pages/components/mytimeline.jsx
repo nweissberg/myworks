@@ -4,6 +4,9 @@ import { Menu } from 'primereact/menu';
 import { Button } from 'primereact/button';
 import { Card } from 'primereact/card';
 import { Toolbar } from 'primereact/toolbar';
+import { Dialog } from 'primereact/dialog';
+import { Galleria } from 'primereact/galleria';
+import { HistoryService } from '../services/HistoryService';
 
 const IconSet = {
     Conquista:{
@@ -28,196 +31,66 @@ const IconSet = {
     }
   }
 
-const History = [
-    { 
-      title: 'Spawn Point',
-      date: '21 - Março - 1991',
-      subtitle:'São Bernardo - SP',
-      text: 'Vem ao mundo um bebê!',
-      type: 'Conquista'
-    },{
-      title: 'Colégio Hebraico Brasileiro Renascença',
-      subtitle:'Ensino Fundamental',
-      date: '1996 | 1998',
-      text: 'Além do currículo padrão de colégio, tive aulas de carpintaria, cultura judáica e hebreu.',
-      type: 'Formação'
-    },{
-      title: 'McNab Elementary School',
-      subtitle:'Ensino Fundamental',
-      date: '1998 | 2001',
-      text: 'Fui com minha familia morar e estudar em Pompano Beach, FL. Currículo de colégio americano envolve Baseball, Football, aulas de programação e espanhol, além do padrão Brasileiro.',
-      type: 'Formação'
-    },{
-      title: 'Prêmio de melhor desenho',
-      subtitle:'McNab Elementary School',
-      date: '1999',
-      text: 'Com grafite representei a casa branca em uma A3, este foi enviado pelo colégio para um campeonado de desenhos em Washington, D.C. Fui premiado com o primeiro lugar.',
-      type: 'Conquista'
-    },{
-      title: 'Colégio VIP',
-      subtitle:'Ensino Fundamental',
-      date: '2003 | 2005',
-      text: 'Nessa escola tive a apção de escolher entre, japonês e espanhol... escolhi japonês! Aprendi ler Hiragana e Katakana. Também fiz judô e dança.',
-      type: 'Formação'
-    },{
-      title: 'Fundação Escola de Comércio Álvares Penteado F.E.C.A.P.',
-      subtitle:'Ensino Médio Técnico',
-      date: '2005 | 2008',
-      text: 'Fiz o colegial técnico em publicidade e propaganda, onde aprendi marketing, design, Flash, Corel Draw, Photoshop, Blender 3D. Também tive aulas extras no técnico de Informática, onde estudei lógica de programação, .NET, Visual Studio, Python e SQL.Programas e habilidades que uso até hoje!',
-      type: 'Formação'
-    },{
-      title: 'Campeão de Xadrez',
-      subtitle:'Olimpíadas interescolar anual da F.E.C.A.P.',
-      date: '2007',
-      text: 'Quase perdi na final, meu oponente falou chequemate... porém, ainda tinha uma saída, sua desatenção foi meu trunfo, virei o jogo. O prêmio foi um troféu e um pendrive Kingston 256MB.',
-      type: 'Conquista'
-    },{
-      title: 'A.I.S. Advanced Informatics School S.A.G.A.',
-      subtitle:'Design Publicitário',
-      date: 'Janeiro - 2007 | Julho - 2008',
-      text: 'Nesse curso aprendi como fazer composição de videos com Adobe Premiere e efeitos especiais de cinema com Adobe After Effects. Também tive a honra de conhecer meu primeiro gerente, Rogério Felix, o professor que viu um potêncial em mim e me deu meu primeiro emprego de carteira assinada.',
-      type: 'Formação'
-    },{
-      title: 'School of Art, Game and Animation S.A.G.A.',
-      subtitle:'Professor assistente',
-      date: 'Outubro - 2008 | Julho - 2009',
-      text: 'Junto ao coordenador Rogerio Felix, e aos professores Lucas Silva, Caio Hutter Cipó, Danielle Melo, criamos o material didático do curso de jogos que hoje é conhecido como PlayGame da escola S.A.G.A.',
-      type: 'Emprego'
-    },{
-      title: 'Apóstrofe - Cenografia e Montagens',
-      subtitle:'Designer de Cenário 3D',
-      date: 'Março - 2009 | Janeiro - 2011',
-      text: 'Criação e desenvolvimento de ambientes digitais para para construção de eventos, programas de televisão, shows e estandes. Arquiteto Responsável: Fernando Carvalho Jr.',
-      type: 'Emprego'
-    },{
-      title: 'Campeão de Judô',
-      subtitle:'Federação Paulista de Judô, Kaikan Tucuruvi - ACET (Associação Cultural e Esportiva de Tucuruvi).',
-      date: '2010',
-      text: 'Quase desisti depois de ter quebrado o naríz na primeira luta, mas minha garra e o calor do momento não me deixou entregar a toalha, já banhada em sangue. A dor me motivou ainda mais, finalizando tão rápido a última luta que quase não lembro qual foi o golpe!',
-      type: 'Conquista'
-    },{
-      title: 'Fundação Escola de Comércio Álvares Penteado F.E.C.A.P.',
-      subtitle:'Professor de Jogos',
-      date: 'Janeiro - 2011 | Janeiro - 2013',
-      text: 'Lecionava aulas de programação para jogos digitais em diversas linguagens (Java, Python, Visual Basic e Actionscript), para turmas do primeiro ao terceiro ano do ensino médio. Sob coordenação de Tania Aguiar e supervisão de Mario Sergio Zaize.',
-      type: 'Emprego'
-    },{
-      title: 'Colégio Internacional Vocacional Radial',
-      subtitle:'Professor de Jogos',
-      date: 'Março - 2011 | Outubro - 2011',
-      text: 'Ensinava ao ensino médio técnico, como criar jogos usando o software Blender 3D, desde a modelagem dos objetos tridimensionais, até publicar o jogo completo.',
-      type: 'Emprego'
-    },{
-      title: 'Uma Propaganda',
-      subtitle:'Artista digital freelancer',
-      date: 'Maio - 2011 | Agosto - 2011',
-      text: 'Criação de vídeos, sites, animações e artes visuais em geral. Empresa fundada pelo meu ex-professor de marketing, coordenado do colégio F.E.C.A.P. e referência de homem Alessandro Bender.',
-      type: 'Emprego'
-    },{
-      title: 'International Game Solutions - IGS',
-      subtitle:'Programador Analista',
-      date: 'Março - 2012 | Julho - 2012',
-      text: 'Atuei na criação de dois jogos para cassino, um chamado Triple Bônus e o outro Lucky Note. Como programador de Python no motor de jogo Blender 3D. Ambos foram apresentados em uma feira de jogos na cidade do México.',
-      type: 'Emprego'
-    },{
-      title: 'Agência Rae,MP',
-      subtitle:'Designer de jogos',
-      date: 'Julho - 2012 | Setembro - 2012',
-      text: 'Desenvolvimento de um Addver Game para o Volkswagen Jetta, usando o motor de jogo do Blender 3D. Construção de todos os aspectos do jogo: Modelagem, texturas, animações, programação, etc.',
-      type: 'Emprego'
-    },{
-      title: 'Virtuale Comunicação',
-      subtitle:'Programador Web Pleno',
-      date: 'Janeiro - 2013 | Outubro - 2014',
-      text: 'Desenvolvimento de aplicativos multi-plataforma para divulgação de produtos, softwares de administração para congressos de médicos, edição de vídeo para propaganda, animação e artes visuais. Gerente de projeto Claudio Corvello e Silva & CEO Pérsio Marcondes do Amaral',
-      type: 'Emprego'
-    },{
-      title: 'Vancouver Film School V.F.S.',
-      subtitle:'Video Game Art and Development',
-      date: 'Agosto - 2014 | Dezembro - 2014',
-      text: 'Fui para Vancouver no Canada, realizar um sonho, estudar Design de Jogos, onde aprofundei meus conhecimentos de Unity, Unreal Engine e como funciona o mercado de jogos digitais. Também tive o desafio de criar jogos de tabuleiro, celular e participei em Game Jams (Hat Jam), onde aprendi a fazer meu melhor o mais rápido possível.',
-      type: 'Formação'
-    },{
-      title: 'Galpão Base & ZOOMB',
-      subtitle:'Designer Programador Sênior',
-      date: 'Fevereiro - 2016 | Outubro - 2016',
-      text: 'Com a parceria entre Leo Ceolin Arquiteto Responsável, interatividade por Rodrigo Barbosa, inovamos em exposições com instalações interativas de vídeo game mapping. Desenvolvimento de aplicações 3D realtime com captação de voz e movimento.',
-      type: 'Emprego',
-      url: 'https://www.behance.net/gallery/111385517/British-Invasion-Experience',
-      video: 'https://www.youtube.com/watch?v=t3XiMz6tQ7c'
-    },{
-      title: 'Nyco Tattoo',
-      subtitle:'Tatuador autônomo',
-      date: 'Novembro - 2016 | Dezembro - 2020',
-      text: 'Sempre amei desenhar, ao meu ver a tatuagem é um ápice da arte. Representar uma imagem na pele de um cliente é uma honra e um processo transformador, para todas as partes envolvidas.',
-      type: 'Emprego',
-      url: 'www.instagram.com/nycotattoo',
-      image: 'tattoos.jpg'
-    },{
-      title: 'Wizard by Pearson',
-      subtitle:'Instrutor de Idiomas Nível 3',
-      date: 'Fevereiro - 2021 | Março - 2021',
-      text: 'Atuei lecionando Inglês para todos os níveis de fluência, por meio de aulas dinâmicas, criativas e interativas (Kahoot).',
-      type: 'Emprego',
-      image:'wizard.jpg'
-    },{
-      title: 'Nestlé',
-      subtitle:'Desenvolvedor php',
-      date: 'Março - 2021 | Junho - 2021',
-      text: 'Tive a honra de participar de um projeto com duração de 2 meses atendendo a Nestlé através da Tech Mahindra. Nesse período, junto a uma equipe coordenada pelo Lucas Di Domenico Bertola, documentei e testei formulários onde migramos do PHP à JavaScript.',
-      type: 'Projeto'
-    },{
-      title: 'Lear Corporation',
-      subtitle:'Desenvolvedor Frontend Sênior',
-      date: 'Junho - 2021 | Outubro - 2021',
-      text: 'Para não descartar um projeto, a Tech Mahindra me alocou com a Lear Corporation, no último mês do prazo. Usando a metodologia Agile/Scrum conseguimos entregar antes que começasse a ser um prejuízo à empresa. Ficaram tão felizes com o resultado, que ganhei mais 22 dias simplesmente para executar soluções tecnológicas que havia sugerido, essas tornaram a vida dos usuários e dos administradores mais rápida e intuitiva sem tempo de loading (IndexDB). Project owner Arnoldo Liesenberg',
-      type: 'Projeto'
-    },{
-      title: 'Canvas Terminal',
-      subtitle:'Desenvolvedor Arquiteto',
-      date: 'Outubro - 2021 | Março - 2022',
-      text: 'O objetivo desse projeto foi de criar um webapp, que permite a criação de novos aplicativos e jogos, 2D e 3D. Uma engine de jogos feito com HTML Canvas e Javascript.',
-      type: 'Projeto',
-      url:'canvasterminal.web.app',
-      image:'canvasterminal.jpg'
-    },{
-      title: 'DeepLearning.AI',
-      subtitle:'Natural Language Processing in TensorFlow & Python',
-      date: 'Março - 2022',
-      text: 'Curso online do Laurence Moroney (Lead AI Advocate, Google) onde aprendi como criar linguagem natural usando um modelo computacional de Machine Learning em Python. Tornando possível consumir textos de um autor, então essa I.A. aprende a escrever como se fosse aquele autor. Retornando textos inéditos, muitas vezes surpreendentes!',
-      type: 'Formação',
-      url:'coursera.org/share/b0b0adf470ebe415b170d581787349b9',
-      image:'tensorflow.jpeg'
-    },{
-      title: 'Suvinil',
-      subtitle:'Tech Lead Arquiteto',
-      date: 'Novembro - 2021 | Abril - 2022',
-      text: 'Após demonstrar meu profissionalismo, dedicação e competência nos últimos projetos, fui chamado para coordenar um time de desenvolvedores, atuando como technology leader. Onde sou responsável por criar um web app em React JS, Node JS, Next JS e MS SQL, inteiramente estruturado no conceito de orientação objeto, para uma experiência responsiva, dinâmica e intuitiva, com componentes e funções reutilizáveis, para melhorar a qualidade de vida do time e de quem for cuidar do código no futuro. Cliente Suvinil, time de desenvolvimento Fabyo Silveira, Guilherme Fernandes, Allan Hopólito',
-      type: 'Projeto',
-      image: 'suvinil.jpg'
-    },{
-      title: 'Pilar Papeis',
-      subtitle:'Desenvolvedor Fullstack Freelancer',
-      date: 'Abril - 2022',
-      text: 'Proposta do cliente: “Fazer um sistema que leia uma consulta SQL server e a partir do seu resultado crie API” Main stack: Node.js (Backend), React (Frontend) - Firebase (Serviços) Aproximadamente 40 horas de desenvolvimento, é possível conectar-se a quaisquer banco de dados SQL, criar queries e variáveis, gerar um link URL para usar como REST API, por fim receber os dados em JSON para uso em inúmeras aplicações. Gratidão Marcos Pilar pela oportunidade, muito massa sua ideia, foi um prazer desenvolve-la.',
-      type: 'Projeto',
-      image:'pilarpapeis.jpg',
-      url:'pilarpapeisrest.web.app'
-    },{
-      title: 'Pokédex 3D',
-      subtitle:'Desenvolvedor / Artista',
-      date: 'Maio - 2022',
-      text: 'Esse foi um projeto para criar união entre uma REST API (PokeAPI), um modelo 3D e HTML Canvas em um webapp responsivo. Dedico esse estudo para você fãs de Pokémon! Para ativar sua nostalgia, relembrando os melhores 151 monstrinhos.',
-      type: 'Projeto',
-      url:'pokedex-nyco3d.web.app',
-      image:'pokedex.jpg'
-    }
-  ]
+// const History = []
+
+const galleriaResponsive = [
+  {
+      breakpoint: '1500px',
+      numVisible: 5
+  },
+  {
+      breakpoint: '1024px',
+      numVisible: 3
+  },
+  {
+      breakpoint: '768px',
+      numVisible: 2
+  },
+  {
+      breakpoint: '560px',
+      numVisible: 1
+  }
+];
+
+const itemTemplate = (item) => {
+  return (
+    <div>
+      <img
+        src={item?.itemImageSrc}
+        onError={(e) => e.target.src=''}
+        alt={item?.alt}
+        style={{ width: '100%', display: 'block' }}
+      />
+    </div>    
+    );
+}
+
+const thumbnailTemplate = (item) => {
+  return <img src={item.thumbnailImageSrc} onError={(e) => e.target.src=''} alt={item.alt} style={{ display: 'block' }} />;
+}
+
 export default function MyTimeline(){
     const menu = useRef(null);
+    const [overlay, setOverlay] = useState(false)
     const [descendente, set_descendente] = useState(true)
-    const [active_history, set_active_history] = useState([...History].reverse())
     const [timeline_header, set_timeline_header] = useState('Timeline')
+    const [video_id, set_video_id] = useState('Vqe4LSGmwOg')
+    const [images, setImages] = useState([
+      {"itemImageSrc": "images/galleria/galleria1.jpg","alt": "Description for Image 1","title": "Title 1"}
+  ]);
+    const [activeIndex, setActiveIndex] = useState(0)
+    const historyService = new HistoryService();
+    const [History, setHistory] = useState([])
+    const [active_history, set_active_history] = useState([])
+    const galleria = useRef(null);
+    
+    
+    useEffect(() => {
+      historyService.getTimeline().then(data => {
+        setHistory(data)
+        set_active_history([...data].reverse())
+      });
+    }, []);
     
     const debounce = (fn) => {
 
@@ -282,9 +155,7 @@ export default function MyTimeline(){
     //     });
     
     //   })
-  const customizedDate = (item) => {
-    return(<></>)
-  }
+
   const customizedMarker = (item) => {
     return (
       <div>
@@ -340,14 +211,60 @@ export default function MyTimeline(){
         subTitle={<div style={{fontFamily:'neuro',color:"var(--matrix-secondary)"}}>{item.subtitle}</div>}
         >
         {item.image &&
-          <div>
-            <img width={300} alt={item.title} src={'/image/timeline/'+item.image}/>
+          <div style={{
+            width:"100%",
+            height:"100%",
+            // backgroundColor:"red",
+            alignItems:"left",
+            textAlign:"center",
+            justifyContent:"center"
+          }}>
+            <img style={{
+              cursor:"pointer",
+              position:"relative",
+            }} width={200} alt={item.title} src={'/image/timeline/'+item.image}
+            onClick={(e)=>{
+              const image_name = e.target.currentSrc.split("/").pop()
+              // console.log(image_name)
+              setActiveIndex(0)
+              var image_array = []
+
+              if(image_name.split('.')[0].indexOf('-') != -1){
+                const image_parts = image_name.split('.')[0].split('-')
+                const image_max = image_parts.pop()
+                // console.log(,image_parts[0])
+                for(var i = parseInt(image_max); i > 0; i--){
+                  var path = image_parts[0]+'-'+i +'.'+ image_name.split('.').pop()
+                  // console.log(path)
+                  image_array.unshift({"itemImageSrc": "image/timeline/"+path,"thumbnailImageSrc": "image/timeline/"+path,"alt": "Description for Image 1","title": "Title 1"})
+                }
+              }else{
+                image_array = [{"itemImageSrc": "image/timeline/"+image_name,"thumbnailImageSrc": "image/timeline/"+image_name,"alt": "Description for Image 1","title": "Title 1"}]
+              }
+              // console.log(image_array)
+              setImages(image_array)
+              galleria.current.show()
+            }}
+            />
           </div>
-          
         }
+       
         {item.text && <p style={{fontFamily:'futura', fontSize:"22px"}}>{item.text}</p>}
           { item.url && item.url != '' &&
-            <Button
+            <div>
+              {
+                item.video &&
+                <Button 
+                  label="Video"
+                  className="p-button-text"
+                  icon="pi pi-youtube"
+                  onClick={(e)=>{
+                    setOverlay(true)
+                    set_video_id(item.video)
+                  }}
+                />
+              }
+              <Button
               label="Abrir"
               className="p-button-text"
               icon="pi pi-link"
@@ -360,6 +277,8 @@ export default function MyTimeline(){
                 window.open('https://'+item.url).focus();
             }}
             />
+            </div>
+            
           }
         </Card>
           
@@ -510,6 +429,43 @@ export default function MyTimeline(){
             />
         </div>
       </div>
+      <Dialog
+          header="Video"
+          visible={overlay}
+          maximizable
+          onHide={() => {setOverlay(false)}}
+        >
+          <div>
+          <iframe style={{
+            width:"50vw",
+            height:"60vh",
+            // aspectRatio:1,
+            backgroundColor:"black"
+          }} src={"https://www.youtube.com/embed/"+video_id} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+          </div>
+        </Dialog>
+
+        <Galleria
+          ref={galleria}
+          value={images}
+          responsiveOptions={galleriaResponsive}
+          activeIndex={activeIndex}
+          onItemChange={(e) => setActiveIndex(e.index)}
+          // numVisible={9}
+          style={{
+            // position:"absolute",
+            // zIndex:10,
+            maxWidth: '80vw',
+            // maxHeight:'90vh'
+          }}
+          circular
+          fullScreen
+          showThumbnails={false}
+          showIndicators
+          showItemNavigators
+          item={itemTemplate}
+          // thumbnail={thumbnailTemplate}
+        />
     </>
   )
 }

@@ -4,7 +4,7 @@ import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
 import { SpeedDial } from 'primereact/speeddial';
 import { useRouter } from 'next/router'
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import 'primeflex/primeflex.css';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -60,22 +60,52 @@ function MyApp({ Component, pageProps }) {
 ];
   return (
     <div>
-      <div style={{
-        position: 'fixed',
-        margin:"10px",
-        right:"70px",
-        height: '350px' , 
-        zIndex:5
-      }}>
-        <SpeedDial
-          model={items}
-          direction="down"
-          transitionDelay={80}
-          showIcon="pi pi-bars"
-          hideIcon="pi pi-times"
-          buttonClassName="p-button-success p-button-outlined" />
-      </div>
-     <Component {...pageProps} />
+      <Suspense
+        fallback={<div
+          style={{
+            position:"absolute",
+            width:"100vw",
+            height:"100vh",
+            backgroundColor:"#000",
+            zIndex:100,
+            pointerEvents:"none"
+          }}
+        >
+          <img alt='N3D_logo' src="/image/N3D.gif"></img>
+        </div>}
+      >
+        <div
+          className='fg_anim'
+          style={{
+            opacity:0,
+            position:"absolute",
+            width:"100vw",
+            height:"100vh",
+            backgroundColor:"#000",
+            zIndex:100,
+            pointerEvents:"none"
+          }}
+        >
+          <img alt='N3D_logo' src="/image/N3D.gif"></img>
+        </div>
+        <div style={{
+          position: 'fixed',
+          margin:"10px",
+          right:"70px",
+          height: '350px' , 
+          zIndex:5
+        }}>
+          <SpeedDial
+            model={items}
+            direction="down"
+            transitionDelay={80}
+            showIcon="pi pi-bars"
+            hideIcon="pi pi-times"
+            buttonClassName="p-button-success p-button-outlined" />
+        </div>
+      <Component {...pageProps} />
+      </Suspense>
+      
     
     </div>
   )
