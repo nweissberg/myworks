@@ -41,7 +41,7 @@ export default function UserHeader(){
               fontWeight:"normal",
               margin:"20px",
               color:"var(--matrix-secondary)"
-            }}>Desenvolvedor . Tech Lead . Professor . Generalista 3D . Tatuador</h3>
+            }}>Desenvolvedor . Professor . Artista 3D . Tatuador</h3>
           </div>
           <div style={line_style}>
             <h2 style={{fontFamily: 'mars',margin:"20px"}}>Nycholas Weissberg</h2>

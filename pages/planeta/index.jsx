@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import css from "../../styles/Teste.module.css";
 // import Floor from "../../componets/objects3D/Floor";
 import LightBulb from "../../componets/objects3D/LightBulb"
@@ -45,6 +45,14 @@ const vector3ToLatLng = (v3) => {
 const Planet_Mesh = () => {
     const scroll = useScroll()
     const refMesh = useRef();
+    const { invalidate, camera, gl } = useThree()
+    
+    useEffect(() => {
+        if(refMesh.current && refMesh.current.isObject3D) {
+            refMesh.current.addEventListener('change', invalidate)
+            return () => refMesh.current.removeEventListener('change', invalidate)
+        }
+    }, [])
     
     useFrame(() => {
         // if(scroll) console.log(scroll)

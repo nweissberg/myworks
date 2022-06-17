@@ -17,6 +17,9 @@ import Pin from '../../componets/objects3D/Pin';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 import TouchMask from '../planeta/TouchMask';
 import TimeLine from './Timeline';
+import { useAuth } from '../api/auth';
+import { useRouter } from 'next/router'
+import { add_data } from '../api/firebase';
 
 const latLngToVector3 = (latLng, radius=0.99) => {
     const phi = Math.PI * (0.5 - (latLng.lat / 180));
@@ -42,18 +45,41 @@ const vector3ToLatLng = (v3) => {
 // console.log(v3, latLng)
 
 export default function Teste() {
+    const { currentUser } = useAuth()
+    const router = useRouter()
     const clock = new Clock();
     const [tick,setTick] = useState(0)
+    const [pins, set_pins] = useState([
+        {
+            id:"userLocation",
+            address:"São Paulo, State of São Paulo, Brazil",
+            location:{ lat: -23.5557714, lng: -46.6395571 }
+        }
+    ])
     useEffect(() => {
         var _tick = tick
         _tick += clock.getDelta()
         setTick(_tick)
     },[tick])
+
+    useEffect(()=>{
+        console.log(currentUser)
+        // if(currentUser === null) router.push('/login')
+    }, [currentUser])
+
+    const savetest = (e)=>{
+        // add_data;
+        console.log(e,currentUser)
+    }
+
     return (
       <div className={css.scene}>
         {/* <TouchMask /> */}
-        <TimeLine />
+        <TimeLine user={currentUser} setPins={(e)=>{
+            if(e) set_pins([...pins,...e])
+        }}/>
         <Canvas
+            frameloop="demand"
             shadows={true}
             className={css.canvas}
             camera={{
@@ -99,25 +125,13 @@ export default function Teste() {
                 <div className="pi pi-map-marker marker3D" style={{fontSize: "7px"}} />
             </Marker> */}
             <LightBulb position={[-20, 0, 20]} />
-            
-            <Pin name="Pompano Beach, FL, USA" position={latLngToVector3({ lat: 26.2378597, lng: -80.1247667 })} scale={0.015}/>
-            
-            <Pin name="São Paulo, State of São Paulo, Brazil" position={latLngToVector3({ lat: -23.5557714, lng: -46.6395571 })} scale={0.015}/>
-            
-            <Pin name="Vancouver, BC, Canada" position={latLngToVector3({ lat: 49.2827291, lng: -123.1207375 })} scale={0.015}/>
-
-            <Pin name="Tel Aviv-Yafo, Israel" position={latLngToVector3({ lat: 32.0852999, lng: 34.78176759999999 })} scale={0.015}/>
-
-            <Pin name="Bickenbach, Germany" position={latLngToVector3({ lat: 49.7560649, lng: 8.6110515 })} scale={0.015}/>
-
-            <Pin name="Mexico City, CDMX, Mexico" position={latLngToVector3({ lat: 19.4326077, lng: -99.133208 })} scale={0.015}/>
-
-            <Pin name="Rio de Janeiro, State of Rio de Janeiro, Brazil" position={latLngToVector3({ lat: -22.9068467, lng: -43.1728965 })} scale={0.015}/>
-
-            <Pin name="Florianópolis, State of Santa Catarina, Brazil" position={latLngToVector3({ lat: -27.5948036, lng: -48.5569286 })} scale={0.015}/>
-            
-            {/* <OrbitControls
-                enabled={false}
+            {pins.map((item)=>{
+                console.log(item)
+                return(<Pin key={item.id} name={item.address} position={latLngToVector3(item.location)} scale={0.015}/>)
+            })}
+           
+            <OrbitControls
+                // enabled={false}
                 // enableZoom={false}
                 enablePan={false}
                 // maxZoom={0}
@@ -125,12 +139,12 @@ export default function Teste() {
                 // minPolarAngle={0}
                 // maxPolarAngle={Math.PI / 2.25}
                 makeDefault
-            /> */}
-            <TrackballControls 
+            />
+            {/* <TrackballControls 
                 noPan={true}
                 noZoom={true}
                 // rotateSpeed={2}
-            />
+            /> */}
         </Canvas>
       </div>
     );

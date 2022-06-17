@@ -155,6 +155,12 @@
         "type": "Emprego",
         "image":"wizard-7.jpg"
     },{
+        "title": "Pai pela primeira vez",
+        "subtitle":"Piracicaba - SP",
+        "date": "03 - Junho - 2021",
+        "text": "Vem ao mundo uma nenena!",
+        "type": "Conquista"
+    },{
         "title": "Nestlé",
         "subtitle":"Desenvolvedor php",
         "date": "Março - 2021 | Junho - 2021",
@@ -182,13 +188,6 @@
         "type": "Formação",
         "url":"coursera.org/share/b0b0adf470ebe415b170d581787349b9",
         "image":"tensorflow.jpeg"
-    },{
-        "title": "Suvinil",
-        "subtitle":"Tech Lead Arquiteto",
-        "date": "Novembro - 2021 | Abril - 2022",
-        "text": "Após demonstrar meu profissionalismo, dedicação e competência nos últimos projetos, fui chamado para coordenar um time de desenvolvedores, atuando como technology leader. Onde sou responsável por criar um web app em React JS, Node JS, Next JS e MS SQL, inteiramente estruturado no conceito de orientação objeto, para uma experiência responsiva, dinâmica e intuitiva, com componentes e funções reutilizáveis, para melhorar a qualidade de vida do time e de quem for cuidar do código no futuro. Cliente Suvinil, time de desenvolvimento Fabyo Silveira, Guilherme Fernandes, Allan Hopólito",
-        "type": "Projeto",
-        "image": "suvinil-12.jpg"
     },{
         "title": "Pilar Papeis",
         "subtitle":"Desenvolvedor Fullstack Freelancer",

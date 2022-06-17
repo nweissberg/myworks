@@ -4,11 +4,15 @@ import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
 import { SpeedDial } from 'primereact/speeddial';
 import { useRouter } from 'next/router'
-import { useEffect, Suspense } from 'react';
+import { useEffect, Suspense, useState } from 'react';
 import 'primeflex/primeflex.css';
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { AuthProvider } from './api/auth';
+import { Dialog } from 'primereact/dialog';
+import  QRCode  from 'qrcodejs'
+// var qrcode = new QRCode()
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -27,9 +31,12 @@ const firebaseConfig = {
 
 function MyApp({ Component, pageProps }) {
   // Initialize Firebase
+  const [qrcode, set_qrcode] = useState(false)
+
   useEffect((e)=>{
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+    // new QRCode(document.getElementById("qrcode"), "https://nyco3d.com");
   },[])
   
   const router = useRouter()
@@ -52,62 +59,72 @@ function MyApp({ Component, pageProps }) {
     },
     {
         label: 'Download CV',
-        icon: 'pi pi-file-pdf',
+        icon: 'pi pi-qrcode',
         command: () => {
+          set_qrcode(true)
             // toast.current.show({ severity: 'error', summary: 'Delete', detail: 'Data Deleted' });
         }
     }
 ];
   return (
-    <div>
-      <Suspense
-        fallback={<div
-          style={{
-            position:"absolute",
-            width:"100vw",
-            height:"100vh",
-            backgroundColor:"#000",
-            zIndex:100,
-            pointerEvents:"none"
-          }}
+    <AuthProvider>
+      <div>
+        <Suspense
+          fallback={<div
+            style={{
+              position:"absolute",
+              width:"100vw",
+              height:"100vh",
+              backgroundColor:"#000",
+              zIndex:100,
+              pointerEvents:"none"
+            }}
+          >
+            <img alt='N3D_logo' src="/image/N3D.gif"></img>
+          </div>}
         >
-          <img alt='N3D_logo' src="/image/N3D.gif"></img>
-        </div>}
-      >
-        <div
-          className='fg_anim'
-          style={{
-            opacity:0,
-            position:"absolute",
-            width:"100vw",
-            height:"100vh",
-            backgroundColor:"#000",
-            zIndex:100,
-            pointerEvents:"none"
-          }}
+          <div
+            className='fg_anim'
+            style={{
+              opacity:0,
+              position:"absolute",
+              width:"100vw",
+              height:"100vh",
+              backgroundColor:"#000",
+              zIndex:100,
+              pointerEvents:"none"
+            }}
+          >
+            <img alt='N3D_logo' src="/image/N3D.gif"></img>
+          </div>
+          <div style={{
+            position: 'fixed',
+            margin:"10px",
+            right:"70px",
+            height: '350px' , 
+            zIndex:5
+          }}>
+            <SpeedDial
+              model={items}
+              direction="down"
+              transitionDelay={80}
+              showIcon="pi pi-bars"
+              hideIcon="pi pi-times"
+              buttonClassName="p-button-success p-button-outlined" />
+          </div>
+          <Component {...pageProps} />
+        </Suspense>
+        <Dialog
+          header="Apontar Câmera aqui"
+          visible={qrcode}
+          // maximizable
+          onHide={() => {set_qrcode(false)}}
         >
-          <img alt='N3D_logo' src="/image/N3D.gif"></img>
-        </div>
-        <div style={{
-          position: 'fixed',
-          margin:"10px",
-          right:"70px",
-          height: '350px' , 
-          zIndex:5
-        }}>
-          <SpeedDial
-            model={items}
-            direction="down"
-            transitionDelay={80}
-            showIcon="pi pi-bars"
-            hideIcon="pi pi-times"
-            buttonClassName="p-button-success p-button-outlined" />
-        </div>
-      <Component {...pageProps} />
-      </Suspense>
+          <div id='qrcode' />
+        </Dialog>
       
-    
-    </div>
+      </div>
+    </AuthProvider>
   )
 }
 

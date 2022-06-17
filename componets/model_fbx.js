@@ -52,7 +52,7 @@ const Model = ({innerRef, children, ...props}) => {
       // receiveShadow: false,
       // castShadow: false,
   }).then((data)=>{
-      // console.log(data)
+      console.log(data)
       setFbx(data)
   })
 };
