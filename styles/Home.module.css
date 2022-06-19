@@ -1,22 +1,4 @@
-@font-face {
-  font-family: 'thematrix';
-  src: url('../public/font/thematrix.ttf');
-}
 
-@font-face {
-  font-family: 'mars';
-  src: url('../public/font/beyond_mars.ttf');
-}
-
-@font-face {
-  font-family: 'neuro';
-  src: url('../public/font/neuropolitical.ttf');
-}
-
-@font-face {
-  font-family: 'futura';
-  src: url('../public/font/futura_light.ttf');
-}
 
 .main {
   /* min-height: 100vh; */

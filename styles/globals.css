@@ -1,3 +1,44 @@
+
+@font-face {
+  font-family: 'thematrix';
+  src: url('../public/font/thematrix.ttf');
+}
+
+@font-face {
+  font-family: 'mars';
+  src: url('../public/font/beyond_mars.ttf');
+}
+
+@font-face {
+  font-family: 'neuro';
+  src: url('../public/font/neuropolitical.ttf');
+}
+
+@font-face {
+  font-family: 'futura';
+  src: url('../public/font/futura_light.ttf');
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #fff0; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2A05; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #2A0; 
+}
+
 :root{
   --marker-size:40px;
   --matrix-primary:#22AA00;
@@ -13,7 +54,7 @@
 
 html,
 body {
-  background-color: #333;
+  background-color: #000;
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -115,13 +156,13 @@ p{
   color: white;
   width: max-content;
   margin-top: calc(25% - 50px);
-  margin-left: auto;
-  margin-right: auto; 
+  /* margin-left: auto; */
+  /* margin-right: auto;  */
   font-family: neuro;
   /* opacity: 0; */
   /* transition: opacity 0.4s; */
   /* background-image: linear-gradient(to left, #000, #000, #0000); */
-  z-index: 100 !important;
+  /* z-index: 100 !important; */
 }
 
 /* .pin_card:hover{

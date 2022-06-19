@@ -1,6 +1,7 @@
 .scene{
-    width:100%;
-    height:100vh;
+    width:180%;
+    height:100%;
+    margin-left:-22vw;
     /* max-width: 800px; */
 }
 

@@ -9,27 +9,27 @@ import { Galleria } from 'primereact/galleria';
 import HistoryService from '../services/HistoryService';
 
 const IconSet = {
-    Conquista:{
-      header:'Conquistas',
-      icon: 'pi pi-star-fill',
-      color: 'var(--icon-pallet-f)'
-    },
-    Formação:{
-      header:'Formações',
-      icon: 'pi pi-book',
-      color: 'var(--icon-pallet-b)'
-    },
-    Emprego:{
-      header:'Empregos',
-      icon: 'pi pi-building',
-      color: 'var(--icon-pallet-d)'
-    },
-    Projeto:{
-      header:'Projetos',
-      icon: 'pi pi-briefcase',
-      color: 'var(--icon-pallet-a)'
-    }
+  Conquista:{
+    header:'Conquistas',
+    icon: 'pi pi-star-fill',
+    color: 'var(--icon-pallet-f)'
+  },
+  Formação:{
+    header:'Formações',
+    icon: 'pi pi-book',
+    color: 'var(--icon-pallet-b)'
+  },
+  Emprego:{
+    header:'Empregos',
+    icon: 'pi pi-building',
+    color: 'var(--icon-pallet-d)'
+  },
+  Projeto:{
+    header:'Projetos',
+    icon: 'pi pi-briefcase',
+    color: 'var(--icon-pallet-a)'
   }
+}
 
 // const History = []
 
@@ -91,6 +91,10 @@ export default function MyTimeline(){
         set_active_history([...data].reverse())
       });
     }, []);
+
+    const setTimeline = (data)=>{
+      console.log("SE Timeline data:",data)
+    }
     
     const debounce = (fn) => {
 
@@ -406,10 +410,10 @@ export default function MyTimeline(){
         </div>
         <Menu model={timeline_menu} popup ref={menu} id="popup_menu" />
         <div style={{
-            height:"140vh",
+            height:"100vh",
             marginTop:"-65px",
             paddingTop:"65px",
-            marginBottom:"10px",
+            marginBottom:"100px",
             maxWidth:"444px",
             overflowX:"hidden",
         }}>

@@ -32,31 +32,9 @@ api_cloud.interceptors.response.use(function(response){
   console.warn(error)
 })
 
-const api_call = ((body)=>{
-  return new Promise(function(res, rej) {
-    api_cloud.post("/api/query", body)
-    .then((data) => {
-      if(data){
-        console.log('CLOUD')
-        res(data)
-      }else{
-        api.post("/api/query", body)
-        .then((data) => {
-          if(data){
-            console.log('LOCAL')
-            res(data)
-          }else{
-            rej(null)
-          }
-        })
-      }
-    })
-  })
-})
-
 const api_get = ((body, headers)=>{
     const route = body.route
-    console.log(body,body.data)
+    // console.log(body,body.data)
     return new Promise(function(res, rej) {
         api.post("/api/"+route+"/", body.data, headers)
         .then((data) => {
@@ -85,4 +63,4 @@ const api_get = ((body, headers)=>{
 })
 
 export default api;
-export{ api_call, api_get };
+export{ api_get };

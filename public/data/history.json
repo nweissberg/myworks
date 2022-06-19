@@ -159,7 +159,8 @@
         "subtitle":"Piracicaba - SP",
         "date": "03 - Junho - 2021",
         "text": "Vem ao mundo uma nenena!",
-        "type": "Conquista"
+        "type": "Conquista",
+        "image":"nenena-1.jpg"
     },{
         "title": "Nestlé",
         "subtitle":"Desenvolvedor php",
