@@ -18,7 +18,7 @@ import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 import TouchMask from './TouchMask';
 import { isMobile } from '../utils';
 
-const latLngToVector3 = (latLng, radius=0.99) => {
+const latLngToVector3 = (latLng, radius=1.05) => {
     const phi = Math.PI * (0.5 - (latLng.lat / 180));
     const theta = Math.PI * (latLng.lng / 180);
     const spherical = new THREE.Spherical(radius || latLng.radius || 1, phi, theta);
@@ -87,7 +87,8 @@ export default function Planeta() {
     <div style={{
         position:"absolute",
         height:"100%",
-        width:"100%"
+        width:"100%",
+        cursor: "grab"
     }}>
         {/* <TouchMask /> */}
         <Suspense fallback={<span>loading...</span>}>

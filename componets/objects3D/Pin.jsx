@@ -9,19 +9,19 @@ function Pin(props) {
 
   useLayoutEffect(() => {
     mesh.current.lookAt(0, 0, 0)
-    pin.current.position.z = 8
+    pin.current.position.z = 2
   }, [])
   // const label_position = props.position.clone().multiplyScalar(5)
   return (
     
     <mesh ref={mesh} {...props} recieveShadow castShadow>
       <mesh ref={pin}>
-        <boxGeometry raycast={null} args={[0.1,0.1,10]} />
+        <boxGeometry raycast={null} args={[0.1,0.1,5]} />
         <meshBasicMaterial  />
       </mesh>
       <pointLight castShadow />
       {/* <boxBufferGeometry args={[20,0.1,0.1]}/> */}
-      <sphereBufferGeometry args={[1, 8, 8]}/>
+      <boxGeometry args={[1, 1, 1]}/>
       <meshBasicMaterial color={"#ffd000"} />
       <Html {...props}
         transform

@@ -21,7 +21,7 @@ import { useAuth } from '../api/auth';
 import { useRouter } from 'next/router'
 import { add_data } from '../api/firebase';
 
-const latLngToVector3 = (latLng, radius=1.1) => {
+const latLngToVector3 = (latLng, radius=1.05) => {
     const phi = Math.PI * (0.5 - (latLng.lat / 180));
     const theta = Math.PI * (latLng.lng / 180);
     const spherical = new THREE.Spherical(radius || latLng.radius || 1, phi, theta);

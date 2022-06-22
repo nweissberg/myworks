@@ -70,7 +70,8 @@ function MyApp({ Component, pageProps }) {
     <AuthProvider>
       <div>
         <Suspense
-          fallback={<div
+          fallback={
+          <div
             style={{
               position:"absolute",
               width:"100vw",
@@ -97,6 +98,7 @@ function MyApp({ Component, pageProps }) {
           >
             <img alt='N3D_logo' src="/image/N3D.gif"></img>
           </div>
+          
           <div style={{
             position: 'fixed',
             margin:"10px",
@@ -120,7 +122,9 @@ function MyApp({ Component, pageProps }) {
           // maximizable
           onHide={() => {set_qrcode(false)}}
         >
-          <div id='qrcode' />
+          <div id='qrcode' >
+            <img alt='nyco3d.com' width={300} src='image/qrcode.jpg'/>
+          </div>
         </Dialog>
       
       </div>
