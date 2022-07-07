@@ -47,12 +47,12 @@ const Planet_Mesh = () => {
     const refMesh = useRef();
     const { invalidate, camera, gl } = useThree()
     
-    useEffect(() => {
-        if(refMesh.current && refMesh.current.isObject3D) {
-            refMesh.current.addEventListener('change', invalidate)
-            return () => refMesh.current.removeEventListener('change', invalidate)
-        }
-    }, [])
+    // useEffect(() => {
+    //     if(refMesh.current && refMesh.current.isObject3D) {
+    //         refMesh.current.addEventListener('change', invalidate)
+    //         return () => refMesh.current.removeEventListener('change', invalidate)
+    //     }
+    // }, [])
     
     useFrame(() => {
         // if(scroll) console.log(scroll)
@@ -66,9 +66,11 @@ const Planet_Mesh = () => {
   }
 
 export default function Planeta() {
-    const [mobile, set_mobile] = useState()
+    const [mobile, set_mobile] = useState(true)
+    const [wait_loader, set_wait_loader] = useState(true)
     useEffect(()=>{
         set_mobile(isMobile())
+        setTimeout(()=>{set_wait_loader(false)},5000)
     },[])
     // const ref = useRef()
     // const scroll = useScroll()
@@ -84,16 +86,15 @@ export default function Planeta() {
     //     setTick(_tick)
     // },[tick])
     return (
-    <div style={{
+    <div className="grabbable" style={{
         position:"absolute",
         height:"100%",
         width:"100%",
-        cursor: "grab"
     }}>
         {/* <TouchMask /> */}
         <Suspense fallback={<span>loading...</span>}>
             <Canvas
-                frameloop="demand"
+                frameloop={wait_loader?"always":"demand"}
                 shadows={true}
                 className={css.canvas}
                 camera={{
@@ -135,21 +136,21 @@ export default function Planeta() {
                 </Suspense>}
                 <LightBulb position={[-20, 0, 20]} />
                 
-                <Pin name="Pompano Beach, FL, USA" position={latLngToVector3({ lat: 26.2378597, lng: -80.1247667 })} scale={0.015}/>
+                <Pin type='Conquista' name="Pompano Beach, FL, USA" position={latLngToVector3({ lat: 26.2378597, lng: -80.1247667 })} scale={0.015}/>
                 
-                <Pin name="São Paulo, State of São Paulo, Brazil" position={latLngToVector3({ lat: -23.5557714, lng: -46.6395571 })} scale={0.015}/>
+                <Pin type='Conquista' name="São Paulo, State of São Paulo, Brazil" position={latLngToVector3({ lat: -23.5557714, lng: -46.6395571 })} scale={0.015}/>
                 
-                <Pin name="Vancouver, BC, Canada" position={latLngToVector3({ lat: 49.2827291, lng: -123.1207375 })} scale={0.015}/>
+                <Pin type='Conquista' name="Vancouver, BC, Canada" position={latLngToVector3({ lat: 49.2827291, lng: -123.1207375 })} scale={0.015}/>
 
-                <Pin name="Tel Aviv-Yafo, Israel" position={latLngToVector3({ lat: 32.0852999, lng: 34.78176759999999 })} scale={0.015}/>
+                <Pin type='Conquista' name="Tel Aviv-Yafo, Israel" position={latLngToVector3({ lat: 32.0852999, lng: 34.78176759999999 })} scale={0.015}/>
 
-                <Pin name="Bickenbach, Germany" position={latLngToVector3({ lat: 49.7560649, lng: 8.6110515 })} scale={0.015}/>
+                <Pin type='Conquista' name="Bickenbach, Germany" position={latLngToVector3({ lat: 49.7560649, lng: 8.6110515 })} scale={0.015}/>
 
-                <Pin name="Mexico City, CDMX, Mexico" position={latLngToVector3({ lat: 19.4326077, lng: -99.133208 })} scale={0.015}/>
+                <Pin type='Conquista' name="Mexico City, CDMX, Mexico" position={latLngToVector3({ lat: 19.4326077, lng: -99.133208 })} scale={0.015}/>
 
-                <Pin name="Rio de Janeiro, State of Rio de Janeiro, Brazil" position={latLngToVector3({ lat: -22.9068467, lng: -43.1728965 })} scale={0.015}/>
+                <Pin type='Conquista' name="Rio de Janeiro, State of Rio de Janeiro, Brazil" position={latLngToVector3({ lat: -22.9068467, lng: -43.1728965 })} scale={0.015}/>
 
-                <Pin name="Florianópolis, State of Santa Catarina, Brazil" position={latLngToVector3({ lat: -27.5948036, lng: -48.5569286 })} scale={0.015}/>
+                <Pin type='Conquista' name="Florianópolis, State of Santa Catarina, Brazil" position={latLngToVector3({ lat: -27.5948036, lng: -48.5569286 })} scale={0.015}/>
                 
                 <OrbitControls
                     enableZoom={false}

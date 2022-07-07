@@ -1,11 +1,3 @@
-.scene{
-    width:180%;
-    height:100%;
-    margin-left:-22vw;
-    cursor: grab;
-    /* max-width: 800px; */
-}
-
 .canvas{
     z-index: 3;
     background: #00000000;

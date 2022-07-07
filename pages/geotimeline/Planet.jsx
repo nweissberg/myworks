@@ -21,7 +21,7 @@ import { useAuth } from '../api/auth';
 import { useRouter } from 'next/router'
 import { add_data } from '../api/firebase';
 
-const latLngToVector3 = (latLng, radius=1.05) => {
+const latLngToVector3 = (latLng, radius=1.05 ) => {
     const phi = Math.PI * (0.5 - (latLng.lat / 180));
     const theta = Math.PI * (latLng.lng / 180);
     const spherical = new THREE.Spherical(radius || latLng.radius || 1, phi, theta);
@@ -47,9 +47,9 @@ const vector3ToLatLng = (v3) => {
 export default class TimeLine extends React.Component {
 	constructor(props) {
 		super(props);
-		console.log(props)
+		// console.log(props)
 		this.state = {
-    
+            wait_loader:true
         }
     }
     // const { currentUser } = useAuth()
@@ -73,9 +73,17 @@ export default class TimeLine extends React.Component {
     //     // add_data;
     //     console.log(e,currentUser)
     // }
+    componentDidMount(){
+        setTimeout(()=>{ this.setState({wait_loader:false}) },5000)
+    }
     render(){
         return (
-        <div className={css.scene}>
+        <div className="grabbable" style={{
+            position:"absolute",
+            height:"100%",
+            width:"180%",
+            marginLeft:"-22vw"
+        }}>
             {/* <TouchMask /> */}
             {/* <TimeLine
             
@@ -87,7 +95,7 @@ export default class TimeLine extends React.Component {
             /> */}
             <Canvas
                 style={{zIndex:1}}
-                frameloop="demand"
+                frameloop={this.state.wait_loader?"always":"demand"}
                 shadows={true}
                 className={css.canvas}
                 camera={{
@@ -125,6 +133,7 @@ export default class TimeLine extends React.Component {
                         
                     </Selection>
                 </Suspense>
+                <LightBulb position={[-20, 0, 20]} />
                 {/* <Marker rotation={[0, 0, 0]} position={[0, 1, 0]}>
                     <div className="pi pi-map-marker marker3D" style={{fontSize: "7px"}} />
                 </Marker>
@@ -135,7 +144,7 @@ export default class TimeLine extends React.Component {
                 {/* <LightBulb position={[-20, 0, 20]} /> */}
                 {this.props.pins.map((item)=>{
                     // console.log(item)
-                    return(<Pin key={item.id} name={item.address} position={latLngToVector3(item.location)} scale={0.015}/>)
+                    return(<Pin key={item.id} name={item.address} type={item.type} position={latLngToVector3(item.location)} scale={0.015}/>)
                 })}
             
                 <OrbitControls

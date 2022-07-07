@@ -32,17 +32,17 @@ api_cloud.interceptors.response.use(function(response){
   console.warn(error)
 })
 
-const api_get = ((body, headers)=>{
-    const route = body.route
-    // console.log(body,body.data)
+const api_get = ((request, headers)=>{
+    const route = request.route
+    // console.log(request,request.body)
     return new Promise(function(res, rej) {
-        api.post("/api/"+route+"/", body.data, headers)
+        api.post("/api/"+route+"/", request.body, headers)
         .then((data) => {
         if(data){
             console.log('LOCAL')
             res(data)
         }else{
-            api_cloud.post("/api/"+route, body.data)
+          api_cloud.post("/api/"+route+"/", request.body,headers)
             .then((data) => {
             if(data){
                 console.log('CLOUD')

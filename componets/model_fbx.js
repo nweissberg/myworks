@@ -49,8 +49,8 @@ const Model = ({innerRef, children, ...props}) => {
     </Suspense>
   )
   loadFBXModel(props.path, {
-      // receiveShadow: false,
-      // castShadow: false,
+      receiveShadow: false,
+      castShadow: false,
   }).then((data)=>{
       console.log(data)
       setFbx(data)

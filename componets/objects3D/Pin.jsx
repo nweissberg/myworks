@@ -1,11 +1,12 @@
 import React, { useState, useRef,useLayoutEffect } from "react";
 import { Box, Html } from "@react-three/drei";
 import { Marker } from "./Marker";
-
+import { getIcons } from "../../pages/components/timeline_marker"
 function Pin(props) {
   const [occluded, occlude] = useState()
   const mesh = useRef(null)
   const pin = useRef(null)
+  const IconSet = getIcons()
 
   useLayoutEffect(() => {
     mesh.current.lookAt(0, 0, 0)
@@ -16,13 +17,13 @@ function Pin(props) {
     
     <mesh ref={mesh} {...props} recieveShadow castShadow>
       <mesh ref={pin}>
-        <boxGeometry raycast={null} args={[0.1,0.1,5]} />
+        <boxGeometry raycast={null} args={[0.1,0.1,4]} />
         <meshBasicMaterial  />
       </mesh>
-      <pointLight castShadow />
+      <pointLight color={IconSet[props.type]?.color}/>
       {/* <boxBufferGeometry args={[20,0.1,0.1]}/> */}
       <boxGeometry args={[1, 1, 1]}/>
-      <meshBasicMaterial color={"#ffd000"} />
+      <meshBasicMaterial color={IconSet[props.type]?.color} />
       <Html {...props}
         transform
         occlude
@@ -44,7 +45,7 @@ function Pin(props) {
               height:"200px",
               width:"400px",
               top:"calc(-100px + calc(var(--marker-size) * 0.5))",
-              left:"calc(-200px + calc(var(--marker-size) * 0.5))",
+              // left:"calc(-200px + calc(var(--marker-size) * 0.5))",
               position:"absolute",
               marginLeft: "auto",
               marginRight: "auto", 
