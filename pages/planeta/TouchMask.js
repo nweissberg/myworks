@@ -1,7 +1,7 @@
 export default function TouchMask() {
 return(
     <>
-        <div className='hide_on_mobile' style={{
+        <div className='hide-on-mobile' style={{
             position:"absolute",
             marginLeft:"calc(100% - 33%)",
             height:"100%",
@@ -9,7 +9,7 @@ return(
             zIndex:4,
             // backgroundColor:"blue"
         }}/>
-        <div className='hide_on_mobile' style={{
+        <div className='hide-on-mobile' style={{
             position:"absolute",
             // top:"0px",
             height:"100%",

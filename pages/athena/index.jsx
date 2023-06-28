@@ -9,7 +9,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import { api_get } from '../api/connect';
 import SpeechToText from '../../componets/speech_to_text';
 import { Sidebar } from 'primereact/sidebar';
-import { normalize, similarText, splitStringWithPunctuation, useUtils, var_get, var_set, yamlDocToJSON } from '../utils';
+import { normalize, similarText, splitStringWithPunctuation, upload_image, useUtils, var_get, var_set, yamlDocToJSON } from '../utils';
 import Timer from '../../componets/Timer';
 import { auth, readRealtimeData, writeRealtimeData } from '../api/firebase'
 import { signInAnonymously, updateProfile } from 'firebase/auth'
@@ -41,8 +41,8 @@ import generate_image, {
 
 
 export default function Athena() {
-    const {capitalize, blob_to_image, createId, clone_array, is_mobile} = useUtils()
-    const {assistant, brain_data , set_code, language, setLanguage} = useAthena()
+    const {capitalize, createId, clone_array, is_mobile} = useUtils()
+    const {brain, brain_data , set_code, language, setLanguage} = useAthena()
     const [image_models, set_image_models] = useState([
 
         { name: 'Microscopic', from:'Fictiverse', code: 'Fictiverse/Stable_Diffusion_Microscopic_model', keys:['Microscopic'] },
@@ -446,7 +446,7 @@ export default function Athena() {
             // loadBrain()
             // console.log(user, genders.find(g=>g.value == user.gender).name)
         
-            set_user_gender(genders.find(g=>g.value == user.gender).name)
+            set_user_gender(genders.find(g=>g.value == user.gender)?.name || genders[0])
             set_user_name(user.name, set_chat_state('chat'))
         }
         
@@ -481,7 +481,7 @@ export default function Athena() {
             reply = data
 
             if(data != '' && (breakpoint || tokens.length <= max) && regex_point_end.test(data.split(' ').pop()) == false){
-                if( (!data.includes(assistant[language].server+":") && breakpoint == true) || (!data.includes(breakpoint) && breakpoint != true) ){
+                if( (!data.includes(brain[language].server+":") && breakpoint == true) || (!data.includes(breakpoint) && breakpoint != true) ){
                     if(tokens.length <= max){
                         console.log(`...${tokens.length}:tokens...`)
                         const continuation = await generate(prompt+" "+data, breakpoint, max)
@@ -498,7 +498,7 @@ export default function Athena() {
             }
         })
         if(breakpoint != true){
-            reply = reply.split(breakpoint)[0].split(assistant[language].server+":")[0]
+            reply = reply.split(breakpoint)[0].split(brain[language].server+":")[0]
         }
         return(reply)
     }
@@ -527,50 +527,7 @@ export default function Athena() {
         }
         return (equivalency / maxLength);
     }
-    async function upload_images(image_blobs, image_info, isPublic=false){
-        var img_index = 0
-        let urls = []
-        var image_data = image_blobs[img_index]
-        console.log(image_data)
-        if(!image_data) return
-        return new Promise(async (res, rej)=>{
-            const onLoad = async (fb_url) => {
-                urls.push(fb_url)
-                img_index += 1
-                if(img_index < image_blobs.length){
-                    image_data = image_blobs[img_index]
-                    await upload_image(image_data, image_info, isPublic).then(onLoad)
-                }else{
-                    res(urls)
-                }
-            }
-            await upload_image(image_data, image_info, isPublic)
-            .then(onLoad)
-        })
-    }
-    async function upload_image(image_info, isPublic=false){
-        return new Promise(async (res, rej)=>{
-            const name  = 'painter_'+image_info.id+'_'+image_info.index+'.jpg'
-            var url = ''
-            await blob_to_image(image_info.blob).then(async image_file => {
-                // set_thinking(thinking=>thinking+1)
-                image_file.name = name
-                image_file.isPublic = isPublic
-                image_file.model = image_info.model
-
-                await upload_file(image_file,'chat_photos',
-                (progress)=>{
-                    // set_thinking(thinking=>thinking+1)
-                    console.log(progress+"%")                        
-                }).then((fb_url) => {
-                    url = fb_url
-                    // urls.push(fb_url)
-                    set_thinking(thinking=>thinking+1)
-                })
-            })
-            res(url)
-        })
-    }
+    
     function clear_inputs(){
         set_thinking(0)
         chat_input.current?.clear()
@@ -582,7 +539,7 @@ export default function Athena() {
         chat_input.current?.stopRecognition()
         
         var reply_txt = ''
-        var reply_AI = assistant[language].apology
+        var reply_AI = brain[language].apology
 
         var _chat_user = [...chat_user]
         _chat_user.push({
@@ -594,7 +551,7 @@ export default function Athena() {
         })
         set_chat_user(_chat_user)
         
-        if(chat_action == assistant[language].actions[2]){ //'summerize'
+        if(chat_action == brain[language].actions[2]){ //'summerize'
             SpeechSynth({text:'Okay, let me think...'})
             set_thinking(1)
             
@@ -606,7 +563,7 @@ export default function Athena() {
             clear_inputs()
             return
         }
-        if(painter_models.length > 0 && chat_action == assistant[language].actions[1]){ //'create image'
+        if(painter_models.length > 0 && chat_action == brain[language].actions[1]){ //'create image'
             set_thinking(3)
 
             let [inputs,forget] = user_query.split("/forget")
@@ -660,7 +617,7 @@ export default function Athena() {
             await generate_image(options,(image_info)=>{
                 console.log(image_info)
                 // image_blobs_array = [...image_blobs]
-                upload_image(image_info, true)
+                upload_image(image_info, null,true)
                 .then(url=>{
                     urls.push(url)
                     _chat_painter.at(-1).images[image_info.index].url = url
@@ -704,30 +661,30 @@ export default function Athena() {
                 resumo = '\n'
                 merged_chat.slice(-index).map((i)=>{
                     if(i.from == 'user'){
-                        resumo += `\n${assistant[language].client}: `+ i.text
+                        resumo += `\n${brain[language].client}: `+ i.text
                     }else{
-                        resumo += `\n${assistant[language].server}: ` + i.text
+                        resumo += `\n${brain[language].server}: ` + i.text
                     }
                 })
             }
             console.log("Length of memory = "+resumo.length, "Recals "+index+" of "+merged_chat.length+" replies")
             
-            if(resumo != '') await generate(resumo+'\n'+assistant[language].analysis)
+            if(resumo != '') await generate(resumo+'\n'+brain[language].analysis)
             .then(async(analys_feedback)=>{
                 if(analys_feedback != ''){
-                    sentiment = '\n'+assistant[language].feedback+analys_feedback
+                    sentiment = '\n'+brain[language].feedback+analys_feedback
                 }
                 console.log(sentiment)
             })
         }
         // return
         //Explain with details what is the AI singularity
-        await zero_shot_classification(user_query, assistant[language].understand)
+        await zero_shot_classification(user_query, brain[language].understand)
         .then(async(action)=>{
             console.log("The action ="+action.option)
             // reply_AI = action
             
-            await query_API_new(`${user_query}. ${assistant[language].explain[0]} ${action.option} ${assistant[language].explain[1]} `)
+            await query_API_new(`${user_query}. ${brain[language].explain[0]} ${action.option} ${brain[language].explain[1]} `)
             .then(async(data)=>{
                 if(data != ''){
                     console.log('As explanation ='+data)
@@ -735,20 +692,20 @@ export default function Athena() {
                 }
             })
         
-            await generate(`${assistant[language].orientation}
-${assistant[language].client}: ${assistant[language].firstQ}
-${assistant[language].server}: ${assistant[language].firstA}
+            await generate(`${brain[language].orientation}
+${brain[language].client}: ${brain[language].firstQ}
+${brain[language].server}: ${brain[language].firstA}
 ${resumo}
 ${sentiment}
-${assistant[language].client}: ${user_query}.
-${assistant[language].server}: ${reply_AI}
-${assistant[language].client}: ${assistant[language].continue}
-${assistant[language].server}: `, assistant[language].client+":", 200).then(async(chat_data)=>{
+${brain[language].client}: ${user_query}.
+${brain[language].server}: ${reply_AI}
+${brain[language].client}: ${brain[language].continue}
+${brain[language].server}: `, brain[language].client+":", 200).then(async(chat_data)=>{
                 if(chat_data != '') {
                     const similarity = similarText(reply_AI,chat_data)
                     if(chat_data.includes(reply_AI) == false){
                         reply_txt = reply_AI
-                        // chat_data = chat_data.split(assistant[language].client+":")[0].replace('AI: ','')
+                        // chat_data = chat_data.split(brain[language].client+":")[0].replace('AI: ','')
                         if(similarity <= 0.5) reply_txt += chat_data
                     }else{
                         reply_txt = chat_data
@@ -921,7 +878,7 @@ ${assistant[language].server}: `, assistant[language].client+":", 200).then(asyn
                     tooltip={'Select AI Diffusion Models to use for image generation.'}
                     tooltipOptions={{position:"right", style:{width:"300px",whiteSpace:"pre-wrap"}}}
                     dropdownIcon="pi pi-palette"
-                    panelClassName="p-1 bg-black-alpha-40 bg-blur-3 h-30rem max-h-screen overflow-scroll"
+                    panelClassName="p-1 h-30rem max-h-screen overflow-scroll"
                     panelHeaderTemplate={()=>{return(<label className='flex text-green-400 pt-2 pl-4'>AI Diffusion Models</label>)}}
                     selectedItemsLabel={painter_models.length+' Models'}
                     selectedItemTemplate={(option)=>{
@@ -1247,6 +1204,7 @@ ${assistant[language].server}: `, assistant[language].client+":", 200).then(asyn
                     //     // chat_timer.current?.reset()
                     //     if(typeof(text)=='string') set_user_query(text)
                     // }}
+                    className="flex w-full overflow-scroll"
                     onUpdate={(final, interim)=>{
                         // chat_timer.current?.reset()
                         let text = final +(interim==""?"":"\n"+ interim)
@@ -1263,11 +1221,11 @@ ${assistant[language].server}: `, assistant[language].client+":", 200).then(asyn
                         await set_voice_synth(_query)
                         
                         set_user_query(_query)
-                        if(!assistant[language.toLocaleLowerCase()]) {
+                        if(!brain[language.toLocaleLowerCase()]) {
                             set_thinking(0)
                             return
                         }
-                        const _actions = assistant[language.toLocaleLowerCase()]?.actions
+                        const _actions = brain[language.toLocaleLowerCase()]?.actions
                         zero_shot_classification(_query, _actions)
                         .then(async response=>{
                             set_code(response)
@@ -1405,7 +1363,7 @@ ${assistant[language].server}: `, assistant[language].client+":", 200).then(asyn
                 {draw_config_sidebar()}
             </Sidebar>
             <div className='pointer-events-none flex fixed z-2 w-full h-5rem bg-blur-2 bg-gradient-top'></div>
-            <div className='hide_on_mobile'>
+            <div className='hide-on-mobile'>
                 <Splitter onResizeEnd={(e)=>{
                     // console.log(e)
                     if(!user) document.getElementById('name_input').focus()
@@ -1425,10 +1383,10 @@ ${assistant[language].server}: `, assistant[language].client+":", 200).then(asyn
                 </Splitter>
             </div>
 
-            <div className='flex flex-wrap show_on_mobile hidden'>
+            <div className='flex flex-wrap show-on-mobile hidden'>
                 
 
-                <div className='fixed top-0 left-0 w-screen h-screen show_on_mobile'>
+                <div className='fixed top-0 left-0 w-screen h-screen show-on-mobile'>
                     <Splitter gutterSize={30} layout="vertical" style={{height: '100%', width:"100svw"}} >
                         <SplitterPanel size={90} className='w-screen overflow-scroll flex flex-wrap hide-scroll'>
                             

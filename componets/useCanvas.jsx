@@ -40,7 +40,7 @@ const useCanvas = (draw) => {
         let counter = 0
         const clock = new Clock()
         const render = ctx => {
-            if( canvas.attributes?.animate?.value == 'once' && counter > 0){
+            if( ['once',false].includes(canvas.attributes?.animate?.value) && counter > 0){
                 setShouldRender(false)
                 cancelAnimationFrame(requestAnimationId)
                 return

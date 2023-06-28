@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "imaginy",
     "public": "out",
     "ignore": [
       "firebase.json",

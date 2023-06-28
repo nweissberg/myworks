@@ -1,0 +1,328 @@
+import React, { useEffect, useState } from "react";
+import piexif from "piexifjs";
+import { useAthena } from "../athena/athena_context";
+import { blob_to_image, createId, stringToBinary } from "../utils";
+import { InputText } from "primereact/inputtext";
+
+
+const test_promps = [
+"make a painting in davinci style of the museum of art of são paulo masp, red letter, open ceiling, highly detailed, painted by velazquez, beksinski, giger",
+"modelshoot style, analog style, mdjrny-v4 style, nousr robot, mdjrny-v4, masterpiece, best quality, 8k, pastel, minimalistic style, highly detailed, depth of field, sharp focus, hdr, absurdres, high detail, ultra-detailed, highres, high quality, intricate details, outdoors, ultra high res, 4k, extremely detailed, realistic, photorealistic, raw photo, cinematic lighting",
+"symmetrical, blury, deformed, cropped, low quality, bad anatomy, multilated, long neck, mutation, malformed limbs, username, poorly drawn face, mutated, easynegative, blurry, monochrome, missing fingers, error, missing legs, jpeg artifacts, watermark, text, too many fingers, poorly drawn hands, duplicate, extra legs, signature"
+]
+
+
+// Function to hide binary data within a JPEG image using LSB steganography
+function hideDataInJPEG(imageData, binaryArray) {
+	const newData = imageData.data.slice(); // Create a copy of the image data
+
+	// Modify the LSB of the image data based on the bits of binary data
+	let dataIndex = 0;
+	for (let i = 0; i < newData.length; i += 4) {
+		if (dataIndex >= binaryArray.length) break; // All data bits have been hidden
+		let index = i
+		// Modify the LSB of each color component (R, G, B)
+		for (let j = 0; j < 3; j++) {
+			const bit = binaryArray[dataIndex];
+			newData[index + j] = (newData[index + j] & 0xFE) | parseInt(bit, 2);
+			dataIndex++;
+		
+			if (dataIndex >= binaryArray.length) break; // All data bits have been hidden
+		}
+	}
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+	canvas.width = imageData.width
+	canvas.height = imageData.height
+	// Initialize a new ImageData object
+	imageData = new ImageData(newData,canvas.width);
+
+	// Draw image data to the canvas
+	ctx.putImageData(imageData, 0, 0);
+	
+	return canvas.toDataURL('image/png',1.0);
+}
+	
+	// Function to extract binary data from a JPEG image using LSB steganography
+function extractDataFromJPEG(imageData) {
+	const binaryData = '';
+	
+	// Extract the LSB of each color component (R, G, B)
+	for (let i = 0; i < imageData.data.length; i += 4) {
+		for (let j = 0; j < 3; j++) {
+			const lsb = (imageData.data[i + j] & 1).toString();
+			binaryData+=lsb;
+		}
+	}
+	console.log(binaryData)
+	// Convert the binary data bits to characters
+	let decodedData = '';
+	for (let i = 0; i < binaryData.length; i += 8) {
+		const binaryChar = binaryData.slice(i, i + 8);
+		const decimalValue = parseInt(binaryChar, 2);
+		decodedData += String.fromCharCode(decimalValue);
+	}
+	
+	return decodedData;
+}
+
+// console.log(stringToBinary("make a painting in davinci style of the museum of art of são paulo masp, red letter, open ceiling, highly detailed, painted by velazquez, beksinski, giger"))
+
+function binaryToImage(binaryString,response='data',format='image/png') {
+	const canvas = document.createElement('canvas');
+	const ctx = canvas.getContext('2d');
+	ctx.imageSmoothingEnabled = false
+
+	const height = binaryString.length/8//Math.floor(Math.sqrt(binaryString.length))
+	const width = 8//(Math.ceil(Math.sqrt(binaryString.length)))
+	canvas.width = width;
+	canvas.height = height;
+
+	// ctx.fillStyle = '#888'//"#123456";
+	// ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+	while (binaryString){
+		let bit_char = binaryString.substr(0,8)
+		for(let bit in bit_char){
+			ctx.fillStyle = bit_char[bit] === '1' ? 'white' : 'black';
+			ctx.fillRect(bit, height-(binaryString.length/8), 1, 1);
+		}
+		binaryString = binaryString.slice(8)
+	}
+	return canvas.toDataURL(format, 1.0)
+}
+
+function EditImageMetadata() {
+	const [image_obj, set_image_obj] = useState(null);
+	const [string_out, set_string_out] = useState('');
+	const { set_code } = useAthena();
+	const [text_to_pixel, set_text_to_pixel] = useState('');
+	const [canvas_src, set_canvas_src] = useState(null);
+	const scale = 1
+
+	function stringToBinaryImage(inputString, canvasId) {
+		const canvas = document.getElementById(canvasId);
+		const ctx = canvas.getContext('2d');
+		ctx.imageSmoothingEnabled = false
+		
+		const height = Math.floor(Math.sqrt(inputString.length*8))
+		const width = (Math.ceil(Math.sqrt(inputString.length/8)))*8;
+		canvas.width = width*scale;
+		canvas.height = height*scale;
+
+		ctx.fillStyle = '#8880'//"#123456";
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+		for (let i = 0; i < inputString.length; i++) {
+			const binaryValue = inputString.charCodeAt(i).toString(2).padStart(8, '0');
+			const y = (i%(height))
+			const x = ((i-y)/height)*8
+
+			for(let bit in binaryValue){
+				// ctx.fillStyle = binaryValue[bit] === '1' ? (i%2==1?'gray':'white') : 'black';
+				ctx.fillStyle = binaryValue[bit] === '1' ? 'rgba(122,122,122,1.0)' : 'rgba(122,122,122,0.998)';
+				// if(bit == 0) ctx.fillStyle = 'green'
+				ctx.fillRect((Number(bit)+x)*scale, y*scale, scale, scale);
+			}
+		}
+	}
+
+	function binaryImageToString(canvasId) {
+		const canvas = document.getElementById(canvasId);
+		const ctx = canvas.getContext('2d');
+		
+		// Get canvas dimensions
+		const width = canvas.width;
+		const height = canvas.height;
+		
+		let binaryString = '';
+
+		for (let col = 0; col < (width/8); col++) {
+			for (let char_bit = 0; char_bit < height; char_bit++) {
+				let y =  char_bit%(height)
+				let binaryChar = ''
+				for (let bit = 0; bit < 8; bit++) {
+					const imageData = ctx.getImageData(bit+(col*8), y, 1, 1).data;
+					// console.log(imageData[3])
+					const binaryValue = imageData[3] < 255 ? '0' : '1';
+					binaryChar += binaryValue
+				}
+				if(binaryChar!= '00000000') binaryString += binaryChar;
+			}
+		}
+
+		let textString = '';
+		for (let i = 0; i < binaryString.length; i += 8) {
+			const binaryChar = binaryString.substr(i, 8);
+			const decimalValue = parseInt(binaryChar, 2);
+			textString += String.fromCharCode(decimalValue);
+		}
+		
+		set_string_out(textString);
+		}
+
+	useEffect(() => {
+		set_canvas_src(binaryToImage(stringToBinary(text_to_pixel).join('')))
+		// stringToBinaryImage(text_to_pixel, "myCanvas")
+		// binaryImageToString('myCanvas')
+	},[text_to_pixel])
+	
+	function utf8_to_b64(str) {
+		return window.btoa(unescape(encodeURIComponent(str)));
+	  }
+	  
+	  function b64_to_utf8(str) {
+		return decodeURIComponent(escape(window.atob(str)));
+	  }
+	
+	const getBase64StringFromDataURL = (dataURL) => dataURL.replace('data:', '').replace(/^.+,/, '');
+	
+	function handleImageChange(evt) {
+		var file = evt.target.files[0];
+		var zeroth = {};
+		var exif = {};
+		var img = {};
+		var gps = {};
+		var time_seed = Date.now()
+		zeroth[piexif.ImageIFD.Make] = "Nycholas Weissberg";
+		zeroth[piexif.ImageIFD.Model] = "darkstorm2150/Protogen_x3.4_Official_Release";
+		zeroth[piexif.ImageIFD.Software] = "Imaginy";
+		
+
+		exif[piexif.ExifIFD.ISOSpeed] = 66 //steps
+		exif[piexif.ExifIFD.ShutterSpeedValue] = 7.7 //cfg
+		exif[piexif.ExifIFD.DateTimeDigitized] = time_seed //seed
+		exif[piexif.ExifIFD.DateTimeOriginal] = new Date(time_seed).toISOString().replace('T',' ').replace(/[-T]/g, ':').slice(0, 19);
+		exif[piexif.ExifIFD.ImageUniqueID] = createId(16)
+		
+		// gps[piexif.GPSIFD.GPSVersionID] = [7, 7, 7, 7];
+		// gps[piexif.GPSIFD.GPSDateStamp] = "1999:99:99 99:99:99";
+
+		var exifEdit = {
+			"0th": zeroth,
+			"Exif": exif,
+			// "Image":img
+			// 'GPS': gps
+			// 'thumbnail':
+		};
+
+		var reader = new FileReader();
+		reader.onload = function (e) {
+			var jpegData = e.target.result;
+			// console.log(jpegData)
+			var exifObj = piexif.load(jpegData);
+			// set_code(exifObj);
+			var mapped_exif = {};
+
+			for (var ifd in exifObj) {
+				// console.log(ifd)
+				if (ifd == "thumbnail") {
+					continue;
+				}
+				mapped_exif[ifd] = exifObj[ifd];
+				if (exifEdit[ifd]) for (var tag in exifEdit[ifd]) {
+					mapped_exif[ifd][tag] = exifEdit[ifd][tag];
+					// console.log("	" + piexif.TAGS[ifd][tag]["name"] + ":" + exifObj[ifd][tag]);
+				}
+				console.log(ifd, mapped_exif[ifd])
+			}
+			// var canvas = document.getElementById("myCanvas");
+		
+			// mapped_exif['thumbnail'] = atob(canvas.toDataURL('image/jpeg',1.0).split(',')[1]);//URL.createObjectURL(jpegBlob)//jpegBlob//new Uint8Array(jpegBlob);
+			var exifStr = piexif.dump(mapped_exif);
+			var inserted = piexif.insert(exifStr, jpegData);
+			imageToData(inserted,(img_data)=>{
+				// console.log(img_data)
+				const textBinary = stringToBinary("make a painting in davinci style of the museum of art of são paulo masp, red letter, open ceiling, highly detailed, painted by velazquez, beksinski, giger")
+				console.log(textBinary)
+				const stega = hideDataInJPEG(img_data,textBinary)
+				// console.log(stega)
+				// console.log(mapped_exif['thumbnail'])
+				
+				set_code(mapped_exif);
+	
+				var image = new Image();
+				image.src = stega;
+				// image.width = 200;
+				set_image_obj(image);
+			
+			})
+
+			
+		};
+		reader.readAsDataURL(file);
+	}
+	useEffect(()=>{
+		// if(image_obj){
+		// 	const canvasID = document.getElementById('myCanvas');
+		// 	const ctxID = canvasID.getContext('2d');
+		// 	const canvas = document.getElementById('alphaIDC');
+		// 	const ctx = canvas.getContext('2d');
+		// 	const img = new Image();
+		// 	// Load the Blob object into an image element
+		// 	img.onload = () => {
+		// 		// Set the canvas dimensions to match the image dimensions
+		// 		canvas.width = img.width;
+		// 		canvas.height = img.height;
+		// 		ctx.drawImage(img, 0, 0, img.width, img.height);
+				
+		// 		var cidData = ctxID.getImageData(0, 0, canvasID.width, canvasID.height);
+		// 		var imgData = ctx.getImageData(0, 0, canvasID.width, canvasID.height);
+		// 		var d = imgData.data;
+		// 		for (var i = 0; i < d.length; i += 4) {
+		// 			if(cidData.data[i+3] != 0)imgData.data[i+3] = cidData.data[i+3]
+		// 		}
+		// 		imgData.data[d.length-1] = 0
+		// 		// ctx.clearRect(0, 0, canvasID.width, canvasID.height)
+		// 		ctx.putImageData(imgData, 0,0);
+		// 	};
+		// 	// Create a URL for the Blob object
+		// 	img.src = image_obj.src;
+		// }
+		if(image_obj) imageToData(image_obj.src,(img_data)=>{
+			console.log(img_data)
+			console.log(extractDataFromJPEG(img_data))
+		})
+	},[image_obj])
+	
+	return (
+		<div>
+			<div className="flex w-full absolute top-0 left-0 justify-content-center p-3 bg-black-alpha-80 bg-blur-1">
+				<input type="file" accept="image/*" onChange={handleImageChange} />
+				<InputText type="text" onChange={(e)=>{
+					set_text_to_pixel(e.target.value)
+				}} />
+			</div>
+			<div className="hide-scroll overflow-scroll flex h-full w-screen min-h-screen top-0 left-0 justify-content-center surface-ground">
+			{image_obj && (
+					<img
+						className="bitmap relative center"
+						src={image_obj.src}
+						alt="Updated Image"
+					/>
+				)}
+			</div>
+			<canvas className="bitmap center m-4 flex absolute z-2" id="alphaIDC" />
+		</div>
+	);
+
+	
+	return (
+		<div>
+			<div className="flex w-full absolute z-1 top-0 left-0 justify-content-center p-3 surface-card">
+				
+			</div>
+			<div className="hide-scroll overflow-scroll flex h-full w-screen min-h-screen top-0 left-0 justify-content-center surface-ground">
+				{image_obj && (
+					<img
+						className="relative center max-h-screen w-auto"
+						src={image_obj.src}
+						alt="Updated Image"
+					/>
+				)}
+			</div>
+		</div>
+	);
+}
+
+export default EditImageMetadata;

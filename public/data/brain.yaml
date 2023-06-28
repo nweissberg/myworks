@@ -93,6 +93,11 @@ text:
                 from: Julia Turc
                 info: This is a GPT-2 model fine-tuned on the succinctly/midjourney-prompts dataset, which contains 250k text prompts that users issued to the Midjourney text-to-image service over a month period.
                 license: cc-by-2.0
+
+            SDPromptHelper:
+                model: duchaba/sd_prompt_helper
+                from: Duc Haba
+                api: https://duchaba-sd-prompt-helper.hf.space/run/predict
     
     transform:
         summerize:
@@ -157,46 +162,71 @@ image:
             price: 1.1
 
     generate:
-        stabilityai/stable-diffusion-2-1:
-            price: 1.3
-            code: stabilityai/stable-diffusion-2-1
+        stable-diffusion-2-1-base:
+            price: 0.5
+            user: stabilityai
+            name: Stable Diffusion Base
+            from: Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Björn
+            info: This is a model that can be used to generate and modify images based on text prompts. It is a Latent Diffusion Model that uses a fixed, pretrained text encoder (OpenCLIP-ViT/H).
+            license: creativeml-openrail-m
+            samples:
+                - https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/assets/stable-samples/txt2img/merged-0003.png
+
+        stable-diffusion-2-1:
+            price: 0.3
+            user: stabilityai
             name: Stable Diffusion 2.1
             from: Stability AI
             info: This stable-diffusion-2-1 model is fine-tuned from stable-diffusion-2 (768-v-ema.ckpt) with an additional 55k steps on the same dataset (with punsafe=0.1), and then fine-tuned for another 155k extra steps with punsafe=0.98.
             url: https://huggingface.co/stabilityai/stable-diffusion-2-1
             license: openraill++
+            samples:
+                - https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/assets/stable-samples/txt2img/768/merged-0005.png
 
-        runwayml/stable-diffusion-v1-5:
-            price: 1.2
-            code: runwayml/stable-diffusion-v1-5
+        stable-diffusion-v1-5:
+            price: 0.2
+            user: runwayml
             name: 'Stable Diffusion 1.5'
-            from:  [Robin Rombach, Patrick Esser]
+            from:  Robin Rombach, Patrick Esser
             info: Stable Diffusion is a latent text-to-image diffusion model capable of generating photo-realistic images given any text input.
             url: https://huggingface.co/runwayml/stable-diffusion-v1-5
             license: creativeml-openrail-m
+            samples:
+                - https://huggingface.co/blog/assets/98_stable_diffusion/stable_diffusion_12_1.png
+                - https://huggingface.co/blog/assets/98_stable_diffusion/stable_diffusion_k_lms.png
 
-        wavymulder/Analog-Diffusion:
+        Analog-Diffusion:
             price: 2.6
-            code: wavymulder/Analog-Diffusion
+            user: wavymulder
             name: Analog Diffusion
             from: wavymulder
             info: This is a dreambooth model trained on a diverse set of analog photographs.
             url: https://huggingface.co/wavymulder/Analog-Diffusion
             imagine: [analog style, cowboy]
             forget: [blur, haze, naked, weapon, nsfw]
-        
-        nitrosocke/Nitro-Diffusion:
+            license: creativeml-openrail-m
+            samples:
+                - https://huggingface.co/wavymulder/Analog-Diffusion/resolve/main/images/page1.jpg
+                - https://huggingface.co/wavymulder/Analog-Diffusion/resolve/main/images/page2.jpg
+                - https://huggingface.co/wavymulder/Analog-Diffusion/resolve/main/images/page3.jpg
+
+        Nitro-Diffusion:
             price: 2.8
-            code: nitrosocke/Nitro-Diffusion
+            user: nitrosocke
             name: Nitro Diffusion
             from: nitrosocke
             info: Nitro Diffusion is a fine-tuned Stable Diffusion model trained on three artstyles simultaniously. It allows for high control of mixing, weighting and single style.
             url: https://huggingface.co/nitrosocke/Nitro-Diffusion
             imagine: [archer style, arcane style, modern disney style]
+            license: creativeml-openrail-m
+            samples:
+                - https://huggingface.co/nitrosocke/Nitro-Diffusion/resolve/main/nitro-diff-samples-02.jpg
+                - https://huggingface.co/nitrosocke/Nitro-Diffusion/resolve/main/nitro-diff-samples-01.jpg
+                - https://huggingface.co/nitrosocke/Nitro-Diffusion/resolve/main/nitro-diff-samples-03.jpg
         
-        coder119/Vectorartz_Diffusion:
+        Vectorartz_Diffusion:
             price: 1.2
-            code: coder119/Vectorartz_Diffusion
+            user: coder119
             name: Vectorartz Diffusion
             from: Star Hunter
             info: Generate beautiful vector illustration
@@ -207,67 +237,100 @@ image:
                 sampler: karras_2sa
                 steps: 16
                 cfg: 7
+            samples:
+                - https://huggingface.co/coder119/Vectorartz_Diffusion/resolve/main/beautiful_landscape.png
+                - https://huggingface.co/coder119/Vectorartz_Diffusion/resolve/main/instagram_icon.png
+                - https://huggingface.co/coder119/Vectorartz_Diffusion/resolve/main/isometric_bazaar.png
+                - https://huggingface.co/coder119/Vectorartz_Diffusion/resolve/main/isometric_village.png
+                - https://huggingface.co/coder119/Vectorartz_Diffusion/resolve/main/medieval_armor.png
+                - https://huggingface.co/coder119/Vectorartz_Diffusion/resolve/main/steampunk_machinery.png
+                - https://huggingface.co/coder119/Vectorartz_Diffusion/resolve/main/underwater_coral_reef.png
 
-        johnslegers/epic-diffusion:
+        epic-diffusion:
             price: 2.1
-            code: johnslegers/epic-diffusion
+            user: johnslegers
             name: Epic Diffusion
             from: John Slegers
             info: Epîc Diffusion is a general purpose model based on Stable Diffusion 1.x intended to replace the official SD releases as the default model. It is focused on providing high quality output in a wide range of different styles, with support for NFSW content.
             imagine: [Epic, analog, wavy, openjourney, samdoesarts, ultramerge, postapocalypse, elldreth's dream, Inkpunk, Arcane, Van Gogh, blended ]
             license: creativeml-openrail-m
+            samples:
+                - https://i.stack.imgur.com/0oZij.png
+                - https://i.stack.imgur.com/GnUuV.jpg
+                - https://i.stack.imgur.com/mnnBR.png
+                - https://i.stack.imgur.com/jkpgU.png
+                - https://i.stack.imgur.com/v9NoC.png
+                - https://i.stack.imgur.com/D2GNK.png
+                - https://i.stack.imgur.com/m7Xkb.png
+                - https://i.stack.imgur.com/LwPPa.png
+                - https://i.stack.imgur.com/1nH9c.png
+                - https://i.stack.imgur.com/uNux1.png
+                - https://i.stack.imgur.com/sFXCi.png
+                - https://i.stack.imgur.com/14iZS.png
+                - https://i.stack.imgur.com/D1hsN.png
+                - https://i.stack.imgur.com/4uPzr.png
+                - https://i.stack.imgur.com/4yTQP.png
+                - https://i.stack.imgur.com/gqynB.png
+                - https://i.stack.imgur.com/8qH9Y.png
+                - https://i.stack.imgur.com/GYdOS.png
+                - https://i.imgur.com/ktLu2Tl.png
 
-        prompthero/openjourney-v4:
+        openjourney-v4:
             price: 1.5
-            code: prompthero/openjourney-v4
+            user: prompthero
             name: Openjourney v4
             from: PromptHero
             info: Trained on +124k Midjourney v4 images, by PromptHero. Trained on Stable Diffusion v1.5 using +124000 images, 12400 steps, 4 epochs +32 training hours. Pss... "mdjrny-v4 style" is not necessary anymore (yay!)
             url: https://huggingface.co/prompthero/openjourney-v4
             imagine: [mdjrny-v4 style, midjourney, openjourney ]
             license: creativeml-openrail-m
+            samples:
+                - https://s3.us-east-1.amazonaws.com/prompthero-newsletter/Group-66.png
 
-        Sandro-Halpo/SamDoesArt-V3:
-            price: 2.4
-            code: Sandro-Halpo/SamDoesArt-V3
-            name: Sam Does Art v3
-            from: Sandro Halpo
-            info: Use the token SamDoesArt to trigger the effect. I usually put it at the beginning of the prompt. I don't recommend putting the word style directly after the keyword on this model. The effect of a comma after Sam doesArt or no comma is difficult to determine.
-            url: https://huggingface.co/Sandro-Halpo/SamDoesArt-V3
-            license: unlicense
-            imagine: [samdoesarts, sam, sandro halpo]
-            config:
-                sampler: euler
+        # SamDoesArt-V3:
+        #     price: 2.4
+        #     user: Sandro-Halpo
+        #     name: Sam Does Art v3
+        #     from: Sandro Halpo
+        #     info: Use the token SamDoesArt to trigger the effect. I usually put it at the beginning of the prompt. I don't recommend putting the word style directly after the keyword on this model. The effect of a comma after Sam doesArt or no comma is difficult to determine.
+        #     url: https://huggingface.co/Sandro-Halpo/SamDoesArt-V3
+        #     license: unlicense
+        #     imagine: [samdoesarts, sam, sandro halpo]
+        #     config:
+        #         sampler: euler
 
-        Envvi/Inkpunk-Diffusion:
+        Inkpunk-Diffusion:
             price: 1.9
-            code: Envvi/Inkpunk-Diffusion
+            user: Envvi
             name: Inkpunk Diffusion
             from: Envvi
             info: Finetuned Stable Diffusion model trained on dreambooth. Vaguely inspired by Gorillaz, FLCL, and Yoji Shinkawa. Use nvinkpunk in your prompts.
             url: https://huggingface.co/Envvi/Inkpunk-Diffusion
             license: creativeml-openrail-m
             imagine: [inkpunk, nvinkpunk, ink, okami]
+            samples: 
+                - https://huggingface.co/Envvi/Inkpunk-Diffusion/resolve/main/inkpunk-v2-samples-1.png
+                - https://huggingface.co/Envvi/Inkpunk-Diffusion/resolve/main/inkpunk-v2-samples-2.png
             config: *default
 
-        andite/anything-v4.0:
-            price: 2.2
-            code: andite/anything-v4.0
-            fallback: TareHimself/anything-v4.0
-            name: Anything v4
-            from: Andite
-            info: Anything V4 is a latent diffusion model for weebs. It is intended to produce high-quality, highly detailed anime style with just a few prompts. Like other anime-style Stable Diffusion models, it also supports danbooru tags to generate images.
-            url: https://huggingface.co/andite/anything-v4.0
-            license: creativeml-openrail-m
-            imagine: [anime, manga]
-            config:
-                sampler: karras_2sa, karras_2m
-                steps: [50, 20]
-                cfg: [7, 7]
+        # anything-v4.0:
+        #     price: 2.2
+        #     user: andite
+        #     fallback: TareHimself/anything-v4.0
+        #     name: Anything v4
+        #     from: Andite
+        #     info: Anything V4 is a latent diffusion model for weebs. It is intended to produce high-quality, highly detailed anime style with just a few prompts. Like other anime-style Stable Diffusion models, it also supports danbooru tags to generate images.
+        #     url: https://huggingface.co/andite/anything-v4.0
+        #     license: creativeml-openrail-m
+        #     imagine: [anime, manga]
+        #     config:
+        #         sampler: karras_2sa, karras_2m
+        #         steps: [50, 20]
+        #         cfg: [7, 7]
         
-        claudfuen/photorealistic-fuen-v1:
+        photorealistic-fuen-v1:
             price: 2.5
-            code: claudfuen/photorealistic-fuen-v1
+            user: claudfuen
             name: Photorealistic Fuen v1
             from: Claudio Fuentes
             info: README.md exists but content is empty.
@@ -276,35 +339,50 @@ image:
             imagine: [photorealistic]
             config: *default
 
-        SG161222/Realistic_Vision_V1.4:
+        Realistic_Vision_V1.4:
             price: 3.2
-            code: SG161222/Realistic_Vision_V1.4
+            user: SG161222
             name: Realistic Vision 1.4
             from: Evgeny
             info: My model has always been free and always will be free. There are no restrictions on the use of the model. The rights to this model still belong to me.
             license: creativeml-openrail-m
             imagine: [(high detailed skin:1.2), 8k uhd, dslr, soft lighting, high quality, film grain, Fujifilm XT3]
+            forget: [deformed iris, deformed pupils, semi-realistic, cgi, 3d, render, sketch, cartoon, drawing, anime:1.4, text, close up, cropped, out of frame, worst quality, low quality, jpeg artifacts, ugly, duplicate, morbid, mutilated, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, deformed, blurry, dehydrated, bad anatomy, bad proportions, extra limbs, cloned face, disfigured, gross proportions, malformed limbs, missing arms, missing legs, extra arms, extra legs, fused fingers, too many fingers, long neck]
             config:
                 sampler: karras_2sa, karras_2m
                 steps: 25
                 cfg: [3.5, 7]
 
-        DucHaiten/DucHaitenAIart:
-            price: 2.1
-            code: DucHaiten/DucHaitenAIart
+        DucHaitenAIart:
+            price: 0.8
+            user: DucHaiten
             name: Duc Haiten AI art 3.1
             from: nguyễn minh đức
+            info: This model generates diverse and detailed prompts with gorgeous colors and realistic shadows. It provides a 3D anime-inspired look with improved sharpness and lighting correction. While some celebrity images are unavailable, the model offers realistic material. It supports NSFW content with specific prompts and welcomes support on Patreon. Users can optimize results by including keywords for desired attributes and image quality. Lighting effects can be enhanced, but realism should be adjusted accordingly.
             license: creativeml-openrail-m
             imagine: [masterpiece, best quality, extremely detailed 8K, high resolution, ultra quality, 3D, pixar, pin-up, smooth]
-            forget: [sketch, (worst quality:1.5), (low quality:1.5), (normal quality:1.5), lowres, bad anatomy, bad hands, ((monochrome)), ((grayscale)), collapsed eyeshadow, multiple eyeblows, vaginas in breasts, (cropped), oversaturated, extra limb, missing limbs, deformed hands, long neck, long body, imperfect, (bad hands), signature, watermark, username, artist name, conjoined fingers, deformed fingers, ugly eyes, imperfect eyes, skewed eyes, unnatural face, unnatural body, error]
+            forget: [illustration, painting, cartoons, sketch, (worst quality:1.5), (low quality:1.5), (normal quality:1.5), lowres, bad anatomy, bad hands, ((monochrome)), ((grayscale)), collapsed eyeshadow, multiple eyeblows, vaginas in breasts, (cropped), oversaturated, extra limb, missing limbs, deformed hands, long neck, long body, imperfect, (bad hands), signature, watermark, username, artist name, conjoined fingers, deformed fingers, ugly eyes, imperfect eyes, skewed eyes, unnatural face, unnatural body, error]
             config:
                 sampler: karras_2sa
                 steps: 50
                 cfg: [11, 15]
+            samples:
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/jQ46etkANhUUtz_uYQyR-.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/uBTH9T77fKGINCLPpeXWH.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/ODtYR7NENJOPQkyE6u_Si.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/jAGcOQ0UowwqRchlM96dX.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/sUWm2K5SDepcr77uBwJWL.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/5qE_HgiZPKzTEZIluLSYG.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/D9F9oVbp-FNk3PUSVJb0X.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/50JoUeFchiV04cJk6g_5d.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/jBDzWnSJjyafeJFryjTYF.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/YyxzXcbAHyRLiyDX8TNuS.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/Lbef0zbfrvHD1pQA9Eltf.png
+                - https://s3.amazonaws.com/moonup/production/uploads/630b58b279d18d5e53e3a5a9/20qL2iMQA-mnCDLo084Fe.png
         
-        darkstorm2150/Protogen_x3.4_Official_Release:
+        Protogen_x3.4_Official_Release:
             price: 2.3
-            code: darkstorm2150/Protogen_x3.4_Official_Release
+            user: darkstorm2150
             name: Protogen 3.4
             from: Victor Espinoza-Guerra
             info: Protogen was warm-started with Stable Diffusion v1-5 and fine-tuned on various high quality image datasets. Version 3.4 continued training from ProtoGen v2.2 with added photorealism.
@@ -312,7 +390,71 @@ image:
             imagine: [modelshoot style, analog style, mdjrny-v4 style, nousr robot]
             config: *default
         
-        # darkstorm2150/Protogen_Eclipse_Official_Release:
+        Protogen_Eclipse_Official_Release:
+            price: 2.1
+            user: darkstorm2150
+            name: Protogen Eclipse
+            from: Victor Espinoza-Guerra
+            info: Will add more information soon..
+
+        stable-architecture-diffusers:
+            price: 1.1
+            name: Stable Architecture
+            user: rrustom
+            from: Rami Rustom
+            license: mit
+
+        architecture-tuned-model:
+            price: 1.3
+            name: Architecture Tuned
+            user: stablediffusionapi
+            from: darkvoyage
+            info: Each of the trigger words will create buildings in that style of architecture. You can also use the three trigger words together to generate whole cities in a mix of buildings in those styles. Use "bedroom", "living room", "bathroom", etc. To specify type of room.
+            imagine: [dvArchModern, dvArchGothic, dvArchVictorian, dvArchInteriorModern, dvArchInteriorGothic, dvArchInteriorVictorian]
+            license: creativeml-openrail-m
+            sambles:
+                - https://stablediffusionapi.com//storage/generations/00055-1065154782.jpeg
+
+        artwork-arcane-stable-diffusion:
+            price: 1.0
+            name: Artwork Arcane
+            user: s3nh
+            from: s3nh
+            info: > 
+                Arcane based Artwork Diffusion Model
+                I present you fine tuned model of stable-diffusion-v1-5, which heavily based of work of great artworks from Arcane. Use the tokens arcane style in your prompts for the effect.
+                Model was trained using the diffusers library, which based on Dreambooth implementation. 
+            imagine: [arcane style]
+            license: creativeml-openrail-m
+            samples:
+                - https://huggingface.co/s3nh/artwork-arcane-stable-diffusion/resolve/main/rain_forest_1.png
+                - https://huggingface.co/s3nh/artwork-arcane-stable-diffusion/resolve/main/rain_forest_2.png
+                - https://huggingface.co/s3nh/artwork-arcane-stable-diffusion/resolve/main/traffic_jam_1.png
+                - https://huggingface.co/s3nh/artwork-arcane-stable-diffusion/resolve/main/traffic_jam_2.png
+
+        logo-diffusion-checkpoint:
+            price: 1.0
+            name: Modern Logo
+            user: logo-wizard
+            from: Ivan Sidorov
+            info: Este modelo é ideal para criar logotipos modernos e minimalistas em alta qualidade. Ao usá-lo, você pode descrever o setor da empresa, objetos relacionados, cores desejadas e o estilo que você busca. Evite solicitar características indesejadas, como baixa qualidade, composição ruim, dígitos extras, texto, marcas d'água ou design assimétrico. Com essas dicas, você pode obter resultados melhores ao gerar seu logotipo. Boa sorte!
+            imagine: [a logo of, modern, minimalism, vector art, 2d, best quality, centered]
+            forget: [low quality, worst quality, bad composition, extra digit, fewer digits, text, inscription, watermark, label, asymmetric]
+            license: creativeml-openrail-m
+            config:
+                sampler: euler
+                steps: 30
+                cfg: 7.5
+            samples:
+                - https://huggingface.co/logo-wizard/logo-diffusion-checkpoint/resolve/main/results.png
+
+        # anything-v5:
+        #     price: 2.2
+        #     name: Anything v5
+        #     user: stablediffusionapi
+        #     from: Stable Diffusion API
+        #     license: creativeml-openrail-m
+
         # Re7X/ProjectTurn8:
         # DeepFloyd/IF-I-M-v1.0:
         # saftle/urpm
@@ -353,9 +495,9 @@ config:
 
 subject: [a man holding an apple]
 
-pose: [standing]
+pose: [ standing ]
 
-background: [in an empty city street]
+background: [ in an empty city street ]
 
 lighting: [ twilight, sunset, natural, neon, stuio, godrays ]
 
@@ -363,12 +505,7 @@ angle: [ close, closeup portrait, midrange, fullbody, backwards, above, below ]
 
 expression: [ sad, happy, confused, angry, bored, exited ]
 
-NSFW: # Not Safe for Work
-    imagine-2: masterpiece, 1girl, porn star, nude, tattooed body, ginger, big ass, pussy, showing butt, fat pussy, sexy pose, looking at viewer, master bed, naked, wavy long hair, white hair, sitting on ground, full body, large thighs, model posing, nsfw, fat butt, big quads, outside, large breast
-    imagine:
-        'masterpiece, 1girl, porn star, nude, tattooed body, ginger, big ass, pussy, showing butt, fat pussy, sexy pose, looking at viewer, master bed, naked, wavy long hair, white hair, sitting on ground, full body, large thighs, model posing, nsfw, fat butt, big quads, outside, large breast, lewd'
-    forget:
-        'EasyNegative, out of frame, normal, crosseyed, extra fingers, hand, hands, feet, toes, fewer fingers, easynegative, nfixer, logo, watermark, name, text, signature, site, disfigured'
+era: [ primal, antique, modern, future, space ]
 
 ... # Prompts
 

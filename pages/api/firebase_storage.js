@@ -1,4 +1,4 @@
-import { getApp } from "firebase/app";
+import { getApp, initializeApp } from "firebase/app";
 import {
     ref,
     getStorage,
@@ -10,7 +10,17 @@ import {
 } from "firebase/storage";
 import { get_uid } from "./firebase";
 
-const fb_app = getApp()
+const fb_app = initializeApp({
+	apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOM,
+    projectId: process.env.NEXT_PUBLIC_FB_PROJ_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FB_STORAGE,
+    messagingSenderId: process.env.NEXT_PUBLIC_FB_MESSAGE,
+    appId: process.env.NEXT_PUBLIC_FB_APP_ID,
+    measurementId: process.env.NEXT_PUBLIC_FB_MEASURE
+})
+
+// const fb_app = getApp()
 // Create a root reference
 const fb_store = getStorage(fb_app);
 
@@ -26,7 +36,7 @@ const upload_file = async (file,folder='uploads',onUpdate=(progress)=>{console.l
             customMetadata:{
                 'isPublic':file.isPublic,
                 'user_uid':uid,
-                'model':file?.model
+                // 'model':file?.model
             }
         }
         const storageRef = ref(fb_store, `${folder}/${file.name}`);
@@ -70,6 +80,47 @@ const upload_file = async (file,folder='uploads',onUpdate=(progress)=>{console.l
             });
         }
         );
+    })
+}
+
+// Function to get public files from a folder
+export async function get_folder(folderPath, getPublic = 'true') {
+    const storage = getStorage();;
+    const folderRef = ref(storage, folderPath+'/');
+    var _uploadedFiles = []
+    const uid = get_uid()
+    return  listAll(folderRef)
+    .then(async(data) => {
+        await Promise.all(data.items.map((itemRef)=>{
+            console.log(itemRef)
+            return(getMetadata(itemRef)
+            .then((data)=>{
+                if(data.customMetadata){
+                    // console.log(data.customMetadata)
+                    if(data.customMetadata.isPublic === getPublic){
+                        _uploadedFiles.push({
+                            name:itemRef.name,
+                            ref:itemRef,
+                            public:true,
+                            user:data.customMetadata.user_uid
+                        })
+                    }else if(data.customMetadata.user_uid === uid){
+                        _uploadedFiles.push({name:itemRef.name,
+                            ref:itemRef,
+                            public:false,
+                            user:data.customMetadata.user_uid
+                        })
+                    }
+                }else{
+                    _uploadedFiles.push({ name:itemRef.name,
+                        ref:itemRef ,
+                        public:true,
+                        user:null
+                    })
+                }
+            }))
+        }))
+        return(_uploadedFiles)
     })
 }
 

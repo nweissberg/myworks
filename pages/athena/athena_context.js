@@ -34,7 +34,7 @@ export default function AthenaProvider({children}) {
     function loadBrain(){
         loadYaml('/data/brain.yaml').then((data)=>{
             set_brain_data(yamlDocToJSON(data[0]))
-            set_code(yamlDocToJSON(data[0]))
+            // set_code(yamlDocToJSON(data[0]))
             set_assistant(yamlDocToJSON(data[0]).text.generate.role.assistant)
         })
     }
@@ -63,7 +63,7 @@ export default function AthenaProvider({children}) {
     return (
         <AthenaContext.Provider value={value}>
             {children}
-            {brain_data && <DevelopmentWrapper>
+            {code && <DevelopmentWrapper>
                 <CodeViewer
                     header={'Code Viewer'}
                     code={code}
