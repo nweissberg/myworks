@@ -16,7 +16,7 @@ import { EffectComposer, Bloom, Outline, Selection, Select } from '@react-three/
 import Pin from '../../componets/objects3D/Pin';
 import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry';
 import TouchMask from './TouchMask';
-import { isMobile } from '../utils';
+import { useUtils } from '../utils';
 
 const latLngToVector3 = (latLng, radius=1.05) => {
     const phi = Math.PI * (0.5 - (latLng.lat / 180));
@@ -65,11 +65,10 @@ const Planet_Mesh = () => {
     return (<Model innerRef={refMesh} path="/model/earth_lowpoly.fbx" position={[0, 0, 0]} rotation-y={-Math.PI / 5.7}/>);
   }
 
-export default function Planeta() {
-    const [mobile, set_mobile] = useState(true)
+export default function Planeta(props) {
+    const {is_mobile} = useUtils()
     const [wait_loader, set_wait_loader] = useState(true)
     useEffect(()=>{
-        set_mobile(isMobile())
         setTimeout(()=>{set_wait_loader(false)},5000)
     },[])
     // const ref = useRef()
@@ -88,15 +87,16 @@ export default function Planeta() {
     return (
     <div className="grabbable" style={{
         position:"absolute",
+        top:'calc( -100px + (100vw * 0.1))',
         height:"100%",
         width:"100%",
-    }}>
+        ... props.style}}>
         {/* <TouchMask /> */}
         <Suspense fallback={<span>loading...</span>}>
             <Canvas
                 frameloop={wait_loader?"always":"demand"}
                 shadows={true}
-                className={css.canvas}
+                className={'flex '}
                 camera={{
                     position: [-1.5, -0.7, 1.5],
                 }}
@@ -107,14 +107,14 @@ export default function Planeta() {
             >   
                 <ambientLight color={"green"} intensity={0.7} />
                 
-                {mobile? <Suspense> <Planet_Mesh /></Suspense> : <Suspense>
+                {is_mobile? <Suspense> <Planet_Mesh /></Suspense> : <Suspense>
                     <Selection>
                         <EffectComposer multisampling={6} autoClear={false}>
                     
                             <Outline
                                 visibleEdgeColor="#3f6"
                                 blur={1} edgeStrength={0.1} width={200} />
-                            <Bloom
+                            {/* <Bloom
                                 kernelSize={1}
                                 luminanceThreshold={0.2}
                                 luminanceSmoothing={0.1}
@@ -125,7 +125,7 @@ export default function Planeta() {
                                 luminanceThreshold={0}
                                 luminanceSmoothing={0.3}
                                 intensity={0.3}
-                            />
+                            /> */}
                         </EffectComposer>
                         
                         {/* <Model path="/model/Earth.fbx" position={[0, 0, 0]} rotation-y={-Math.PI / 5.7}/> */}

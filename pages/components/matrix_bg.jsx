@@ -1,15 +1,12 @@
 import { useEffect, useState, Suspense, useRef } from 'react'
 import Canvas from '../../componets/Canvas'
-import { isMobile } from '../utils'
+import { useUtils } from '../utils'
 
 export default function MatrixBackGround(){
-  const [mobile, set_mobile] = useState()
-  useEffect(()=>{
-    set_mobile(isMobile())
-  },[])
-
+  const {is_mobile} = useUtils()
+  
   var particles = []
-  const maxP = mobile?20:70;
+  const maxP = is_mobile?20:70;
   class particle{
     constructor(ctx){
       this.change = 0
@@ -44,8 +41,9 @@ export default function MatrixBackGround(){
       this.ctx.fillText(this.char, this.pos.x, this.pos.y);
     }
   }
-
-  const draw = (ctx, frameCount) => {
+  var draw = {}
+    
+  draw.center = (ctx) => {
     
     // ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     ctx.globalCompositeOperation = 'multiply'
@@ -77,7 +75,7 @@ export default function MatrixBackGround(){
     }}></div> */}
         <Suspense fallback={<></>}>
             <Canvas style={{
-            position:'absolute',
+            position:'fixed',
             width:'100%',
             height:'100%',
             top:'0',

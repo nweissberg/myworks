@@ -2,15 +2,15 @@ export default function UserHeader(){
     const line_style = {
         margin:"auto",
         width:'fit-content',
-        // backgroundColor:"#00000011",
+        backgroundColor:"#1001",
         backdropFilter: "blur(7px)",
         borderRadius:"5px",
         marginBottom:"3px"
       }
     return(
-        <>
-        
-        <div style={{
+        <div className="pointer-events-none select-none">
+        <div className='flex-grow-1 w-full mt-8 ' />
+        <div className="pointer-events-none select-none sticky top-0" style={{
             pointerEvents:"none",
             backgroundColor:"#fff",
             width:"150px",
@@ -48,6 +48,6 @@ export default function UserHeader(){
           </div>
           
           </div>
-        </>
+        </div>
     )
 }

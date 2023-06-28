@@ -1,8 +1,11 @@
 import { initializeApp, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 // import { getAnalytics } from "firebase/analytics";
+import { getDatabase, ref, set, get, update, onValue, push,child } from "firebase/database";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, addDoc, query, where, getDocs, doc, setDoc, updateDoc, serverTimestamp, Timestamp } from "firebase/firestore"; 
+import { hasUndefined } from "../utils";
+
 
 // console.log(Timestamp.fromDate(new Date()).seconds)
 var uid = null
@@ -19,6 +22,11 @@ const app = initializeApp({
 
 // Initialize Cloud Firestore and get a reference to the service
 const fb_db = getFirestore(app);
+const fb_rtdb = getDatabase(app);
+
+export const get_uid = ()=>{
+    return(uid)
+}
 
 export async function add_data(table, data){
     console.log(data)
@@ -44,18 +52,70 @@ export function get_data(table){
     return getDocs(query(collectionRef, where("user_uid", "==", uid)));
 }
 
-export function set_data(data_uid, data){
+export function get_all_data(table){
+    const collectionRef = collection(fb_db, table);
+    return getDocs(query(collectionRef));
+}
+
+export function get_public_data(table){
+    const collectionRef = collection(fb_db, table);
+    return getDocs(query(collectionRef, where("isPublic", "==", true)));
+}
+
+export function set_data(table, data_uid, data){
     if(!data_uid) return
-    const fileRef = doc(fb_db, "query", data_uid.replace(" ",''));
+    const fileRef = doc(fb_db, table, data_uid.replace(" ",''));
     return updateDoc(fileRef, data);
+}
+
+export function del_data(table, data_uid){
+    if(!data_uid) return
+    const fileRef = doc(fb_db, table, data_uid.replace(" ",''));
+    return deleteDoc(fileRef);
+}
+  
+export function writeRealtimeData(path,data) {
+    if(hasUndefined(data)) return null
+    var path = path.replace("#","~")
+    return set(ref(fb_rtdb, path), data);
+}
+
+export function readRealtimeData(path){
+    var path = path.replace("#","~")
+    return new Promise((res,rej)=>{
+        onValue(ref(fb_rtdb, path), (snapshot) => {
+            var read_data = snapshot.val() || null;
+            res(read_data)
+        },{
+            onlyOnce: true
+        });
+    })
 }
 
 export const auth = getAuth(app);
 
 onAuthStateChanged(auth, (user) => {
+    // console.log(user)
     if (user) {
+        console.log("user uid: "+user.uid)
+        // get_fingerprint(user)
         uid = user.uid;
-        // console.log(user)
+        set(ref(fb_rtdb, 'users/'+ uid +'/metadata/lastSeen'), Date.now());
+        
+        get(ref(fb_rtdb, '/roles')).then((snapshot) => {
+            if (snapshot.exists()) {
+                var roles = snapshot.val()
+                // roles.map((role, index)=>{
+                //     roles_db.setItem(index.toString(),role)
+                // })
+                console.log(roles);
+            } else {
+                console.log("No roles available");
+            }
+        }).catch((error) => {
+            console.error(error);
+        });
+
     } else {
         uid = null;
     }

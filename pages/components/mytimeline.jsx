@@ -165,7 +165,7 @@ export default function MyTimeline(){
       <div>
         <Button
           style={{
-            zIndex:4,
+            zIndex:2,
             color:IconSet[item.type]?.color,
             backgroundColor:"#0003",
             borderColor:IconSet[item.type]?.color,
@@ -187,12 +187,7 @@ export default function MyTimeline(){
 
   const customizedContent = (item) => {
     return (
-    <div style={{
-      // height:"600px",
-    //   maxWidth:"100px",
-      marginTop:"30px",
-      zIndex:4,
-    }}>
+    <div className='flex mt-3 w-20rem overflow-x-visible overflow-y-hidden pointer-events-auto'>
       <h2 style={{
       
       backgroundColor:"#000",
@@ -202,18 +197,15 @@ export default function MyTimeline(){
       fontFamily:"neuro",
       fontSize:"14px",
       position:"absolute",
-      zIndex:5,
+      zIndex:2,
       top:"5px"
     }}>{item.date}</h2>
       <Card
-        style={{
-          // position:"absolute",
-        //   width:"333px",
-          zIndex:4,
-        }}
+        // style={{padding:'0px'}}
+        className=' z-1 relative flex flex-grow-1 w-max overflow-x-visible'
         title={<div style={{fontFamily:'mars'}}>{item.title}</div>}
         subTitle={<div style={{fontFamily:'neuro',color:"var(--matrix-secondary)"}}>{item.subtitle}</div>}
-        >
+      >
         {item.image &&
           <div style={{
             width:"100%",
@@ -250,10 +242,9 @@ export default function MyTimeline(){
               galleria.current.show()
             }}
             />
-          </div>
-        }
+          </div>}
        
-        {item.text && <p style={{fontFamily:'futura', fontSize:"22px"}}>{item.text}</p>}
+          {item.text && <p style={{fontFamily:'futura', fontSize:"22px"}}>{item.text}</p>}
           { item.url && item.url != '' &&
             <div>
               {
@@ -339,98 +330,87 @@ export default function MyTimeline(){
 
   return(
     <>
-      <div>
-      <div style={{
-          position:"sticky",
-          zIndex:6,
-          top:"0px",
-          left:"15px",
+      <div className='absolute h-max w-max flex '>
+        <div style={{
+          position:"absolute",
+          zIndex:2,
+          height:"content-max",
           width:"100%",
-          // backgroundColor:"#f004"
+          backgroundColor:"#f004",
+          zIndex:2
         }}>
-          <h2 style={{
-            position:"absolute",
-            marginLeft:"70px",
-            marginTop:"23px",
-            zIndex:10,
-            // color:"var(--matrix-primary)",
-            fontFamily:"mars",
-            fontWeight:"100",
-            fontSize:"20px",
-            textAlign:"center",
-          }}>{timeline_header}</h2>
-          <Toolbar
-            style={{
-              backdropFilter: "blur(7px)",
-              backgroundColor:"#0000",
-              borderColor:"#0000"
-              // maxWidth:"335px"
-            }}
-            left={
-              <Button
-                className='
-                  p-button-sm
-                  p-button-rounded
-                  p-button-outlined'
-                style={{
-                  // marginLeft:"30%",
-                }}
-                tooltip="Filtrar"
-                icon="pi pi-filter"
-                onClick={(event) => {
-                  menu.current.toggle(event)
-                }}
-                aria-controls="popup_menu"
-                aria-haspopup
-              />
-            }
-            right={
-              <Button 
-                icon={descendente? 'pi pi-sort-numeric-down-alt': 'pi pi-sort-numeric-up-alt'}
-                // label={descendente?'Descendente':'Ascendente'}
-                className='
-                  p-button-sm
-                  p-button-rounded
-                  p-button-outlined
-                  mr-4'
-                tooltip={`Ordem: ${descendente?'Descendente':'Ascendente'}`}
-                tooltipOptions={{
-                  position:"bottom"
-                }}
-                onClick={(e)=>{
-                  var _active_history = [...active_history]
-                  _active_history = _active_history.reverse()
-                  
-                  set_active_history(_active_history)
-                  set_descendente(!descendente)
-                }}
-              />
-            }
-          />
+            <div className='fixed flex w-screen bg-blur-3 bg-black-alpha-10 h-auto pb-3 pt-5 bg-gradient-top z-1 justify-content-start '>
+              <div className='flex w-full lg:w-5 px-3 ml-1 justify-content-between'>
+                <Button
+                  className='
+                    border-2
+                    p-button-lg
+                    p-button-rounded
+                    text-white
+                    p-4 m-0
+                    bg-white-alpha-20
+                    hover:bg-bluegray-700
+                  '
+                  tooltip="Filtrar"
+                  icon="pi pi-filter"
+                  onClick={(event) => {
+                    menu.current.toggle(event)
+                  }}
+                  aria-controls="popup_menu"
+                  aria-haspopup
+                />
+                <h2 className='p-0 m-0 '
+                  style={{
+                    fontFamily:"mars",
+                    fontWeight:"90",
+                    fontSize:"30px",
+                    textAlign:"center",
+                  }}
+                >
+                  {timeline_header}
+                </h2>
+                <i className='pi pi-sort-numeric-down-alt button-matrix' />
+                {/* <Button 
+                  icon={descendente? 'pi pi-sort-numeric-down-alt': 'pi pi-sort-numeric-up-alt'}
+                  // label={descendente?'Descendente':'Ascendente'}
+                  className='
+                    p-button-sm
+                    p-button-rounded
+                    p-button-outlined'
+                  tooltip={`Ordem: ${descendente?'Descendente':'Ascendente'}`}
+                  tooltipOptions={{
+                    position:"bottom"
+                  }}
+                  onClick={(e)=>{
+                    var _active_history = [...active_history]
+                    _active_history = _active_history.reverse()
+                    
+                    set_active_history(_active_history)
+                    set_descendente(!descendente)
+                  }}
+                /> */}
+              </div>
+            
+            </div>
         </div>
         <Menu model={timeline_menu} popup ref={menu} id="popup_menu" />
-        <div style={{
-            height:"100vh",
-            marginTop:"-65px",
-            paddingTop:"65px",
-            marginBottom:"100px",
-            maxWidth:"444px",
-            overflowX:"hidden",
-        }}>
-          
-            <Timeline
+        
+          <div className='pointer-events-visibleFill flex overflow-x-visible z-1 fixed scrollbar-none overflow-y-scroll left-0 flex w-max h-screen'>
+              <Timeline
+                className='relative flex overflow-x-visible z-1 w-auto h-max left-0 top-0 mt-4 pt-8 pb-8  '
                 style={{
-                zIndex:3,
-                width:"180%",
+                  marginLeft:'-4px'
+                  // maxWidth: '40vw',
                 }}
                 value={active_history}
                 // layout="horizontal"
-                align="right"
+                align="left"
                 // className="customized-timeline"
                 // opposite={customizedDate} 
                 marker={customizedMarker}
                 content={customizedContent}
-            />
+              />
+          
         </div>
       </div>
       <Dialog

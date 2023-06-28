@@ -34,9 +34,14 @@ api_cloud.interceptors.response.use(function(response){
 
 const api_get = ((request, headers)=>{
     const route = request.route
-    // console.log(request,request.body)
+    // if(process.env.NODE_ENV !== 'development'){
+    //   return api.post("/api/"+route+"/", request.body,headers)
+    // }else{
+    //   return api_cloud.post("/api/"+route+"/", request.body,headers);
+    // }
+    console.log(request,request.body)
     return new Promise(function(res, rej) {
-        api.post("/api/"+route+"/", request.body, headers)
+      api.post("/api/"+route+"/", request.body, headers)
         .then((data) => {
         if(data){
             console.log('LOCAL')

@@ -74,9 +74,14 @@ export default class TimeLine extends React.Component {
 		function success(pos) {
 			var crd = pos.coords;
 			api_get({route:'address', body:{lat:crd.latitude,lng:crd.longitude}}).then((data)=>{
-				if(data[0]){
+				if(data && data[0]){
 					parent.geoPin(data[0])
-				} 
+				}else{
+					parent.geoPin({
+						address:"Meu local",
+						location:{lat:crd.latitude,lng:crd.longitude}
+					})
+				}
 			})
 		};
 		

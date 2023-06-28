@@ -1,0 +1,489 @@
+--- &Models
+
+text:
+    generate:
+        role:
+            assistant:
+                en-us:
+                    welcome: [ Wecome, what can I do for you? ]
+                    name: Athena
+                    server: AI
+                    client: Human
+                    creator: Nyco 3D
+                    analysis: I have analized this conversation, between a Human and an AI. I can conclude in one sentence, that
+                    feedback: So far we understand that
+                    apology: Sorry, I can't answer that.
+                    understand: [ question, reason, information, conclusion ]
+                    explain: [ "The previous","could be written, as an explanation, like this: " ]
+                    orientation: The following is a conversation with an AI assistant named Athena, created by Nyco 3D. The assistant is helpful, creative, friendly, and very descriptive. The AI strongly avoids misinformation and step-by-step replies. If does not know the answer, it replies with an apology.
+                    firstQ: Hello, who are you?
+                    firstA: I am a AI assistant. How can I help you today?
+                    continue: What else? tell me more...
+                    conclude: 'Finaly, this is my conclusion:'
+                    actions: [ 'question', 'create image', 'summerize', 'translate' ]
+                    
+                pt-br:
+                    welcome:  [ Bem-vindo, o que posso fazer pra você?]
+                    name: "Atena",
+                    server: "IA",
+                    role: "assistente",
+                    client: "Humano",
+                    creator: "Nyco 3D",
+                    analysis: "Eu analizei essa conversa, entre um Humano e uma IA. Posso concluir em uma frase, que",
+                    feedback: "Até agora podemos compreender que",
+                    apology: "Perdão, não posso responder isso.",
+                    understand: [ pergunta, razão, informação, conclusão ],
+                    explain: ["A","anterior pode ser escrita, como uma explicação, da seguinte forma:"],
+                    orientation: `A seguinte conversa acontece entre uma IA assistente chamada Atena, criada por Nyco 3D. A assistente é prestativa, criativa, amigável, e muito descritiva. A IA evita fortemente a desinformação e respostas passo a passo. Se não souber a resposta, ela responde com uma desculpa.`,
+                    firstQ: "Olá, quem é você?",
+                    firstA: "Eu sou um IA assistente. Em que posso ajudar você?",
+                    continue: "Somente isso? Conte-me mais..."
+                    actions: ['pergunta', 'criar imagem', 'resumir', 'traduzir']
+        
+        continue:
+            Pythia:
+                model: OpenAssistant/oasst-sft-1-pythia-12b
+                from: Open Assistant
+                info: This is the first iteration English supervised-fine-tuning (SFT) model of the Open-Assistant project. It is based on a Pythia 12B that was fine-tuned on ~22k human demonstrations of assistant conversations collected through the https://open-assistant.io/ human feedback web app before March 7, 2023.
+                website: https://open-assistant.io/
+                license: Apache-2.0
+                prompting: ['<|prompter|>','<|endoftext|>','<|assistant|>']
+
+            BoomZ:
+                api: Not specified
+                model: bigscience/bloomz
+                from: BigScience
+                info: A language model fine-tuned on the Bloomz dataset for text completion and generation tasks.
+                website: Not specified
+                license: Not specified
+                prompting: The model can be prompted with a starting text prompt to generate or complete text based on the input.
+                
+            NeoX:
+                model: EleutherAI/gpt-neox-20b
+                from: EleutherAI
+                info: The GPT-NeoX-20B is a transformer-based language model with 20 billion parameters trained on the Pile, a large English-language dataset. Its architecture is similar to that of GPT-3, and it is primarily intended for research purposes to extract useful features for downstream tasks. The model can be fine-tuned for deployment, but it is not intended for human-facing interactions without supervision. The model has limitations and biases, and its outputs should be curated before presenting them to a human reader.
+                website:
+                license:
+                prompting:
+
+            stablelm:
+                model: stabilityai/stablelm-tuned-alpha-7b
+                api: https://stabilityai-stablelm-tuned-alpha-chat.hf.space/
+                from: Stability AI
+                info: A pre-trained language model based on GPT-3 architecture, fine-tuned on a large corpus of text for various natural language processing tasks.
+                website: https://stability-ai.com/
+                license: proprietary
+                prompting: Supports various types of prompts for natural language processing tasks, including text completion, question-answering, and text generation. Can be fine-tuned on specific domains for improved performance.
+
+        prompts:
+            Ar4ikov:
+                model: Ar4ikov/gpt2-650k-stable-diffusion-prompt-generator
+                from: Nikita
+                info: Stable Diffusion Prompt Generator
+                license: MIT
+            
+            MagicPrompt:
+                model: Gustavosta/MagicPrompt-Stable-Diffusion
+                from: Gustavo Santana
+                info: This is a model from the MagicPrompt series of models, which are GPT-2 models intended to generate prompt texts for imaging AIs, in this case Stable Diffusion.
+                license: MIT
+            
+            Succinctly:
+                model: succinctly/text2image-prompt-generator
+                from: Julia Turc
+                info: This is a GPT-2 model fine-tuned on the succinctly/midjourney-prompts dataset, which contains 250k text prompts that users issued to the Midjourney text-to-image service over a month period.
+                license: cc-by-2.0
+    
+    transform:
+        summerize:
+            lidiya:
+                model: 'lidiya/bart-large-xsum-samsum'
+            philschmid:
+                model: philschmid/bart-large-cnn-samsum
+                from: Philipp Schmid
+                info: This model was trained using Amazon SageMaker and the new Hugging Face Deep Learning container.
+                license: MIT
+
+audio:
+    generate:
+        zetabyte:
+            name: Text To Voice
+            from: zetabyte
+            model: zetabyte/text-to-voice
+            api: https://zetabyte-text-to-voice.hf.space/run/predict
+            url: https://huggingface.co/spaces/zetabyte/text-to-voice
+        
+        espnet:
+            model: espnet/kan-bayashi_ljspeech_vits
+
+
+
+image:
+    config: &default
+        sampler: default
+        steps: 22
+        cfg: 7.7
+
+    process:
+        # - https://huggingface.co/spaces/huggingface-projects/stable-diffusion-latent-upscaler
+        # - https://huggingface.co/spaces/Manjushri/SD-2X-And-4X-Upscaler-GPU
+        # - https://huggingface.co/spaces/Manjushri/SD-2X-And-4X-CPU
+        # - https://huggingface.co/stabilityai/sd-x2-latent-upscaler
+        # - https://huggingface.co/timbrooks/instruct-pix2pix
+
+        facebook/detr-resnet-50:
+            name: DETR (End-to-End Object Detection) model with ResNet-50 backbone
+            info: The DETR (End-to-End Object Detection) model is an object detection model trained on COCO 2017 object detection with a ResNet-50 convolutional backbone. It uses an encoder-decoder transformer architecture with two heads added to the decoder to perform object detection - a linear layer for class labels and a MLP (multi-layer perceptron) for bounding boxes. The model uses object queries to detect objects in an image, with the number of queries set to 100 for COCO. The model is trained using a "bipartite matching loss" and a linear combination of the L1 and generalized IoU loss to optimize the parameters. This model achieves an AP (average precision) of 42.0 on COCO 2017 validation.
+            url: https://huggingface.co/facebook/detr-resnet-50
+
+        openmmlab/upernet-convnext-small:
+            name: UperNet, ConvNeXt small-sized backbone
+            info: UperNet framework for semantic segmentation, leveraging a ConvNeXt backbone.
+            url: https://huggingface.co/openmmlab/upernet-convnext-small
+
+        keras-io/lowlight-enhance-mirnet:
+            name: Low Light Image Enhancement
+            info: Keras Implementation of MIRNet model for light up the dark image
+            url: https://huggingface.co/keras-io/lowlight-enhance-mirnet
+            api: https://keras-io-enhance-low-light-image.hf.space/run/predict
+
+        keras-io/EDSR:
+            name: EDSR
+            info: Enhanced Deep Residual Networks for Single Image Super-Resolution
+            url: https://huggingface.co/spaces/keras-io/EDSR
+            api: https://keras-io-edsr.hf.space/run/predict
+        
+        lambdalabs/sd-image-variations-diffusers:
+            price: 1.1
+
+    generate:
+        stabilityai/stable-diffusion-2-1:
+            price: 1.3
+            code: stabilityai/stable-diffusion-2-1
+            name: Stable Diffusion 2.1
+            from: Stability AI
+            info: This stable-diffusion-2-1 model is fine-tuned from stable-diffusion-2 (768-v-ema.ckpt) with an additional 55k steps on the same dataset (with punsafe=0.1), and then fine-tuned for another 155k extra steps with punsafe=0.98.
+            url: https://huggingface.co/stabilityai/stable-diffusion-2-1
+            license: openraill++
+
+        runwayml/stable-diffusion-v1-5:
+            price: 1.2
+            code: runwayml/stable-diffusion-v1-5
+            name: 'Stable Diffusion 1.5'
+            from:  [Robin Rombach, Patrick Esser]
+            info: Stable Diffusion is a latent text-to-image diffusion model capable of generating photo-realistic images given any text input.
+            url: https://huggingface.co/runwayml/stable-diffusion-v1-5
+            license: creativeml-openrail-m
+
+        wavymulder/Analog-Diffusion:
+            price: 2.6
+            code: wavymulder/Analog-Diffusion
+            name: Analog Diffusion
+            from: wavymulder
+            info: This is a dreambooth model trained on a diverse set of analog photographs.
+            url: https://huggingface.co/wavymulder/Analog-Diffusion
+            imagine: [analog style, cowboy]
+            forget: [blur, haze, naked, weapon, nsfw]
+        
+        nitrosocke/Nitro-Diffusion:
+            price: 2.8
+            code: nitrosocke/Nitro-Diffusion
+            name: Nitro Diffusion
+            from: nitrosocke
+            info: Nitro Diffusion is a fine-tuned Stable Diffusion model trained on three artstyles simultaniously. It allows for high control of mixing, weighting and single style.
+            url: https://huggingface.co/nitrosocke/Nitro-Diffusion
+            imagine: [archer style, arcane style, modern disney style]
+        
+        coder119/Vectorartz_Diffusion:
+            price: 1.2
+            code: coder119/Vectorartz_Diffusion
+            name: Vectorartz Diffusion
+            from: Star Hunter
+            info: Generate beautiful vector illustration
+            license: creativeml-openrail-m
+            imagine: [vectorartz, vector art, flat, colorful]
+            forget: [grayscale, realistic, photo]
+            config:
+                sampler: karras_2sa
+                steps: 16
+                cfg: 7
+
+        johnslegers/epic-diffusion:
+            price: 2.1
+            code: johnslegers/epic-diffusion
+            name: Epic Diffusion
+            from: John Slegers
+            info: Epîc Diffusion is a general purpose model based on Stable Diffusion 1.x intended to replace the official SD releases as the default model. It is focused on providing high quality output in a wide range of different styles, with support for NFSW content.
+            imagine: [Epic, analog, wavy, openjourney, samdoesarts, ultramerge, postapocalypse, elldreth's dream, Inkpunk, Arcane, Van Gogh, blended ]
+            license: creativeml-openrail-m
+
+        prompthero/openjourney-v4:
+            price: 1.5
+            code: prompthero/openjourney-v4
+            name: Openjourney v4
+            from: PromptHero
+            info: Trained on +124k Midjourney v4 images, by PromptHero. Trained on Stable Diffusion v1.5 using +124000 images, 12400 steps, 4 epochs +32 training hours. Pss... "mdjrny-v4 style" is not necessary anymore (yay!)
+            url: https://huggingface.co/prompthero/openjourney-v4
+            imagine: [mdjrny-v4 style, midjourney, openjourney ]
+            license: creativeml-openrail-m
+
+        Sandro-Halpo/SamDoesArt-V3:
+            price: 2.4
+            code: Sandro-Halpo/SamDoesArt-V3
+            name: Sam Does Art v3
+            from: Sandro Halpo
+            info: Use the token SamDoesArt to trigger the effect. I usually put it at the beginning of the prompt. I don't recommend putting the word style directly after the keyword on this model. The effect of a comma after Sam doesArt or no comma is difficult to determine.
+            url: https://huggingface.co/Sandro-Halpo/SamDoesArt-V3
+            license: unlicense
+            imagine: [samdoesarts, sam, sandro halpo]
+            config:
+                sampler: euler
+
+        Envvi/Inkpunk-Diffusion:
+            price: 1.9
+            code: Envvi/Inkpunk-Diffusion
+            name: Inkpunk Diffusion
+            from: Envvi
+            info: Finetuned Stable Diffusion model trained on dreambooth. Vaguely inspired by Gorillaz, FLCL, and Yoji Shinkawa. Use nvinkpunk in your prompts.
+            url: https://huggingface.co/Envvi/Inkpunk-Diffusion
+            license: creativeml-openrail-m
+            imagine: [inkpunk, nvinkpunk, ink, okami]
+            config: *default
+
+        andite/anything-v4.0:
+            price: 2.2
+            code: andite/anything-v4.0
+            fallback: TareHimself/anything-v4.0
+            name: Anything v4
+            from: Andite
+            info: Anything V4 is a latent diffusion model for weebs. It is intended to produce high-quality, highly detailed anime style with just a few prompts. Like other anime-style Stable Diffusion models, it also supports danbooru tags to generate images.
+            url: https://huggingface.co/andite/anything-v4.0
+            license: creativeml-openrail-m
+            imagine: [anime, manga]
+            config:
+                sampler: karras_2sa, karras_2m
+                steps: [50, 20]
+                cfg: [7, 7]
+        
+        claudfuen/photorealistic-fuen-v1:
+            price: 2.5
+            code: claudfuen/photorealistic-fuen-v1
+            name: Photorealistic Fuen v1
+            from: Claudio Fuentes
+            info: README.md exists but content is empty.
+            url: https://huggingface.co/claudfuen/photorealistic-fuen-v1
+            license: creativeml-openrail-m
+            imagine: [photorealistic]
+            config: *default
+
+        SG161222/Realistic_Vision_V1.4:
+            price: 3.2
+            code: SG161222/Realistic_Vision_V1.4
+            name: Realistic Vision 1.4
+            from: Evgeny
+            info: My model has always been free and always will be free. There are no restrictions on the use of the model. The rights to this model still belong to me.
+            license: creativeml-openrail-m
+            imagine: [(high detailed skin:1.2), 8k uhd, dslr, soft lighting, high quality, film grain, Fujifilm XT3]
+            config:
+                sampler: karras_2sa, karras_2m
+                steps: 25
+                cfg: [3.5, 7]
+
+        DucHaiten/DucHaitenAIart:
+            price: 2.1
+            code: DucHaiten/DucHaitenAIart
+            name: Duc Haiten AI art 3.1
+            from: nguyễn minh đức
+            license: creativeml-openrail-m
+            imagine: [masterpiece, best quality, extremely detailed 8K, high resolution, ultra quality, 3D, pixar, pin-up, smooth]
+            forget: [sketch, (worst quality:1.5), (low quality:1.5), (normal quality:1.5), lowres, bad anatomy, bad hands, ((monochrome)), ((grayscale)), collapsed eyeshadow, multiple eyeblows, vaginas in breasts, (cropped), oversaturated, extra limb, missing limbs, deformed hands, long neck, long body, imperfect, (bad hands), signature, watermark, username, artist name, conjoined fingers, deformed fingers, ugly eyes, imperfect eyes, skewed eyes, unnatural face, unnatural body, error]
+            config:
+                sampler: karras_2sa
+                steps: 50
+                cfg: [11, 15]
+        
+        darkstorm2150/Protogen_x3.4_Official_Release:
+            price: 2.3
+            code: darkstorm2150/Protogen_x3.4_Official_Release
+            name: Protogen 3.4
+            from: Victor Espinoza-Guerra
+            info: Protogen was warm-started with Stable Diffusion v1-5 and fine-tuned on various high quality image datasets. Version 3.4 continued training from ProtoGen v2.2 with added photorealism.
+            license: creativeml-openrail-m
+            imagine: [modelshoot style, analog style, mdjrny-v4 style, nousr robot]
+            config: *default
+        
+        # darkstorm2150/Protogen_Eclipse_Official_Release:
+        # Re7X/ProjectTurn8:
+        # DeepFloyd/IF-I-M-v1.0:
+        # saftle/urpm
+        # ou3m: https://huggingface.co/ckpt/organic-mind # Mantra Ardhana : VISUAL POETRY - ORGANIC MIND GALERY
+        # fantasyai:
+        #     url: https://huggingface.co/hassanblend/HassanBlend1.5.1.2 # https://Fantasy.ai/?r=bt8uV
+
+... # AI Models
+
+# This model can create NSFW images but since it is not a hentai and porn model, anything really hardcore will be difficult to create. But, To make the model work better with NSFW images, add “hentai, porn, rule 34” to the prompt
+
+# Always add to the prompt “masterpiece, best quality, 1girl or 1boy, realistic, anime or cartoon (it's two different styles, but I personally prefer anime), 3D, pixar, (add “pin-up”) ” if you are going to give your character a sexy pose), highly detail eyes, perfect eyes, both eyes are the same, (if you don't want to draw eyes, don't add them), smooth, perfect face, hd, 2k, 4k , 8k, 16k
+
+# Add to the prompt: “extremely detailed 8K, high resolution, ultra quality” to further enhance the image quality, but it may weaken the AI's interest in other keywords.
+
+# You can add “glare, Iridescent, Global illumination, real hair movement, realistic light, realistic shadow” to the prompt to create a better lighting effect, but the image will then become too realistic, if you don't want to. Please adjust it accordingly.
+
+--- &Prompts
+
+config:
+    model:
+        seed: 150856
+        count: 4
+        steps: 30
+        cfg_scale: 7.7
+
+    image-sm: &small
+        width: 400
+        height: 400
+
+    image-md: &medium
+        width: 616
+        height: 616
+
+    imagelg: &large
+        width: 768
+        height: 768
+
+subject: [a man holding an apple]
+
+pose: [standing]
+
+background: [in an empty city street]
+
+lighting: [ twilight, sunset, natural, neon, stuio, godrays ]
+
+angle: [ close, closeup portrait, midrange, fullbody, backwards, above, below ]
+
+expression: [ sad, happy, confused, angry, bored, exited ]
+
+NSFW: # Not Safe for Work
+    imagine-2: masterpiece, 1girl, porn star, nude, tattooed body, ginger, big ass, pussy, showing butt, fat pussy, sexy pose, looking at viewer, master bed, naked, wavy long hair, white hair, sitting on ground, full body, large thighs, model posing, nsfw, fat butt, big quads, outside, large breast
+    imagine:
+        'masterpiece, 1girl, porn star, nude, tattooed body, ginger, big ass, pussy, showing butt, fat pussy, sexy pose, looking at viewer, master bed, naked, wavy long hair, white hair, sitting on ground, full body, large thighs, model posing, nsfw, fat butt, big quads, outside, large breast, lewd'
+    forget:
+        'EasyNegative, out of frame, normal, crosseyed, extra fingers, hand, hands, feet, toes, fewer fingers, easynegative, nfixer, logo, watermark, name, text, signature, site, disfigured'
+
+... # Prompts
+
+--- &Study
+Concorrentes:
+    https://dreamlike.art/plans
+    https://beta.dreamstudio.ai/account
+    https://playgroundai.com/
+
+Reference:
+    https://huggingface.co/docs/api-inference/detailed_parameters
+    https://github.com/huggingface/huggingface.js/blob/main/packages/inference/README.md
+    https://huggingface.co/docs/diffusers/using-diffusers/stable_diffusion_jax_how_to
+
+Video:
+    https://huggingface.co/damo-vilab/modelscope-damo-text-to-video-synthesis
+
+Templates:
+    https://vercel.com/new/templates/next.js/mint-nft-moralis
+    https://vercel.com/new/templates/next.js/realtime-chat-app
+    https://vercel.com/new/templates/next.js/nextjs-portfolio-pageview-counter
+    https://vercel.com/new/templates/next.js/og-image-generation
+    https://vercel.com/new/templates/svelte/sveltekit-boilerplate
+    https://github.com/monogramdesign/notify-new-deployments/tree/main
+    https://www.masswerk.at/elizabot/
+    https://github.com/jthegedus/svelte-adapter-firebase
+    https://github.com/vercel/vercel/tree/main/examples/sveltekit-1
+    https://vercel.com/new/templates/next.js/agent-gpt
+    https://www.npmjs.com/package/react-i18next
+    https://locize.com/
+    https://ejs.co/
+    https://opencollective.com/
+    https://chat.forefront.ai/
+    https://js.langchain.com/docs/
+... # Study
+
+--- &Licenses
+MIT:
+    url: https://en.wikipedia.org/wiki/MIT_License
+    info: The MIT License is a permissive free software license originating at the Massachusetts Institute of Technology (MIT) in the late 1980s. As a permissive license, it puts only very limited restriction on reuse and has, therefore, high license compatibility.
+    terms: >
+        Copyright (c) <year> <copyright holders>
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+
+unlicense:
+    url: https://unlicense.org/
+    info: The Unlicense is a template for disclaiming copyright monopoly interest in software you've written; in other words, it is a template for dedicating your software to the public domain. It combines a copyright waiver patterned after the very successful public domain SQLite project with the no-warranty statement from the widely-used MIT/X11 license.
+    terms: >
+        This is free and unencumbered software released into the public domain.
+
+        Anyone is free to copy, modify, publish, use, compile, sell, or
+        distribute this software, either in source code form or as a compiled
+        binary, for any purpose, commercial or non-commercial, and by any
+        means.
+
+        In jurisdictions that recognize copyright laws, the author or authors
+        of this software dedicate any and all copyright interest in the
+        software to the public domain. We make this dedication for the benefit
+        of the public at large and to the detriment of our heirs and
+        successors. We intend this dedication to be an overt act of
+        relinquishment in perpetuity of all present and future rights to this
+        software under copyright law.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+        EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+        MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+        IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+        OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+        ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+        OTHER DEALINGS IN THE SOFTWARE.
+
+        For more information, please refer to <http://unlicense.org/>
+
+
+cc-by-2.0:
+    url: https://creativecommons.org/licenses/by/2.0/legalcode
+    info: >
+        You are free to:
+        Share — copy and redistribute the material in any medium or format
+        Adapt — remix, transform, and build upon the material
+        for any purpose, even commercially.
+        This license is acceptable for Free Cultural Works.
+        The licensor cannot revoke these freedoms as long as you follow the license terms.
+    terms: >
+        Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+        No additional restrictions — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
+
+creativeml-openrail-m:
+    url: https://huggingface.co/spaces/CompVis/stable-diffusion-license
+    info: The Responsible AI License allows users to take advantage of the model in a wide range of settings (including free use and redistribution) as long as they respect the specific use case restrictions outlined, which correspond to model applications the licensor deems ill-suited for the model or are likely to cause harm.
+    terms: In short, this license strives for both the open and responsible downstream use of the accompanying model. When it comes to the open character, we took inspiration from open source permissive licenses regarding the grant of IP rights. Referring to the downstream responsible use, we added use-based restrictions not permitting the use of the Model in very specific scenarios, in order for the licensor to be able to enforce the license in case potential misuses of the Model may occur. At the same time, we strive to promote open and responsible research on generative models for art and content generation.
+
+openraill++:
+    url: https://www.ykilcher.com/license
+    info: The Responsible AI License allows users to take advantage of the model in a wide range of settings (including free use and redistribution) as long as they respect the specific use case restrictions outlined, which correspond to model applications the licensor deems ill-suited for the model or are likely to cause harm.
+
+Apache-2.0:
+    url: http://www.apache.org/licenses/LICENSE-2.0
+    info: A permissive license whose main conditions require preservation of copyright and license notices. Contributors provide an express grant of patent rights. Licensed works, modifications, and larger works may be distributed under different terms and without source code.
+
+... # License

@@ -6,6 +6,7 @@ import TimeLine from './Timeline'
 import Planeta from './Planet'
 import { useEffect,useState } from 'react'
 import localforage from 'localforage'
+import MatrixBackGround from '../components/matrix_bg'
 
 export default function Home() {
   const [user_timeline, set_user_timeline] = useState([])
@@ -22,11 +23,11 @@ export default function Home() {
 
   
   return (
-    <div >
+    <div>
       <div style={{
         position:"absolute",
 				width:"100vw",
-        zIndex:5,
+        zIndex:0,
 				// pointerEvents:"all",
     }}>
         {/* <MatrixBackGround/> */}
@@ -49,7 +50,7 @@ export default function Home() {
             flex
             justify-content-start"
           style={{
-						zIndex:5
+						zIndex:1
 					}}>
             <TimeLine  pins={user_timeline} setPins={(data)=>{
 								set_user_timeline(data)
@@ -79,7 +80,7 @@ export default function Home() {
         overflow:"hidden",
         width:"100vw",
         height:"100vh",
-        zIndex:4
+        zIndex:0
         }}>
           <div style={{
             position:"absolute",
