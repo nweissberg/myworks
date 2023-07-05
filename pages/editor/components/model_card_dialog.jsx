@@ -7,11 +7,12 @@ import { useEffect, useState } from "react";
 import PinchZoom from "../../../componets/wrapper_pinch_zoom";
 
 export default function ModelCardDialog(props){
-	const {isMobile} = useUtils()
+	const {isMobile,is_dev} = useUtils()
 	const [add_tags, set_add_tags] = useState({imagine:[],forget:[]})
 	
 	useEffect(()=>{
-		print(add_tags)
+		if(is_dev) console.log('line',print(add_tags,'log'))
+		
 		props.updateVision?.(add_tags)
 	},[add_tags])
 	

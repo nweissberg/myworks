@@ -294,7 +294,7 @@ function EditImageMetadata() {
 				}} />
 			</div>
 			<div className="hide-scroll overflow-scroll flex h-full w-screen min-h-screen top-0 left-0 justify-content-center surface-ground">
-			{image_obj && (
+				{image_obj && (
 					<img
 						className="bitmap relative center"
 						src={image_obj.src}

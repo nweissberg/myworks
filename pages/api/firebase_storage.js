@@ -24,6 +24,26 @@ const fb_app = initializeApp({
 // Create a root reference
 const fb_store = getStorage(fb_app);
 
+export async function delete_file(file,folder='uploads'){
+    return new Promise((res,rej)=>{
+        const uid = get_uid()
+        if(!uid) rej(null)
+
+        console.log("Deleting file = "+file)
+        
+        const storageRef = ref(fb_store, `${folder}/${file}`);
+        deleteObject(storageRef)
+        .then(() => {
+            console.log("File deleted successfully");
+            res(true); // Resolving the promise with a true value to indicate successful deletion
+        })
+        .catch((error) => {
+            console.error("Error deleting file:", error);
+            rej(false); // Rejecting the promise with a false value to indicate deletion failure
+        });
+    })
+}
+
 
 const upload_file = async (file,folder='uploads',onUpdate=(progress)=>{console.log('Upload is ' + progress + '% done')}) => {
     return new Promise((res,rej)=>{
@@ -92,9 +112,9 @@ export async function get_folder(folderPath, getPublic = 'true') {
     return  listAll(folderRef)
     .then(async(data) => {
         await Promise.all(data.items.map((itemRef)=>{
-            console.log(itemRef)
+            // console.log(itemRef)
             return(getMetadata(itemRef)
-            .then((data)=>{
+            .then(async (data)=>{
                 if(data.customMetadata){
                     // console.log(data.customMetadata)
                     if(data.customMetadata.isPublic === getPublic){
@@ -102,13 +122,15 @@ export async function get_folder(folderPath, getPublic = 'true') {
                             name:itemRef.name,
                             ref:itemRef,
                             public:true,
-                            user:data.customMetadata.user_uid
+                            user:data.customMetadata.user_uid,
+                            // url: await getDownloadURL(itemRef)
                         })
                     }else if(data.customMetadata.user_uid === uid){
                         _uploadedFiles.push({name:itemRef.name,
                             ref:itemRef,
                             public:false,
-                            user:data.customMetadata.user_uid
+                            user:data.customMetadata.user_uid,
+                            // url: await getDownloadURL(itemRef)
                         })
                     }
                 }else{

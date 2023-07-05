@@ -20,6 +20,12 @@
 }
 
 :root{
+  --text: #dbdbdb;
+  --light: #ffffff;
+  --text-a: #333333;
+  --text-b: #666666;
+  --text-c: #aba2af;
+  
   --compound-a:#333928;
   --compound-b:#88C313;
   --compound-c:#E24A28;
@@ -581,6 +587,12 @@ main{
     text-align:right;
     margin-right: 20px;
   } */
+  /* .sm\:blur-1 */
+  .sm\:blur-2{
+    filter: blur(10px);
+  }
+  /* .blur-3 */
+  /* .blur-4 */
   .hide-on-phone{
     display: none;
   }
@@ -641,25 +653,75 @@ main{
   top: 0px !important;
 }
 
+.swal2-container {
+  /* z-index: 1000000 !important; */
+  overflow: hidden !important;
+}
+.swal2-container::-webkit-scrollbar {
+  width: 0px !important;
+  height: 0px !important;
+}
 
-/* .swal2-container {
-  z-index: 1000000 !important;
-} */
+.swal-html-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+.swal-html-input > h4 {
+  position: relative;
+  margin-top: 30px;
+  /* margin-bottom: auto; */
+  color: var(--text-c);
+  white-space: nowrap;
+}
+
+.swal2-html-container,
+.swal2-title {
+  color: var(--text) !important;
+}
+.swal2-file,
+.swal2-input,
+.swal2-textarea {
+  color: var(--text) !important;
+}
+
+.swal2-validation-message {
+  color: var(--text) !important;
+  background-color: var(--surface-a) !important;
+}
 
 .swal2-popup {
   background-color: var(--surface-a) !important;
 }
 
-.swal2-success-circular-line-left{
+.swal2-success-circular-line-left {
   background-color: var(--surface-a) !important;
 }
-.swal2-success-circular-line-right{
+.swal2-success-circular-line-right {
   background-color: var(--surface-a) !important;
 }
-.swal2-success-fix{
+.swal2-success-fix {
   background-color: var(--surface-a) !important;
+}
+/* 
+.swal2-styled.swal2-cancel {
+  background-color: var(--secondary) !important;
 }
 
+.swal2-styled.swal2-confirm {
+  background-color: #6e7881 !important;
+} */
+
+.swal2-checkbox {
+  border-radius: 15px;
+  width: 30px;
+  height: 30px;
+}
+
+#swal2-html-container > label {
+  transform: translate(-20px, -10px);
+  color: white;
+}
 .form-control {
   color:var(--text-color)!important;
   background-color: var(--surface-a)!important;

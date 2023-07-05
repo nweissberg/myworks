@@ -11,6 +11,8 @@ import { useAuth } from "./api/auth";
 import Imaginy from "./components/ml_imaginy";
 import { getAuth, sendSignInLinkToEmail } from 'firebase/auth'
 import ImaginyEditor from "./components/imaginy_editor";
+import { get_folder } from "./api/firebase_storage";
+import UserFiles from "./components/all_images";
 
 export default function Home() {
 	// const clock = new Clock
@@ -21,6 +23,7 @@ export default function Home() {
 	const [user_email, set_user_email] = useState()
 	const [image_editor, set_image_editor] = useState(false)
 	const editor = useRef()
+	const [public_images, set_public_images] = useState([])
 
 	const imaginy_editor = <ImaginyEditor
 		ref={editor}
@@ -45,10 +48,21 @@ export default function Home() {
 		// dynamicLinkDomain: 'imagyny.fsu.web'
 	};
 	useEffect(() => {
-		if(user && router) router.push({pathname:'/editor',shallow:true, query:{doc:"local"}})
+		if(router){
+			if(router.query.doc){
+				router.push({pathname:'/editor',shallow:true, query:{doc:router.query.doc}})
+			}else if(user){
+				// router.push({pathname:'/editor',shallow:true,query:{doc:"local"}})
+			}
+		}
 	},[user,router])
 
-	
+	useEffect(() => {
+		get_folder('imaginy').then((data)=>{
+			// console.log(data)
+			if(data) set_public_images(data)
+		})
+	},[])
 	return <main className="bg-black scrollbar-none  select-none"
 		onContextMenu={(e) => {
 			e.preventDefault()
@@ -229,7 +243,15 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-
+			<div>
+				<UserFiles files={public_images}
+				className='overflow-scroll hide-scroll z-2 grid gap-0 grid-nogutter'
+					
+				openDoc={(e)=>{
+					router.push({pathname:'/editor',shallow:true, query:{doc:e}})
+				}}
+				/>
+			</div>
 		</header>
 	</main>;
 }

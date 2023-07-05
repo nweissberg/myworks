@@ -35,7 +35,7 @@ api_cloud.interceptors.response.use(function (response) {
 
 // var api_buffer = []
 
-const api_call = (async (path, body, cloud = true) => {
+const api_call = (async (path, body, cloud = ("development" != process.env.NODE_ENV)) => {
 	// var isLoading = api_buffer.find((requested) => isDeepEqual(body, requested))
 	// print(api_buffer)
 	return new Promise(function (res, rej) {

@@ -238,27 +238,27 @@ export default function UtilsProvider({ children }) {
 
     const getOrientation = () => {
         if (window.matchMedia("(orientation: landscape)").matches) {
-          return "landscape";
+            return "landscape";
         } else {
-          return "portrait";
+            return "portrait";
         }
-      };
+    };
 
     useEffect(() => {
         set_is_mobile(isMobile() || window.innerWidth <= 960);
         set_orientation(getOrientation());
-      
+
         const handleResize = () => {
-          set_is_mobile(isMobile() || window.innerWidth <= 960);
-          set_orientation(getOrientation());
+            set_is_mobile(isMobile() || window.innerWidth <= 960);
+            set_orientation(getOrientation());
         };
-      
+
         window.addEventListener("resize", handleResize);
-      
+
         return () => {
-          window.removeEventListener("resize", handleResize);
+            window.removeEventListener("resize", handleResize);
         };
-      }, [win, nav]);
+    }, [win, nav]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -397,10 +397,10 @@ export const dateMask = (value = new Date()) => {
 
 export const moneyMask = (value = 0, currency = "BRL") => {
     return value.toLocaleString('pt-BR', {
-        ...(currency?{
+        ...(currency ? {
             style: 'currency',
             currency: currency
-        }:{}),
+        } : {}),
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
     });
@@ -437,7 +437,7 @@ export function toIdTag(str) {
 }
 
 export function normalize(str) {
-   return (str.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z,-])+/g, ' '));
+    return (str.normalize('NFD').replace(/([\u0300-\u036f]|[^0-9a-zA-Z,-])+/g, ' '));
 }
 
 export function splitStringWithPunctuation(string) {
@@ -447,62 +447,62 @@ export function splitStringWithPunctuation(string) {
 
 export const copyToClipBoard = (data) => {
     return new Promise((resolve, reject) => {
-      if (typeof data === 'string') {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(data)
-            .then(function () {
-              console.log('Async: Copying text to clipboard was successful!');
-              resolve();
-            })
-            .catch(function (err) {
-              console.error('Async: Could not copy text: ', err);
-              reject(err);
-            });
+        if (typeof data === 'string') {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(data)
+                    .then(function () {
+                        console.log('Async: Copying text to clipboard was successful!');
+                        resolve();
+                    })
+                    .catch(function (err) {
+                        console.error('Async: Could not copy text: ', err);
+                        reject(err);
+                    });
+            } else {
+                fallbackCopyTextToClipboard(data);
+                resolve();
+            }
+        } else if (data instanceof Blob) {
+            if (navigator.clipboard && navigator.clipboard.write) {
+                navigator.clipboard.write([
+                    new ClipboardItem({ [data.type]: data })
+                ])
+                    .then(function () {
+                        console.log('Async: Copying blob to clipboard was successful!');
+                        resolve();
+                    })
+                    .catch(function (err) {
+                        console.error('Async: Could not copy blob: ', err);
+                        reject(err);
+                    });
+            } else {
+                const error = new Error('Clipboard API not supported on this device.');
+                console.error(error.message);
+                reject(error);
+            }
         } else {
-          fallbackCopyTextToClipboard(data);
-          resolve();
+            const error = new Error('Invalid data type. Only strings and blobs are supported.');
+            console.error(error.message);
+            reject(error);
         }
-      } else if (data instanceof Blob) {
-        if (navigator.clipboard && navigator.clipboard.write) {
-          navigator.clipboard.write([
-            new ClipboardItem({ [data.type]: data })
-          ])
-            .then(function () {
-              console.log('Async: Copying blob to clipboard was successful!');
-              resolve();
-            })
-            .catch(function (err) {
-              console.error('Async: Could not copy blob: ', err);
-              reject(err);
-            });
-        } else {
-          const error = new Error('Clipboard API not supported on this device.');
-          console.error(error.message);
-          reject(error);
-        }
-      } else {
-        const error = new Error('Invalid data type. Only strings and blobs are supported.');
-        console.error(error.message);
-        reject(error);
-      }
     });
-  };
-  
-  function fallbackCopyTextToClipboard(text) {
+};
+
+function fallbackCopyTextToClipboard(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
-  
+
     // Place the textarea in the DOM
     document.body.appendChild(textArea);
-  
+
     // Select the textarea and copy its contents
     textArea.select();
     document.execCommand('copy');
-  
+
     // Remove the textarea from the DOM
     document.body.removeChild(textArea);
-  }
-  
+}
+
 
 
 export const validaCPF = cpf => {
@@ -761,7 +761,7 @@ export async function shareImage(imageUrl, file, title, text) {
     }
 }
 
-export function blob_to_image(blob, response = 'image',format='image/png') {
+export function blob_to_image(blob, response = 'image', format = 'image/png') {
     return new Promise((res, rej) => {
         // Assume "blob" is the Blob object you want to convert to JPEG
         const canvas = document.createElement('canvas');
@@ -787,7 +787,7 @@ export function blob_to_image(blob, response = 'image',format='image/png') {
         // Create a URL for the Blob object
         if (response != 'blob') {
             img.src = URL.createObjectURL(blob);
-        }else{
+        } else {
             img.src = blob;
             // console.log(img)
             canvas.width = img.width;
@@ -801,34 +801,39 @@ export function blob_to_image(blob, response = 'image',format='image/png') {
     })
 }
 
-export function dataToImage(image_data,format='jpeg'){
-	const canvas = document.createElement('canvas');
-	const ctx = canvas.getContext('2d');
-	ctx.drawImage(image_data,0,0)
-	return(canvas.toDataURL('image/'+format, 1.0))
+export function dataToImage(image_data, format = 'jpeg') {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(image_data, 0, 0)
+    return (canvas.toDataURL('image/' + format, 1.0))
 }
 
 export function imageToData(image_src) {
     return new Promise((resolve, reject) => {
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      const img = new Image();
-  
-      img.onload = () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(ctx.getImageData(0, 0, canvas.width, canvas.height));
-      };
-  
-      img.onerror = (error) => {
-        reject(error);
-      };
-  
-      img.src = image_src;
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            try {
+                const data = ctx.getImageData(0, 0, canvas.width, canvas.height)
+                resolve(data);
+            } catch (error) {
+                reject(error);
+            }
+        };
+
+        img.onerror = (error) => {
+            reject(error);
+        };
+
+        img.src = image_src;
     });
-  }
-  
+}
+
 export async function upload_images(image_blobs, image_info, isPublic = false) {
     var img_index = 0
     let urls = []
@@ -851,7 +856,7 @@ export async function upload_images(image_blobs, image_info, isPublic = false) {
     })
 }
 export async function upload_image(image_info, path = 'chat_photos', isPublic = false) {
-    return new Promise(async(res, rej) => {
+    return new Promise(async (res, rej) => {
         const name = 'painter_' + image_info.id + '_' + image_info.index + '.png'
         var url = ''
         if (image_info.image) {
@@ -880,154 +885,156 @@ export async function upload_image(image_info, path = 'chat_photos', isPublic = 
                 console.log(fb_url)
                 res(fb_url)
             }).catch((e) => {
-                rej(e.message)
+                rej(e?e.message:"Upload Error")
             })
-        
+
         }
-        
+
     })
 }
 
 export function toPower(value) {
     let result = Math.floor(2 ** (value * 0.06) + 64) * 8;
-    
+
     if (result % 8 !== 0) {
-      result = Math.ceil(result / 8) * 8;
+        result = Math.ceil(result / 8) * 8;
     }
-    
+
     return result;
-  }
-  
+}
+
 
 export const roundToPower = number => Math.pow(2, Math.round(Math.log2(number)));
 
-export const calculateResolution = (ar, mr= { width: 1024, height: 1024 }) => ({
-    width: Math.round(Math.min(Math.max(mr.width, mr.height) * (ar.width / ar.height), Math.min(mr.width, mr.height))),
-    height: Math.round(Math.min(Math.min(mr.width, mr.height) / (ar.width / ar.height), Math.max(mr.width, mr.height)))
-});
-  
+export const calculateResolution = (ar, mr = { width: 1024, height: 1024 }) => {
+    const width = Math.round(Math.min(Math.max(mr.width, mr.height) * (ar.width / ar.height), Math.min(mr.width, mr.height)));
+    const height = Math.round(Math.min(Math.min(mr.width, mr.height) / (ar.width / ar.height), Math.max(mr.width, mr.height)));
+    return { width: Math.floor(width / 8) * 8, height: Math.floor(height / 8) * 8};
+};
+
+
 // Function to hide a string in a JPEG image using LSB
-export function hideStringInImage(imageData, hiddenString, format='png') {
-	const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = imageData.width;
-  canvas.height = imageData.height;
+export function hideStringInImage(imageData, hiddenString, format = 'png') {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
 
-  if(format == 'png'){
-		// Convert the string to binary
-		const binaryString = (hiddenString + "<EOD>")
-			.split("")
-			.map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
-			.join("");
-        
-		// Check if the image can hold the hidden string
-		if (binaryString.length > imageData.data.length * 8) {
-			throw new Error("Image does not have enough capacity to hide the string.");
-		}
-	
-		// Modify the image data
-		let binaryIndex = 0;
-		for (let i = 0; i < imageData.data.length; i += 4) {
-			if (binaryIndex >= binaryString.length) break;
-	
-			// Get the binary representation of the pixel value
-			const binaryPixel = imageData.data[i].toString(2).padStart(8, "0");
-	
-			// Modify the least significant bit
-			const modifiedBinaryPixel =
-				binaryPixel.substring(0, 7) + binaryString[binaryIndex];
-	
-			// Update the pixel value
-			imageData.data[i] = parseInt(modifiedBinaryPixel, 2);
-	
-			binaryIndex++;
-		}
-		// Draw image data to the canvas
-		ctx.putImageData(imageData, 0, 0);
-		return canvas.toDataURL("image/"+format, 1.0);
+    if (format == 'png') {
+        // Convert the string to binary
+        const binaryString = (hiddenString + "<EOD>")
+            .split("")
+            .map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
+            .join("");
 
-	}else{
-		ctx.putImageData(imageData, 0, 0);
-		// Convert the hidden string to base64
-		const encodedHiddenString = btoa(hiddenString+"<EOD>");
-		// Embed the hidden data in the JPEG comment section
-		const comment = String.fromCharCode(encodedHiddenString.length) + encodedHiddenString;
-		// Convert the canvas back to image data
-		const modifiedImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-		console.log(comment)
-		// return blob_to_image(canvas.toDataURL('image/jpeg', 1.0, comment))
-		return canvas.toDataURL('image/jpeg', 1.0, comment);
-		// Convert the modified image data to an image object
-		const modifiedImage = dataToImage(modifiedImageData);
+        // Check if the image can hold the hidden string
+        if (binaryString.length > imageData.data.length * 8) {
+            throw new Error("Image does not have enough capacity to hide the string.");
+        }
 
-		return modifiedImage;
-	}
+        // Modify the image data
+        let binaryIndex = 0;
+        for (let i = 0; i < imageData.data.length; i += 4) {
+            if (binaryIndex >= binaryString.length) break;
+
+            // Get the binary representation of the pixel value
+            const binaryPixel = imageData.data[i].toString(2).padStart(8, "0");
+
+            // Modify the least significant bit
+            const modifiedBinaryPixel =
+                binaryPixel.substring(0, 7) + binaryString[binaryIndex];
+
+            // Update the pixel value
+            imageData.data[i] = parseInt(modifiedBinaryPixel, 2);
+
+            binaryIndex++;
+        }
+        // Draw image data to the canvas
+        ctx.putImageData(imageData, 0, 0);
+        return canvas.toDataURL("image/" + format, 1.0);
+
+    } else {
+        ctx.putImageData(imageData, 0, 0);
+        // Convert the hidden string to base64
+        const encodedHiddenString = btoa(hiddenString + "<EOD>");
+        // Embed the hidden data in the JPEG comment section
+        const comment = String.fromCharCode(encodedHiddenString.length) + encodedHiddenString;
+        // Convert the canvas back to image data
+        const modifiedImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        console.log(comment)
+        // return blob_to_image(canvas.toDataURL('image/jpeg', 1.0, comment))
+        return canvas.toDataURL('image/jpeg', 1.0, comment);
+        // Convert the modified image data to an image object
+        const modifiedImage = dataToImage(modifiedImageData);
+
+        return modifiedImage;
+    }
 }
 
 // Function to extract hidden data from a JPEG image using LSB
 export function extractPng(imageData) {
     let hiddenString = "";
     let binaryString = "";
-  
+
     // Extract the least significant bit from each pixel's red channel
     for (let i = 0; i < imageData.length; i += 4) {
-      const binaryPixel = imageData[i].toString(2).padStart(8, "0");
-      binaryString += binaryPixel.charAt(7);
+        const binaryPixel = imageData[i].toString(2).padStart(8, "0");
+        binaryString += binaryPixel.charAt(7);
     }
-  
+
     // Convert the binary string back to characters
     for (let i = 0; i < binaryString.length; i += 8) {
-      const binaryChar = binaryString.substr(i, 8);
-      const charCode = parseInt(binaryChar, 2);
-      hiddenString += String.fromCharCode(charCode);
+        const binaryChar = binaryString.substr(i, 8);
+        const charCode = parseInt(binaryChar, 2);
+        hiddenString += String.fromCharCode(charCode);
     }
-  
+
     if (hiddenString.indexOf("<EOD>") === -1) return '{"data":null}';
     return `{"data":${hiddenString.split("<EOD>")[0]}}`;
-  }
-  
-  export function extractJpeg(imageData) {
+}
+
+export function extractJpeg(imageData) {
     // Create a canvas element to draw the image
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = imageData.width;
     canvas.height = imageData.height;
-  
+
     // Create an image element
     const image = new Image();
-  
+
     // Wait for the image to load
     // image.onload = () => {
     //   // Draw the image onto the canvas
-      
-    // };
-      // Set the source of the image to the imageData
-      image.src = imageData;
-      ctx.drawImage(image, 0, 0);
-  
-      // Extract the hidden data from the JPEG comment section
-      const comment = canvas.toDataURL('image/jpeg').split(',')[1];
-      const encodedHiddenString = atob(comment);
-  
-      // Convert the hidden data from base64
-      const hiddenString = encodedHiddenString.substring(0, encodedHiddenString.length - 1);
-  
-      console.log(hiddenString);
-      
-      return(image)
-  }
 
-  
-export function extractHiddenDataFromImage(imageData,format='png'){
-	if(format=='png'){
-		return extractPng(imageData)
-	}else{
-		return extractJpeg(imageData)
-	}
+    // };
+    // Set the source of the image to the imageData
+    image.src = imageData;
+    ctx.drawImage(image, 0, 0);
+
+    // Extract the hidden data from the JPEG comment section
+    const comment = canvas.toDataURL('image/jpeg').split(',')[1];
+    const encodedHiddenString = atob(comment);
+
+    // Convert the hidden data from base64
+    const hiddenString = encodedHiddenString.substring(0, encodedHiddenString.length - 1);
+
+    console.log(hiddenString);
+
+    return (image)
 }
 
-function ascii (a) { return a.charCodeAt(0); }
+
+export function extractHiddenDataFromImage(imageData, format = 'png') {
+    if (format == 'png') {
+        return extractPng(imageData)
+    } else {
+        return extractJpeg(imageData)
+    }
+}
+
+function ascii(a) { return a.charCodeAt(0); }
 
 export function stringToBinary(inputString) {
-	return inputString.split('').map(c=>ascii(c).toString(2).padStart(8, '0'))
+    return inputString.split('').map(c => ascii(c).toString(2).padStart(8, '0'))
 }

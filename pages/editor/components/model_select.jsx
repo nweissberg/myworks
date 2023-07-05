@@ -14,9 +14,9 @@ export default function ModelSelect(props) {
 	// 	if(props.selected )
 	// },[props])
 	return <>
-		<div className="flex flex-wrap justify-content-center w-full h-screen overflow-scroll hide-scroll" style={orientation=='portrait'?{maxHeight:"30vh"}:{maxHeight:"calc(100vh - 3rem)"}}>
+		<div className="flex flex-wrap justify-content-center w-screen h-screen overflow-scroll hide-scroll" style={orientation=='portrait'?{maxHeight:"30vh"}:{maxHeight:"calc(100vh - 3rem)"}}>
 			{props.models.map((model,index)=>
-				<div key={"AI_Model_"+index} className={((props.selected?isDeepEqual(props.selected,model):false)?'sticky top-0 bottom-0 bg-gray-700 z-1 ':'')+" w-full p-2 flex justify-content-start w-full"}>
+				<div key={"AI_Model_"+index} className={((props.selected?isDeepEqual(props.selected,model):false)?'sticky top-0 bottom-0 bg-gray-700 z-1 ':'')+" w-full p-2 flex justify-content-start "}>
 					{props.selected && isDeepEqual(props.selected,model) &&  <div className="flex whitespace-nowrap align-items-center">
 						<label>{moneyMask(model.price,false)} p</label>	
 					</div>}

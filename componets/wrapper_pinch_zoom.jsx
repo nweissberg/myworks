@@ -173,15 +173,16 @@ const PinchZoom = ( props ) => {
     };
 
     const handleReset = (event) => {
-      // if(scale == 1){
-      //   // scale = 4;
-      //   const deltaX = (width*scale) - (start.x*scale)
-      //   const deltaY = (height*scale) - (start.y*scale)
-      //   position = {x:deltaX, y:deltaY}
-      //   const transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scale})`;
-      //   containerElement.style.transform = transform;
-      //   containerElement.style.WebkitTransform = transform;
-      // }else{
+      if(scale == 1){
+        props.onReset?.()
+        // scale = 4;
+        // const deltaX = (width*scale) - (start.x*scale)
+        // const deltaY = (height*scale) - (start.y*scale)
+        // position = {x:deltaX, y:deltaY}
+        // const transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scale})`;
+        // containerElement.style.transform = transform;
+        // containerElement.style.WebkitTransform = transform;
+      }
         scale = 1;
         position = {x:0,y:0};
         containerElement.style.transform =  `translate3d(${0}px, ${0}px, 0) scale(${1})`;

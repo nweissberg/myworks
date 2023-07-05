@@ -1,7 +1,14 @@
-[  
-  { 
-    "origin": ["*"],
-    "method": ["GET"],
+[
+  {
+    "origin": [
+      "https://imagyny.storage.googleapis.com/imaginy",
+      "https://storage.googleapis.com/imagyny.appspot.com/imaginy",
+      "https://imagyny.storage.googleapis.com",
+      "https://imaginy.web.app/editor",
+      "https://imaginy.web.app/"
+    ],
+    "method": ["GET","POST"],
+    "responseHeader": ["Access-Control-Allow-Origin"],
     "maxAgeSeconds": 3600
   }
 ]
