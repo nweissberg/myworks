@@ -167,7 +167,7 @@ image:
             user: stabilityai
             name: Stable Diffusion Base
             from: Rombach, Robin and Blattmann, Andreas and Lorenz, Dominik and Esser, Patrick and Ommer, Björn
-            info: This is a model that can be used to generate and modify images based on text prompts. It is a Latent Diffusion Model that uses a fixed, pretrained text encoder (OpenCLIP-ViT/H).
+            info: Este é um modelo que pode ser usado para gerar e modificar imagens com base em prompts de texto. É um modelo de difusão latente que usa um codificador de texto fixo e pré-treinado (OpenCLIP-ViT/H).
             license: creativeml-openrail-m
             samples:
                 - https://raw.githubusercontent.com/Stability-AI/stablediffusion/main/assets/stable-samples/txt2img/merged-0003.png
@@ -177,7 +177,7 @@ image:
             user: stabilityai
             name: Stable Diffusion 2.1
             from: Stability AI
-            info: This stable-diffusion-2-1 model is fine-tuned from stable-diffusion-2 (768-v-ema.ckpt) with an additional 55k steps on the same dataset (with punsafe=0.1), and then fine-tuned for another 155k extra steps with punsafe=0.98.
+            info: Este modelo de difusão estável-2-1 é treinado a partir de stable-diffusion-2(768-v-ema.ckpt) com 55k etapas adicionais no mesmo conjunto de dados (com punsafe = 0,1) e, em seguida, treinado para outros 155k passos extras com punsafe = 0,98.
             url: https://huggingface.co/stabilityai/stable-diffusion-2-1
             license: openraill++
             samples:
@@ -188,7 +188,7 @@ image:
             user: runwayml
             name: 'Stable Diffusion 1.5'
             from:  Robin Rombach, Patrick Esser
-            info: Stable Diffusion is a latent text-to-image diffusion model capable of generating photo-realistic images given any text input.
+            info: Stable Diffusion é um modelo de difusão latente que via texto é capaz de gerar imagens fotorrealistas a partir de qualquer entrada.
             url: https://huggingface.co/runwayml/stable-diffusion-v1-5
             license: creativeml-openrail-m
             samples:
@@ -200,7 +200,7 @@ image:
             user: wavymulder
             name: Analog Diffusion
             from: wavymulder
-            info: This is a dreambooth model trained on a diverse set of analog photographs.
+            info: Este é um modelo dreambooth treinado em um conjunto diversificado de fotografias analógicas.
             url: https://huggingface.co/wavymulder/Analog-Diffusion
             imagine: [analog style, cowboy]
             forget: [blur, haze, naked, weapon, nsfw]

@@ -35,7 +35,7 @@ function gen_new(_vision, onRequest=(vision)=>{print(vision)}) {
 	onRequest(_imaginy_vision)
 	Array('url', 'blob', 'image').map((k) => delete _imaginy_vision?.[k]);
 	var_set('imaginy_vision', JSON.stringify(_imaginy_vision));
-  
+	console.log("ashhdgfaksdgfkasjhdggf",_imaginy_vision)
 	var _request = get_image({
 	  steps: _imaginy_vision.steps,
 	  seed: _imaginy_vision.seed,
@@ -164,7 +164,7 @@ export default function Editor() {
 	},[])
 
 	useEffect(()=>{
-		if(router.query.doc == "local"){
+		if(router.query.doc == "local" || router.query.doc == "file"){
 			var_get("imaginy_vision").then((_vision_data)=>{
 				let _vision = JSON.parse(_vision_data)
 				print(_vision)

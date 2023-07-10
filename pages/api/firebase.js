@@ -97,7 +97,7 @@ export function readRealtimeData(path) {
 export const auth = getAuth(app);
 
 onAuthStateChanged(auth, (user) => {
-    // console.log(user)
+    console.log(user)
     if (user) {
         console.log("user uid: " + user.uid)
         // get_fingerprint(user)

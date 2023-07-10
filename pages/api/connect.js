@@ -37,32 +37,32 @@ api_cloud.interceptors.response.use(function (response) {
 
 const api_call = (async (path, body, cloud = ("development" != process.env.NODE_ENV)) => {
 	// var isLoading = api_buffer.find((requested) => isDeepEqual(body, requested))
-	// print(api_buffer)
+	// console.log(api_buffer)
 	return new Promise(function (res, rej) {
 		// if (isLoading) { return rej(null) }
 
 		// api_buffer.push(body)
 		if (cloud) {
-			print((Date.now(), 'CLOUD'))
+			console.log((Date.now(), 'CLOUD'))
 			api_cloud.post(path, body).then((data) => {
 				// api_buffer = api_buffer.filter((request) => isDeepEqual(request, body) == false)
 				if (data) {
-					print((Date.now(), 'resolved'))
+					console.log((Date.now(), 'resolved'))
 					res(data)
 				} else {
-					print((Date.now(), 'rejected'))
+					console.log((Date.now(), 'rejected'))
 					rej(null)
 				}
 			})
 		} else {
-			print((Date.now(), 'LOCAL'))
+			console.log((Date.now(), 'LOCAL'))
 			api.post(path, body).then((data) => {
 				// api_buffer = api_buffer.filter((request) => isDeepEqual(request, body) == false)
 				if (data) {
-					print((Date.now(), 'resolved'))
+					console.log((Date.now(), 'resolved'))
 					res(data)
 				} else {
-					print((Date.now(), 'rejected'))
+					console.log((Date.now(), 'rejected'))
 					rej(null)
 				}
 			})
@@ -72,7 +72,7 @@ const api_call = (async (path, body, cloud = ("development" != process.env.NODE_
 
 var api_buffer = []
 const api_get = ((body, headers) => {
-	print(api_buffer)
+	console.log(api_buffer)
 
 	var isLoading = api_buffer.find((requested) => isDeepEqual(body, requested))
 
@@ -83,12 +83,12 @@ const api_get = ((body, headers) => {
 		api_cloud.post("/api/" + body.route, body, headers).then((data) => {
 			api_buffer = api_buffer.filter((request) => isDeepEqual(request, body) == false)
 			if (data) {
-				print((Date.now(), 'CLOUD'))
+				console.log((Date.now(), 'CLOUD'))
 				res(data)
 			} else {
 				api.post("/api/"+ body.route, body, headers).then((data) => {
 					if (data) {
-						print((Date.now(), 'LOCAL'))
+						console.log((Date.now(), 'LOCAL'))
 						res(data)
 					} else {
 						res(null)

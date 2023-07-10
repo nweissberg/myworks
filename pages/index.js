@@ -119,7 +119,7 @@ export default function Home() {
 				</div>
 				<h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-7xl font-extrabold text-[#888] relative tracking-tighter text-center mb-6 md:mb-12 max-w-[780px]">
 					<span className="text-white z-1">Crie imagens </span>
-					<span className="mix-blend-color-dodge text-400">únicas com Inteligência Artificial</span>
+					<span className="mix-blend-color-dodge text-gray-100">únicas com Inteligência Artificial</span>
 				</h1>
 				<p className="text-700 mix-blend-color-dodge text-lg sm:text-xl md:text-3xl text-center max-w-[550px] mb-12 md:mb-16 xl:mb-20">
 					Uma plataforma para criar, editar e hospedar suas artes e design em um único lugar.
@@ -200,7 +200,7 @@ export default function Home() {
 									Infinitas obras
 								</span>
 							</div>
-							<p className="text-500 line-height-4">
+							<p className="text-600 line-height-4">
 								Crie imagens impressionantes usando <i className="font-bold text-700">linguegem natural</i>, de forma que não perca suas ideias pensando em quais <i className="font-bold text-700">prompts</i> deva usar.
 								Escreva ou fale como se tivesse em uma conversa com um amigo, um artista ou um vendedor. Liberte o diretor de arte que existe dentro de você.
 							</p>

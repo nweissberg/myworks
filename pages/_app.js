@@ -13,10 +13,11 @@ import { getAnalytics } from "firebase/analytics";
 import { AuthProvider } from './api/auth';
 import { Dialog } from 'primereact/dialog';
 import QRCode from 'qrcodejs'
-import UtilsProvider, { print, var_del, var_get, var_set } from './utils';
+import UtilsProvider, { extractHiddenDataFromImage, imageToData, print, var_del, var_get, var_set } from './utils';
 import AthenaProvider from './athena/athena_context';
 import PrimeReact, { locale, addLocale } from 'primereact/api';
 import Head from 'next/head'
+import ImageDropWrapper from './components/wrapper_on_drop_file';
 // var qrcode = new QRCode()
 
 const app = initializeApp({
@@ -103,6 +104,28 @@ function MyApp({ Component, pageProps }) {
     }
   }, [router])
 
+  const file_handle = (file_data)=>{
+		console.log(file_data)
+		const img = new Image();
+		
+		imageToData(file_data).then((image_data) => {
+			const extractedData = extractHiddenDataFromImage(image_data.data,'png')
+			if(extractedData) {
+				var _imaginy_vision = JSON.parse(extractedData).data
+				// set_imaginy_vision(_imaginy_vision);
+        console.log(_imaginy_vision)
+				var_set('imaginy_vision', JSON.stringify(_imaginy_vision));
+				
+			}
+			// blob_to_image(file_data, 'data').then((image_data) => {
+      console.log(image_data)
+			var_set('imaginy_view', image_data, { compressed: true })
+			// })
+		});
+		img.src = file_data;
+		// set_imaginy_view(img)
+	}
+
   const items = [
     {
       label: 'Home',
@@ -179,7 +202,15 @@ function MyApp({ Component, pageProps }) {
                   buttonClassName="flex z-3 p-button-success p-button-outlined"
                   />
               </div> */}
-              <Component {...pageProps} />
+              <ImageDropWrapper className=" flex flex-wrap justify-content-center bg-contain w-auto min-w-screen h-auto overflow-hidden max-h-screen m-0 p-0 surface-ground "
+                onFileDrop={(file_data)=>{
+                  file_handle(file_data)
+                  console.log(file_data)
+                  router.push({pathname:'/editor',shallow:true, query:{doc:'file'}})
+                }}
+              >
+                <Component {...pageProps} />
+              </ImageDropWrapper>
             </Suspense>
             <Dialog
               header="NYCO3D.com"
