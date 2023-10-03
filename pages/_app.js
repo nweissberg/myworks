@@ -77,6 +77,9 @@ function MyApp({ Component, pageProps }) {
   
   useEffect(() => {
     print(router)
+    if(router.pathname == '/by'){
+      if(!router.query.i) router.push({ pathname: '/by', query:{'i':true}, shallow: true })
+    }
     if (router.query.pg) {
       var _query = { ...router.query }
       Array('pg').map(k => delete _query?.[k])
@@ -162,7 +165,7 @@ function MyApp({ Component, pageProps }) {
   ];
   return (<>
     <Head>
-			<title>Imaginy</title>
+			<title>Nyco3D Portfolio</title>
 			<meta name="description" content="Imaginy is a web application that helps you to create and share your images. Using Machine Learning A.I." />
 			<meta name 	= "viewport" 	content = "width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
       <meta name 	= "apple-mobile-web-app-capable" content = "yes" />
@@ -191,7 +194,7 @@ function MyApp({ Component, pageProps }) {
                 <img className='center' alt='N3D_logo' src="/image/N3D.gif"></img>
               </div>
 
-              {/* <div className='flex absolute w-auto mt-3 z-4'>
+              <div className='flex absolute w-auto mt-3 z-4'>
                 <SpeedDial
                   className='flex fixed right-0 mr-2 z-4'
                   model={items}
@@ -201,7 +204,7 @@ function MyApp({ Component, pageProps }) {
                   hideIcon="pi pi-times"
                   buttonClassName="flex z-3 p-button-success p-button-outlined"
                   />
-              </div> */}
+              </div>
               <ImageDropWrapper className=" flex flex-wrap justify-content-center bg-contain w-auto min-w-screen h-auto overflow-hidden max-h-screen m-0 p-0 surface-ground "
                 onFileDrop={(file_data)=>{
                   file_handle(file_data)

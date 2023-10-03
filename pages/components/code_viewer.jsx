@@ -9,7 +9,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 import json from 'highlight.js/lib/languages/json';
 
 // import the styles you need // androidstudio | agate | rainbow | atom-one-dark |
-import 'highlight.js/styles/rainbow.css';
+import 'highlight.js/styles/atom-one-dark.css';
 
 // register the languages
 hljs.registerLanguage('javascript', javascript);

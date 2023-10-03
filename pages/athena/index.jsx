@@ -29,7 +29,7 @@ import { Tooltip } from 'primereact/tooltip';
 import generate_image, {
     generate_prompts,
     generate_text_stream,
-    HF_api_keys,
+    HFK,
     playBase64EncodedFlacAudio,
     prompt_score,
     summerize_text,
@@ -39,10 +39,9 @@ import generate_image, {
     text_language_detection
 } from './interface_api';
 
-
 export default function Athena() {
     const {capitalize, createId, clone_array, is_mobile} = useUtils()
-    const {brain, brain_data , set_code, language, setLanguage} = useAthena()
+    const {assistant, brain_data , set_code, language, setLanguage} = useAthena()
     const [image_models, set_image_models] = useState([
 
         { name: 'Microscopic', from:'Fictiverse', code: 'Fictiverse/Stable_Diffusion_Microscopic_model', keys:['Microscopic'] },
@@ -340,8 +339,8 @@ export default function Athena() {
 
     async function query_API_new(query,breakpoint,max) {
         console.log(query,breakpoint)
-        const index = Math.max(0,chat_user.length % (HF_api_keys.length))
-        const key =  HF_api_keys[index]
+        const index = Math.max(0,chat_user.length % (HFK.length))
+        const key =  HFK[index]
         console.log(key)
         var generatedText = null
         await generate_text_stream(query,max,key).then(response => {
@@ -481,7 +480,7 @@ export default function Athena() {
             reply = data
 
             if(data != '' && (breakpoint || tokens.length <= max) && regex_point_end.test(data.split(' ').pop()) == false){
-                if( (!data.includes(brain[language].server+":") && breakpoint == true) || (!data.includes(breakpoint) && breakpoint != true) ){
+                if( (!data.includes(assistant[language].server+":") && breakpoint == true) || (!data.includes(breakpoint) && breakpoint != true) ){
                     if(tokens.length <= max){
                         console.log(`...${tokens.length}:tokens...`)
                         const continuation = await generate(prompt+" "+data, breakpoint, max)
@@ -498,7 +497,7 @@ export default function Athena() {
             }
         })
         if(breakpoint != true){
-            reply = reply.split(breakpoint)[0].split(brain[language].server+":")[0]
+            reply = reply.split(breakpoint)[0].split(assistant[language].server+":")[0]
         }
         return(reply)
     }
@@ -539,7 +538,7 @@ export default function Athena() {
         chat_input.current?.stopRecognition()
         
         var reply_txt = ''
-        var reply_AI = brain[language].apology
+        var reply_AI = assistant[language].apology
 
         var _chat_user = [...chat_user]
         _chat_user.push({
@@ -551,7 +550,7 @@ export default function Athena() {
         })
         set_chat_user(_chat_user)
         
-        if(chat_action == brain[language].actions[2]){ //'summerize'
+        if(chat_action == assistant[language].actions[2]){ //'summerize'
             SpeechSynth({text:'Okay, let me think...'})
             set_thinking(1)
             
@@ -563,7 +562,7 @@ export default function Athena() {
             clear_inputs()
             return
         }
-        if(painter_models.length > 0 && chat_action == brain[language].actions[1]){ //'create image'
+        if(painter_models.length > 0 && chat_action == assistant[language].actions[1]){ //'create image'
             set_thinking(3)
 
             let [inputs,forget] = user_query.split("/forget")
@@ -661,30 +660,30 @@ export default function Athena() {
                 resumo = '\n'
                 merged_chat.slice(-index).map((i)=>{
                     if(i.from == 'user'){
-                        resumo += `\n${brain[language].client}: `+ i.text
+                        resumo += `\n${assistant[language].client}: `+ i.text
                     }else{
-                        resumo += `\n${brain[language].server}: ` + i.text
+                        resumo += `\n${assistant[language].server}: ` + i.text
                     }
                 })
             }
             console.log("Length of memory = "+resumo.length, "Recals "+index+" of "+merged_chat.length+" replies")
             
-            if(resumo != '') await generate(resumo+'\n'+brain[language].analysis)
+            if(resumo != '') await generate(resumo+'\n'+assistant[language].analysis)
             .then(async(analys_feedback)=>{
                 if(analys_feedback != ''){
-                    sentiment = '\n'+brain[language].feedback+analys_feedback
+                    sentiment = '\n'+assistant[language].feedback+analys_feedback
                 }
                 console.log(sentiment)
             })
         }
         // return
         //Explain with details what is the AI singularity
-        await zero_shot_classification(user_query, brain[language].understand)
+        await zero_shot_classification(user_query, assistant[language].understand)
         .then(async(action)=>{
             console.log("The action ="+action.option)
             // reply_AI = action
             
-            await query_API_new(`${user_query}. ${brain[language].explain[0]} ${action.option} ${brain[language].explain[1]} `)
+            await query_API_new(`${user_query}. ${assistant[language].explain[0]} ${action.option} ${assistant[language].explain[1]} `)
             .then(async(data)=>{
                 if(data != ''){
                     console.log('As explanation ='+data)
@@ -692,20 +691,20 @@ export default function Athena() {
                 }
             })
         
-            await generate(`${brain[language].orientation}
-${brain[language].client}: ${brain[language].firstQ}
-${brain[language].server}: ${brain[language].firstA}
+            await generate(`${assistant[language].orientation}
+${assistant[language].client}: ${assistant[language].firstQ}
+${assistant[language].server}: ${assistant[language].firstA}
 ${resumo}
 ${sentiment}
-${brain[language].client}: ${user_query}.
-${brain[language].server}: ${reply_AI}
-${brain[language].client}: ${brain[language].continue}
-${brain[language].server}: `, brain[language].client+":", 200).then(async(chat_data)=>{
+${assistant[language].client}: ${user_query}.
+${assistant[language].server}: ${reply_AI}
+${assistant[language].client}: ${assistant[language].continue}
+${assistant[language].server}: `, assistant[language].client+":", 200).then(async(chat_data)=>{
                 if(chat_data != '') {
                     const similarity = similarText(reply_AI,chat_data)
                     if(chat_data.includes(reply_AI) == false){
                         reply_txt = reply_AI
-                        // chat_data = chat_data.split(brain[language].client+":")[0].replace('AI: ','')
+                        // chat_data = chat_data.split(assistant[language].client+":")[0].replace('AI: ','')
                         if(similarity <= 0.5) reply_txt += chat_data
                     }else{
                         reply_txt = chat_data
@@ -1221,11 +1220,11 @@ ${brain[language].server}: `, brain[language].client+":", 200).then(async(chat_d
                         await set_voice_synth(_query)
                         
                         set_user_query(_query)
-                        if(!brain[language.toLocaleLowerCase()]) {
+                        if(!assistant[language.toLocaleLowerCase()]) {
                             set_thinking(0)
                             return
                         }
-                        const _actions = brain[language.toLocaleLowerCase()]?.actions
+                        const _actions = assistant[language.toLocaleLowerCase()]?.actions
                         zero_shot_classification(_query, _actions)
                         .then(async response=>{
                             set_code(response)

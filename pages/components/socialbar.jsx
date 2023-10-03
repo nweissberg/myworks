@@ -9,6 +9,19 @@ export default function SocialBar(){
             <div style={{pointerEvents:"all"}} className='socialBar'>
                 <span className="p-buttonset">
                     <Button
+                    style={{backgroundColor:'#4020B9', ...button_style}} 
+                    icon="pi pi-file-pdf"
+                    // className="p-button-sm"
+                    tooltip="Resume Nyco3D"
+                    tooltipOptions={{
+                        // mouseTrack:true,
+                        position:"bottom"
+                    }}
+                    onClick={(e)=>{
+                        window.open('https://docs.google.com/document/d/149-dyiv5XzywFKxfXSUXyyFKfTG2TMRd3xLqiADK-wE/edit?usp=sharing').focus();
+                    }}
+                    />
+                    <Button
                     style={{backgroundColor:'#0a66c2', ...button_style}} 
                     icon="pi pi-linkedin"
                     // className="p-button-sm"
@@ -62,7 +75,6 @@ export default function SocialBar(){
                         window.open('https://github.com/nweissberg').focus();
                     }}
                     />
-                    
                 </span>
             </div>
         </>

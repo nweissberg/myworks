@@ -18,8 +18,10 @@ import { delete_file, get_folder } from "../api/firebase_storage";
 import UserFiles from "../components/all_images";
 import Swal from 'sweetalert2';
 import EditorHeader from "./components/header";
+import MatrixBackGround from "../components/matrix_bg";
 
 function gen_new(_vision, onRequest=(vision)=>{print(vision)}) {
+	// if(generate) return
 	var _imaginy_vision = {
 		model:{user:'prompthero',code:'openjourney-v4'},
 		ratio:[1,1],
@@ -134,6 +136,7 @@ export default function Editor() {
 	const {user} = useAuth()
 	const router = useRouter()
 	const [model_dialog, set_model_dialog] = useState(false)
+	const [generate, set_generate] = useState(false)
 	const [imaginy_view, set_imaginy_view] = useState(null)
 	// const [image_obj, set_image_obj] = useState(null)
 	const [imaginy_vision, set_imaginy_vision] = useState(null)
@@ -198,7 +201,7 @@ export default function Editor() {
 						var _imaginy_vision = JSON.parse(extractedData).data
 						set_imaginy_vision(_imaginy_vision);
 						var_set('imaginy_vision', JSON.stringify(_imaginy_vision));
-						
+						console.log(_imaginy_vision)
 					}
 				}).catch(e=>{
 					console.warn(e.message)
@@ -221,7 +224,8 @@ export default function Editor() {
 			const canvas = document.createElement('canvas');
 			const ctx = canvas.getContext('2d');
 			ctx.imageSmoothingEnabled = false
-			var {code, user, name, price} = imaginy_vision.model, _imaginy_vision = {...imaginy_vision, model: {code, user, name, price}}
+			var {code, user, name, price} = imaginy_vision.model || null
+			var _imaginy_vision = {...imaginy_vision, model: {code, user, name, price}}
 			var inputString = JSON.stringify(_imaginy_vision)
 
 			const height = Math.floor(Math.sqrt(inputString.length*8));
@@ -265,6 +269,7 @@ export default function Editor() {
 				var _imaginy_vision = JSON.parse(extractedData).data
 				set_imaginy_vision(_imaginy_vision);
 				var_set('imaginy_vision', JSON.stringify(_imaginy_vision));
+				console.log(_imaginy_vision)
 				
 			}
 			// blob_to_image(file_data, 'data').then((image_data) => {
@@ -351,8 +356,8 @@ export default function Editor() {
 				downloadURI(imaginy_view.src,`${imaginy_vision.seed}_${createId(8)}.png`)
 				break;
 			case 'generate':
-				if(request){
-					request.cancel()
+				if(generate){
+					request?.cancel()
 					messages_ref.current.show({
 						closable:false,
 						icon:'pi-picture',
@@ -361,8 +366,10 @@ export default function Editor() {
 						life: 1000
 					});
 					// return;
+					set_generate(false)
 					break;
 				}
+				set_generate(true)
 				messages_ref.current.show({
 					closable:true,
 					severity: 'info generate',
@@ -374,6 +381,7 @@ export default function Editor() {
 				});
 				request = gen_new(imaginy_vision,(_imaginy_vision)=>{
 					set_imaginy_vision(_imaginy_vision)
+					set_generate(true)
 				})
 				request.promise.then(img_blob=>{
 					var _imaginy_vision = {...imaginy_vision}
@@ -390,24 +398,27 @@ export default function Editor() {
 							const img = new Image();
 							imageToData(image_blob_data.src).then((imageData) => {
 								// Array('url', 'blob', 'image').map((k) => delete _imaginy_vision?.[k]);
-								const encodedImage = hideStringInImage(imageData,JSON.stringify({
-									..._imaginy_vision,
-									model:{
-										code:_imaginy_vision.model.code,
-										user:_imaginy_vision.model.user,
-										name:_imaginy_vision.model.name
-									}}),'png');
-								// set_image_obj(encodedImage);
-								// console.log(encodedImage)
-								img.src = encodedImage;
+								if(_imaginy_vision.model){
 
-								// console.log(encodedImage)
-								// blob_to_image(img_blob,'blob').then(blob_data=>{
-								// 	console.log(blob_data)
-									// _imaginy_vision.blob = imageData//new Blob([blob_data],{type:'image/png'})
-									// _imaginy_vision.blob = new Blob([blob_data],{type:'image/png'})
-									// })									
-									
+									const encodedImage = hideStringInImage(imageData,JSON.stringify({
+										..._imaginy_vision,
+										model:{
+											code:_imaginy_vision.model.code,
+											user:_imaginy_vision.model.user,
+											name:_imaginy_vision.model.name
+										}}),'png');
+									// set_image_obj(encodedImage);
+									// console.log(encodedImage)
+									img.src = encodedImage;
+	
+									// console.log(encodedImage)
+									// blob_to_image(img_blob,'blob').then(blob_data=>{
+									// 	console.log(blob_data)
+										// _imaginy_vision.blob = imageData//new Blob([blob_data],{type:'image/png'})
+										// _imaginy_vision.blob = new Blob([blob_data],{type:'image/png'})
+										// })									
+										
+								}
 								set_imaginy_vision(_imaginy_vision)
 								set_imaginy_view(img)
 							});
@@ -418,9 +429,11 @@ export default function Editor() {
 					}else{
 						print("Failed")
 					}
+					set_generate(false)
 					request=null
 				})
 				request.promise.catch(error=>{
+					set_generate(false)
 					request?.cancel()
 					messages_ref.current.show({
 						closable:true,
@@ -454,6 +467,7 @@ export default function Editor() {
 				set_model_dialog(false)
 			}}
 			updateVision={(tags)=>{
+				console.log(tags)
 				if(imaginy_vision) update_vision({
 					imagine: normalize([...new Set([...imaginy_vision.imagine.split(','), ...tags.imagine])].join(', ')),
 					forget: normalize([...new Set([...imaginy_vision.forget.split(','), ...tags.forget])].join(', '))
@@ -486,7 +500,7 @@ export default function Editor() {
 						maxHeight:orientation == 'portrait'?'calc(100% - 8rem)':'calc(100%)',
 						maxWidth:orientation == 'landscape'?'calc(100% - 8rem)':'100%',
 					}}
-					className='overflow-scroll hide-scroll z-0 grid gap-0 grid-nogutter'
+					className='overflow-scroll z-0 grid gap-0 grid-nogutter'
 					
 					openDoc={(e)=>{
 						router.push({pathname:'/editor',shallow:true, query:{doc:e}})
@@ -523,14 +537,24 @@ export default function Editor() {
 						src={imaginy_view?.src}
 						error='image/backgrounds/matrix-code-loop.gif'
 					/>
+					{generate && <div className="absolute w-full h-full z-0 pointer-events-none top-0 left-0 glass-c bg-blur-1"/>}
+					<div className={"pointer-events-none mix-blend-color-dodge opacity-90 border-round-xl overflow-hidden z-0 absolute flex w-full h-full"}>
+						{generate && <MatrixBackGround className={'relative w-auto h-auto'}/>}
+					</div>
 					
 				</PinchZoom>}
-				
 			</ImageDropWrapper>
 			{/* </ContextMenuWrapper> */}
-			<h3 style={{top:orientation == 'portrait'?'calc(100% - 6rem)':'calc(100% - 2rem)'}} className=" opacity-80 bg-gradient-bottom text-white absolute z-1 text-sm text-overflow-ellipsis whitespace-nowrap w-full h-3rem overflow-hidden">
-				{imaginy_vision?.model?.name}
-			</h3>
+			<h3 style={{
+					bottom:"0px",
+					left:'50vw',
+					transform:"translateX(-50%)"
+				}}
+				className=" px-4 opacity-80 bg-gradient-bottom text-white absolute z-1 text-sm text-overflow-ellipsis whitespace-nowrap w-full overflow-hidden">{
+				// `${imaginy_vision?.model?.name} ${JSON.stringify(imaginy_vision?.parameters)}`
+				//RATIO":[1,1],"CFG":7.7,"STEPS":55,"PARAMETERS":{"WIDTH":1024,"HEIGHT":768},
+				imaginy_vision?.model?.name
+			}</h3>
 
 			<footer className={(orientation=='portrait'?'w-full h-min':'w-min h-full')+" fixed flex flex-wrap z-1 bottom-0 left-0"}>
 				<EditorFooter
@@ -553,6 +577,7 @@ export default function Editor() {
 						if(event.severity == 'info generate'){
 							messages_ref.current.clear()
 							request?.cancel()
+							set_generate(false)
 							request=null
 						}
 					}}

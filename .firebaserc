@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "imagyny"
-  }
+    "default": "my-works-3d",
+    "Nyco3D": "my-works-3d"
+  },
+  "targets": {},
+  "etags": {}
 }

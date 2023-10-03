@@ -4,6 +4,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
+import SkillChart from './skill-chart';
 
 export default function UserCard(){
   const [overlay, setOverlay] = useState(false)
@@ -16,7 +17,7 @@ export default function UserCard(){
     );
   }
     return(
-      <div className='p-0 m-0'>
+      <div className='p-0 m-0 w-full'>
         <div style={{
           pointerEvents:"all",
           boxShadow: "0px 0px 8px 5px #00000066",
@@ -39,7 +40,20 @@ export default function UserCard(){
         {/* <div className='stickyMask'>
         </div> */}
         <TabView>
-          
+          <TabPanel header="Code Skills">
+            <h3 style={{
+                fontFamily:"mars",
+                fontWeight:"800",
+                textAlign:"center",
+                color:"var(--text)",
+              }}>Code skills</h3>
+            <SkillChart />
+            <Button className='p-button-text w-full shadow-none p-button-rounded' label="Open in Code Signal"
+              onClick={(e)=>{
+                window.open('https://app.codesignal.com/evaluation-result/ENBNRnY6qwg8jY6Tr?accessToken=MX6DyhdnNkfDHM6Wq-tLmf3fgWfGiswdZP7voYRBTk').focus();
+              }}
+            />
+          </TabPanel>
           <TabPanel header="Soft Skills">
             <h3 style={{
               fontFamily:"mars",
@@ -57,14 +71,14 @@ export default function UserCard(){
               // fontSize:"20px",
               whiteSpace:"pre-wrap",
               zIndex:3
-            }}>{`Comunicação efetiva
-Trabalho em equipe
-Criatividade
-Resolução de problemas
-Gerenciamento de tempo
-Flexibilidade
-Liderança
-Aprendizado contínuo`}</h2>
+            }}>{`Effective Communication
+Teamwork
+Creativity
+Problem Solving
+Time Management
+Adaptability
+Leadership
+Continuous Learning`}</h2>
             
           </TabPanel>
           
@@ -135,7 +149,7 @@ Aprendizado contínuo`}</h2>
             </div>
           </TabPanel>
 
-          <TabPanel header="Sobre">
+          <TabPanel header="About">
             <div className='p-0 m-0' style={{overflow:"scroll", height:"450px"}}>
                 <h3 style={{
                   fontFamily:"mars",
@@ -143,33 +157,19 @@ Aprendizado contínuo`}</h2>
                   textAlign:"center",
                   color:"var(--text)",
                 }}>
-                  Sobre
+                  About
                 </h3>
               <p style={{zIndex:3, fontFamily:"futura", fontSize:"24px", margin:"0px", padding:"2px"}}>
-              Sou viajante, conheci muitos lugares onde aprendi tudo o que pude pra chegar onde estou hoje, morei 3 
-              anos na Flórida quando pequeno, sou alfabetizado em inglês. Comecei na programação como professor, 
-              dando aula de Blender em Python, após isso minha primeira experiência como programador analista foi 
-              aos 21 anos de idade, fui para o México apresentar em uma feira de casino dois jogos que fiz, estudei 
-              game design aos 23 anos no Canadá, aos 24 trabalhei na Alemanha fazendo simulador de treinamento 
-              médico, para angioplastia e endoscopia, depois dessas experiências dediquei um tempo da minha vida ao 
-              autoconhecimento e exploração de novas culturas, passei pela França, Holanda, Istanbul e Israel onde 
-              aprendi o valor da humildade, trabalhei como ajudante de obra, garçom, assistente de cozinha e faxineiro 
-              de Hostel, quando voltei para o Brasil decidi seguir a arte e me tornei tatuador após me auto tatuar.
+              {"I'm a traveler, and I've had the privilege of exploring many places where I absorbed all I could to reach where I am today. I spent three years in Florida as a child, and that's where I became literate in English. My journey into programming began as a teacher, instructing Blender in Python. At the age of 21, I had my first experience as an analyst programmer. At 21, I traveled to Mexico to showcase two casino games I had created. At 23, I studied game design in Canada, and by 24, I was working in Germany, developing medical training simulators for angioplasty and endoscopy. After these adventures, I dedicated some time to self-discovery and exploring new cultures. I passed through France, the Netherlands, Istanbul, and Israel, where I learned the value of humility and worked various jobs like construction helper, waiter, kitchen assistant, and hostel cleaner. Upon returning to Brazil, I decided to follow my passion for art and became a tattoo artist after giving myself a tattoo."}
               <br/>
               <br/>
-              Durante esse percurso entre o Canadá e a volta para o Brasil desenvolvi uma engine multiplataforma de aplicativos e jogos usando HTML Canvas, CSS e muito JavaScript. Cresci muito nesse processo de estudos e criação. Aos meus 29 anos, voltei ao mercado de trabalho como programador/desenvolvedor. Atendi diversos clientes criando plataformas e serviços usando React, Node e Next agora com 31, aplico esse conhecimento que acumulei durante minhas experiências, construindo projetos freelance online remotamente.
+              {"During my journey from Canada back to Brazil, I developed a multi-platform app and game engine using HTML Canvas, CSS, and a lot of JavaScript. I grew immensely during this period of study and creation. At the age of 29, I reentered the job market as a programmer and developer, serving various clients by creating platforms and services using React, Node, and Next. Now, at 31, I apply the knowledge I've accumulated from my diverse experiences to build freelance projects online, working remotely."}
               <br/>
               <br/>
-              Desafios me impulsionam, amo superar o que as pessoas dizem ser impossível. Assim que comecei a dar 
-              aula no ano de 2008, um professor me disse que ninguém poderia fazer um bom jogo usando Blender, ao 
-              meu ver a ferramenta não faz o artista. Claro que seria mais fácil usar um motor de jogo popular, mas 
-              provei que ele estava errado, desenvolvendo Elpis The Game. No meu canal do YouTube <span style={{cursor:"pointer",fontFamily:"futura", padding:"0px",fontSize:"24px", color:"var(--matrix-primary)"}} onClick={(e)=>{setOverlay(true)}}>@Nyco3D</span>. Agradeço ao meu professor por ter me ajudado a ser o profissional que sou hoje.
+              {"Challenges drive me, and I relish overcoming what others consider impossible. Back in 2008, when I started teaching, a professor told me that no one could create a good game using Blender. In my view, the tool doesn't make the artist. While it might have been easier to use a popular game engine, I proved him wrong by developing Elpis The Game, which you can find on my YouTube channel "}<span style={{cursor:"pointer",fontFamily:"futura", padding:"0px",fontSize:"24px", color:"var(--matrix-primary)"}} onClick={(e)=>{setOverlay(true)}}>@Nyco3D</span>{". I am grateful to my teacher for helping shape me into the professional I am today."}
               <br/>
               <br/>
-              Não há um desafio que não possa ser ultrapassado, uma ferramenta que não possa ser dominada, um 
-              código que não possa ser escrito e uma habilidade que não possa ser adquirida. Posso não saber como 
-              fazer tudo, mas sempre busco aprender, ou encontrar uma solução para o problema. Como um artista, eu 
-              amo criar e como programador amo pensar. O conhecimento esta lá fora, só devemos buscar.
+              {"There's no challenge that can't be conquered, no tool that can't be mastered, no code that can't be written, and no skill that can't be acquired. I may not know everything, but I always seek to learn and find solutions to problems. As an artist, I love to create, and as a programmer, I love to think. Knowledge is out there; we just need to seek it."}
               </p>
             </div>
           </TabPanel>
@@ -181,7 +181,7 @@ Aprendizado contínuo`}</h2>
         <Dialog
           header="Video"
           visible={overlay}
-          maximizable
+          // maximizable
           onHide={() => {setOverlay(false)}}
         >
           <div>

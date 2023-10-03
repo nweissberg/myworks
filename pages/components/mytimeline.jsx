@@ -7,25 +7,27 @@ import { Toolbar } from 'primereact/toolbar';
 import { Dialog } from 'primereact/dialog';
 import { Galleria } from 'primereact/galleria';
 import HistoryService from '../services/HistoryService';
+import { KeyboardListener } from '../../componets/wrapper_keyboard';
+import { shorten } from '../utils';
 
 const IconSet = {
-  Conquista:{
-    header:'Conquistas',
+  Achievement:{
+    header:'Achievements',
     icon: 'pi pi-star-fill',
     color: 'var(--icon-pallet-f)'
   },
-  Formação:{
+  Education:{
     header:'Formações',
     icon: 'pi pi-book',
     color: 'var(--icon-pallet-b)'
   },
-  Emprego:{
-    header:'Empregos',
+  Job:{
+    header:'Jobs',
     icon: 'pi pi-building',
     color: 'var(--icon-pallet-d)'
   },
-  Projeto:{
-    header:'Projetos',
+  Project:{
+    header:'Projects',
     icon: 'pi pi-briefcase',
     color: 'var(--icon-pallet-a)'
   }
@@ -59,7 +61,8 @@ const itemTemplate = (item) => {
         src={item?.itemImageSrc}
         onError={(e) => e.target.src=''}
         alt={item?.alt}
-        style={{ width: '100%', display: 'block' }}
+        // style={{ width: '100%', height:'50%', display: 'block' }}
+        className='max-h-screen w-full max-w-screen h-screen border-round-lg overflow-hidden'
       />
     </div>    
     );
@@ -215,38 +218,8 @@ export default function MyTimeline(){
             textAlign:"center",
             justifyContent:"center"
           }}>
-            <img style={{
-              cursor:"pointer",
-              position:"relative",
-            }} width={200} alt={item.title} src={'/image/timeline/'+item.image}
-            onClick={(e)=>{
-              const image_name = e.target.currentSrc.split("/").pop()
-              // console.log(image_name)
-              setActiveIndex(0)
-              var image_array = []
-
-              if(image_name.split('.')[0].indexOf('-') != -1){
-                const image_parts = image_name.split('.')[0].split('-')
-                const image_max = image_parts.pop()
-                // console.log(,image_parts[0])
-                for(var i = parseInt(image_max); i > 0; i--){
-                  var path = image_parts[0]+'-'+i +'.'+ image_name.split('.').pop()
-                  // console.log(path)
-                  image_array.unshift({"itemImageSrc": "image/timeline/"+path,"thumbnailImageSrc": "image/timeline/"+path,"alt": "Description for Image 1","title": "Title 1"})
-                }
-              }else{
-                image_array = [{"itemImageSrc": "image/timeline/"+image_name,"thumbnailImageSrc": "image/timeline/"+image_name,"alt": "Description for Image 1","title": "Title 1"}]
-              }
-              // console.log(image_array)
-              setImages(image_array)
-              galleria.current.show()
-            }}
-            />
-          </div>}
-       
-          {item.text && <p style={{fontFamily:'futura', fontSize:"22px"}}>{item.text}</p>}
-          { item.url && item.url != '' &&
-            <div>
+            { item.url && item.url != '' &&
+            <div className='flex w-full justify-content-between mb-2'>
               {
                 item.video &&
                 <Button 
@@ -275,6 +248,42 @@ export default function MyTimeline(){
             </div>
             
           }
+            <img className="chat-bubble" style={{
+              cursor:"pointer",
+              position:"relative",
+              width:'100%'
+            }}  alt={item.title} src={'/image/timeline/'+item.image}
+            onClick={(e)=>{
+              const image_name = e.target.currentSrc.split("/").pop()
+              // console.log(image_name)
+              setActiveIndex(0)
+              var image_array = []
+
+              if(image_name.split('.')[0].indexOf('-') != -1){
+                const image_parts = image_name.split('.')[0].split('-')
+                const image_max = image_parts.pop()
+                // console.log(,image_parts[0])
+                for(var i = parseInt(image_max); i > 0; i--){
+                  var path = image_parts[0]+'-'+i +'.'+ image_name.split('.').pop()
+                  // console.log(path)
+                  image_array.unshift({"itemImageSrc": "image/timeline/"+path,"thumbnailImageSrc": "image/timeline/"+path,"alt": "Description for Image 1","title": "Title 1"})
+                }
+              }else{
+                image_array = [{"itemImageSrc": "image/timeline/"+image_name,"thumbnailImageSrc": "image/timeline/"+image_name,"alt": "Description for Image 1","title": "Title 1"}]
+              }
+              // console.log(image_array)
+              setImages(image_array)
+              galleria.current.show()
+            }}
+            />
+          </div>}
+       
+          {item.text &&
+            <div className='w-full justify-content-end flex flex-wrap'>
+              <p className='p-0' style={{fontFamily:'futura', fontSize:"22px"}}>{item.text}</p>
+              {/* <Button className='p-button-outlined p-button-secondary shadow-none p-button-sm p-button-rounded' label="Show more"/> */}
+            </div>}
+          
         </Card>
           
       </div>
@@ -292,10 +301,10 @@ export default function MyTimeline(){
   
   const timeline_menu = [
     {
-      label: 'Eventos',
+      label: 'Life Events',
       items: [
         {
-          label: 'Todos',
+          label: 'Everything',
           icon: 'pi pi-calendar',
           command: () => {
             var _active_history = [...History]
@@ -305,22 +314,22 @@ export default function MyTimeline(){
           }
         },
         {
-          label: 'Projeto',
+          label: 'Project',
           icon: 'pi pi-briefcase',
           command: apply_filter
         },
         {
-          label: 'Conquista',
+          label: 'Achievement',
           icon: 'pi pi-star',
           command: apply_filter
         },
         {
-          label: 'Formação',
+          label: 'Education',
           icon: 'pi pi-book',
           command: apply_filter
         },
         {
-          label: 'Emprego',
+          label: 'Job',
           icon: 'pi pi-building',
           command: apply_filter
         }
@@ -340,7 +349,7 @@ export default function MyTimeline(){
           zIndex:2
         }}>
             <div className='fixed flex w-screen bg-blur-3 bg-black-alpha-10 h-auto pb-3 pt-5 bg-gradient-top z-1 justify-content-start '>
-              <div className='flex w-full lg:w-5 px-3 ml-1 justify-content-between'>
+              <div className='flex w-auto h-full gap-2 px-3 ml-1 justify-content-between align-items-center'>
                 <Button
                   className='
                     border-2
@@ -369,7 +378,7 @@ export default function MyTimeline(){
                 >
                   {timeline_header}
                 </h2>
-                <i className='pi pi-sort-numeric-down-alt button-matrix' />
+                {/* <i className='pi pi-sort-numeric-down-alt button-matrix' /> */}
                 {/* <Button 
                   icon={descendente? 'pi pi-sort-numeric-down-alt': 'pi pi-sort-numeric-up-alt'}
                   // label={descendente?'Descendente':'Ascendente'}
@@ -416,7 +425,7 @@ export default function MyTimeline(){
       <Dialog
           header="Video"
           visible={overlay}
-          maximizable
+          // maximizable
           onHide={() => {setOverlay(false)}}
         >
           <div>
@@ -428,7 +437,30 @@ export default function MyTimeline(){
           }} src={"https://www.youtube.com/embed/"+video_id} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
           </div>
         </Dialog>
-
+        <KeyboardListener onKey={ key =>{
+            switch (key) {
+                case "escape":
+                    galleria.current.hide()
+                    break;
+                case "arrowright":
+                    if(activeIndex < images.length-1){
+                      setActiveIndex(activeIndex+1)
+                    }else{
+                      setActiveIndex(0)
+                    }
+                    break;
+                case "arrowleft":
+                    // prevImage()
+                    if(activeIndex>0){
+                      setActiveIndex(activeIndex-1)
+                    }else{
+                      setActiveIndex(images.length-1)
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }}/>
         <Galleria
           ref={galleria}
           value={images}
@@ -436,16 +468,11 @@ export default function MyTimeline(){
           activeIndex={activeIndex}
           onItemChange={(e) => setActiveIndex(e.index)}
           // numVisible={9}
-          style={{
-            // position:"absolute",
-            // zIndex:10,
-            maxWidth: '80vw',
-            // maxHeight:'90vh'
-          }}
+          className=' flex align-items-center'
           circular
           fullScreen
           showThumbnails={false}
-          showIndicators
+          // showIndicators
           showItemNavigators
           item={itemTemplate}
           // thumbnail={thumbnailTemplate}

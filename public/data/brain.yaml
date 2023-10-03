@@ -162,6 +162,33 @@ image:
             price: 1.1
 
     generate:
+        sdxl-wrong-lora:
+            price: 0.6
+            user: minimaxir
+            name: SDXL Lora
+            from: Max Woolf
+            info: Potencialize sua criação de imagens com LoRA para SDXL 1.0 Base. Aprimore texturas, cores e nitidez, refinando respostas do modelo usando direcionadores negativos. Testemunhe resultados aprimorados por meio de exemplos vívidos.
+            url: https://huggingface.co/minimaxir/sdxl-wrong-lora
+            imagine: [realistic, hyperrealistic, award-winning photo, vanity fair, food photography]
+            forget: [wrong, not wrong]
+            license: mit
+            samples:
+                - https://huggingface.co/minimaxir/sdxl-wrong-lora/resolve/main/img/header.webp
+                - https://huggingface.co/minimaxir/sdxl-wrong-lora/resolve/main/img/example1.webp
+                - https://huggingface.co/minimaxir/sdxl-wrong-lora/resolve/main/img/example2.webp
+                - https://huggingface.co/minimaxir/sdxl-wrong-lora/resolve/main/img/example3.webp
+                - https://huggingface.co/minimaxir/sdxl-wrong-lora/resolve/main/img/example4.webp
+                - https://huggingface.co/minimaxir/sdxl-wrong-lora/resolve/main/img/example5.webp
+
+        stable-diffusion-xl-base-1.0:
+            user: stabilityai
+            name: Stable Diffusion XL Base
+            from: Stability AI
+            info: "SDXL é um conjunto de ferramentas que melhora imagens borradas. Ele usa um modelo principal para criar informações básicas da imagem, aprimora a qualidade e remove ruídos. Esse modelo principal também pode ser usado sozinho. Alternativamente, há um método em duas etapas: Primeiro, o modelo principal cria informações básicas da imagem. Depois, um modelo especializado de alta resolução aperfeiçoa essas informações usando uma técnica chamada SDEdit. Esse método leva um pouco mais de tempo, mas produz resultados melhores."
+            license: openraill++
+            samples:
+                - https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0/blob/main/01.png
+                
         stable-diffusion-2-1-base:
             price: 0.5
             user: stabilityai

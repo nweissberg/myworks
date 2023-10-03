@@ -28,6 +28,7 @@ export default function Home() {
         position:"absolute",
 				width:"100vw",
         zIndex:0,
+        left:"0px",
 				// pointerEvents:"all",
     }}>
         {/* <MatrixBackGround/> */}
@@ -38,9 +39,10 @@ export default function Home() {
       
       <div style={{
         position:"absolute",
-        width:"100vw",
+        width:"100%",
         height:"100vh",
-        overflowX:"hidden"
+        overflowX:"hidden",
+        left:"0px",
         // backgroundColor:"red"
       }} className='flex justify-content-center flex-wrap'>
         <div className="
@@ -76,7 +78,7 @@ export default function Home() {
       <div style={{
         position:"absolute",
         // top:"10px",
-        
+        left:"0px",
         overflow:"hidden",
         width:"100vw",
         height:"100vh",
@@ -87,6 +89,8 @@ export default function Home() {
             left:"calc(-20vw + 200px)",
             width:"100vw",
             height:"100vh",
+            // left:"0px",
+            zIndex:1
           }}>
             {/* <Planeta/> */}
 						<Planeta pins={user_timeline}/>

@@ -8,8 +8,8 @@ export default function UserHeader(){
         marginBottom:"3px"
       }
     return(
-        <div className="pointer-events-none select-none">
-        <div className='flex-grow-1 w-full mt-8 ' />
+        <div className="pointer-events-none select-none ">
+        <div className='flex-grow-1 w-full mt-8 flex' />
         <div className="pointer-events-none select-none sticky top-0" style={{
             pointerEvents:"none",
             backgroundColor:"#fff",
@@ -41,7 +41,7 @@ export default function UserHeader(){
               fontWeight:"normal",
               margin:"20px",
               color:"var(--matrix-secondary)"
-            }}>Desenvolvedor . Professor . Artista 3D . Tatuador</h3>
+            }}>Developer . Teacher . 3D Artist</h3>
           </div>
           <div style={line_style}>
             <h2 style={{fontFamily: 'mars',margin:"20px"}}>Nycholas Weissberg</h2>

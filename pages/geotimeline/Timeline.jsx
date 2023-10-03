@@ -33,7 +33,7 @@ export default class TimeLine extends React.Component {
 		var pin_array = [...this.props.pins]
 		var pins_ids = this.props.pins.map(i=>i.id)
 		
-		if(!pins_ids.includes(item.id)){
+		if(!pins_ids.includes(item?.id)){
 			var new_pin = {
 				date: current_date.toJSON(),
 				text: "",
@@ -180,9 +180,14 @@ export default class TimeLine extends React.Component {
 										this.setState({searching:true})
 										console.log(this.state.searching)
 										api_get({route:'location', body:[this.state.search]}).then((data)=>{
-											const item = data[0]
-											this.geoPin(item)
-											
+											if(data){
+												const item = data[0]
+												this.geoPin(item)
+											}else{
+												this.setState({
+													searching:false
+												})
+											}
 										})
 									}}
 								/>

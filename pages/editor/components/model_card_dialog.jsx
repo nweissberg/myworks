@@ -78,7 +78,7 @@ export default function ModelCardDialog(props){
 		<h3 className="my-1 w-max"> {props.vision?.model.name} </h3>
 	</div>
 	}
-		maximizable
+		// maximizable
 		// maximized
 		closable={true}
 		modal

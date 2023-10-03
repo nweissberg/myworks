@@ -47,7 +47,7 @@ export default function EditorHeader(props) {
 				position:"left",
 				className:"custom-tooltip scalein animation-duration-100 animation-iteration-1 hide-on-mobile"
 			}}
-			tooltip={props.imaginy_vision?.model?.name}
+			tooltip={"Minha Galeria 🧑‍🎨"}
 			icon='pi pi-images text-white text-2xl ' className="p-button-rounded p-button-outlined border-2 p-4 bg-black-alpha-50"
 			onClick={()=>{
 				// set_model_dialog(true)
@@ -110,7 +110,7 @@ export default function EditorHeader(props) {
 					position:"left",
 					className:"custom-tooltip scalein animation-duration-100 animation-iteration-1 hide-on-mobile"
 				}}
-				tooltip={props.imaginy_vision?.model?.name}
+				tooltip={"Minha Galeria 🧑‍🎨"}
 				icon='pi pi-images text-white text-2xl ' className="p-button-rounded p-button-outlined border-2 p-4 bg-black-alpha-50"
 				onClick={()=>{
 					// set_model_dialog(true)

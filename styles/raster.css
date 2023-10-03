@@ -1678,7 +1678,7 @@ color-scheme: light dark; /* both supported */
   display: flex;
   width: 100%;
   max-width: 430px;
-  align-items: center
+  align-items: center;
 }
 
 .email-form button {
@@ -1736,6 +1736,7 @@ color-scheme: light dark; /* both supported */
 }
 
 .email-form .button-wrapper {
+  margin-inline: 20px;
   pointer-events: none;
   position: absolute;
   left: 0px;
@@ -1746,6 +1747,7 @@ color-scheme: light dark; /* both supported */
 }
 
 .email-form input {
+  margin-inline: 20px;
   width: 100%;
   border-radius: 9999px;
   background-color: #0003;
@@ -1857,12 +1859,12 @@ color-scheme: light dark; /* both supported */
   transform: translate(0)
 }
 
-.email-form.is-submitted input+.button-wrapper,.email-form.is-filled input+.button-wrapper {
+.email-form.is-submitted input+.button-wrapper,.email-form.is-filled input+.button-wrapper, .email-form.is-filled span+.button-wrapper {
   transform: translate3d(calc(100% - 3rem),0,0)
 }
 
 @media (min-width: 768px) {
-  .email-form.is-submitted input+.button-wrapper,.email-form.is-filled input+.button-wrapper {
+  .email-form.is-submitted input+.button-wrapper,.email-form.is-filled input+.button-wrapper, .email-form.is-filled span+.button-wrapper {
       transform:translate3d(calc(100% - 4rem),0,0)
   }
 }

@@ -28,6 +28,7 @@ import { Tooltip } from "primereact/tooltip";
 import { InputTextarea } from "primereact/inputtextarea";
 PrimeReact.ripple = false;
 
+// (11)4002-0022
 // forward ref can pass the object to parent component so it can be used as a ref
 const EditorFooter = forwardRef((props, ref) => {
 	const [models, set_models] = useState([]);
@@ -72,14 +73,14 @@ const EditorFooter = forwardRef((props, ref) => {
 	function regenerate(test = true) {
 		set_view("menu");
 		// print(isDeepEqual(last_vision,vision))
-		if (
-			test == false ||
-			last_vision == null ||
-			isDeepEqual(last_vision, vision) == false
-		) {
-			props.onAction?.("generate");
-			set_last_vision(props.imaginy_vision);
-		}
+		// if (
+		// 	test == false ||
+		// 	last_vision == null ||
+		// 	isDeepEqual(last_vision, vision) == false
+		// ) {
+		// 	props.onAction?.("generate");
+		// 	set_last_vision(props.imaginy_vision);
+		// }
 	}
 
 	function update_vision(value, key) {
@@ -229,7 +230,7 @@ const EditorFooter = forwardRef((props, ref) => {
 	// 	minHeight:"100vh",
 	// }
 	let footer_class =
-		"  select-none flex flex-wrap surface-card w-max align-items-start animation-duration-200 animation-iteration-1 " +
+		"  select-none flex flex-wrap glass-c bg-blur-2 w-max align-items-start animation-duration-200 animation-iteration-1 " +
 		(orientation == "portrait" ? "fadeindown" : "fadeinleft");
 	var current_view = <></>;
 	var current_menu = (
@@ -298,16 +299,17 @@ const EditorFooter = forwardRef((props, ref) => {
 							console.log(model);
 							update_vision(models[model], "model");
 							set_view("menu");
-							regenerate(false);
+							// regenerate(false);
 							// set_active_index(model)
 						}}
 					/>
 
 					<PanelHeader
 						onClick={() => {
-							console.log("regenerate");
+							// console.log("regenerate");
 							update_vision(active_index, "model");
-							regenerate();
+							set_view("menu");
+							// regenerate();
 						}}
 					/>
 					<div
@@ -477,7 +479,16 @@ const EditorFooter = forwardRef((props, ref) => {
 			current_view = (
 				<>
 					<PanelHeader onClick={regenerate} />
-					<SpeechToText
+					<InputTextarea
+						className="w-full m-1"
+						rows={5}
+						cols={30}
+						value={vision?.description}
+						onChange={(e) => {
+							update_vision(e.target.value, "description");
+						}}
+					/>
+					{/* <SpeechToText
 						className="flex w-full overflow-scroll"
 						value={vision?.description}
 						uid="image_description"
@@ -489,7 +500,7 @@ const EditorFooter = forwardRef((props, ref) => {
 								update_vision(text.textInput, "description");
 							}
 						}}
-					/>
+					/> */}
 				</>
 			);
 			break;

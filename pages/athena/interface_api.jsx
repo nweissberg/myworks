@@ -613,7 +613,7 @@ export async function generate_text_stream(
         },
       })
       .then((output) => {
-        // console.log(output);
+        console.log(output);
         resolve(output.generated_text);
       });
   });

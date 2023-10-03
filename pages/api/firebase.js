@@ -28,8 +28,24 @@ export const get_uid = () => {
     return (uid)
 }
 
+export async function query_data(table, get = { "user_uid": ['==', uid] }) {
+    const processQuery = (query) => {
+        return ( (query.mode || 'and') === 'and' ? and : or)(
+            ...Object.entries(query).map(([key, value]) => {
+                if (key === 'mode') return null;
+                if (Array.isArray(value)) {
+                    return where(key, value[0], value[1]);
+                } else {
+                    return processQuery(value);
+                }
+            }).filter(Boolean)
+        );
+    };
+    return await getDocs(query(collection(fb_db, table), processQuery(get)));
+}
+
 export async function add_data(table, data) {
-    console.log(data)
+    // console.log(data)
     if (!data) return
     data.user_uid = uid
     data.creation = serverTimestamp()
